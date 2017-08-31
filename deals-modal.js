@@ -84,14 +84,16 @@ const modalLogicHandler = (() => {
   			buttonText: cardClicked.find('#cta-price').html(),
   		};
   	},
-  	/** On modal dismiss, we basically - 
+
+    /** On modal dismiss, we basically - 
   	 * Set our selected object to null
   	 * Reset the modal data to default object
   	 */
   	onModalDismiss: () => {
   		modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
   	},
-  	/** 
+
+    /** 
   	  * Updates the modal data on click
   	*/
   	onModalShow: () => {
@@ -114,7 +116,8 @@ const modalLogicHandler = (() => {
       // Render CTA on modal
       modalLogicHandler.renderCallToActionButton(modalContainer);      
   	},  	
-  	/** Renders the call to action button when user opens the modal
+
+    /** Renders the call to action button when user opens the modal
   	 *  There's 2 options
   	   * Download RateX (For CHROME users who do not have our extension)
   	   * Go to Amazon (For users who have our extension OR users not on chrome)
@@ -132,7 +135,6 @@ const modalLogicHandler = (() => {
         modalContainer.find('.column-14').find('a')
           .text(modalLogicHandler.selectedObject.buttonText);
       }
-
   	},
   };
 })();
