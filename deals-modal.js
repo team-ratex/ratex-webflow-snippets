@@ -80,7 +80,7 @@ $(() => {
           title: cardClicked.find('.product-name').html(),
           description: cardClicked.find('#description-container ul').html(), // Will be an array of text
           starsSrc: cardClicked.find('#star-rating').attr("src"), // Should be URL
-          reviewsCount: cardClicked.find('.text-block-19').html(),
+          reviewsCount: cardClicked.find('#reviews-count').html(),
           itemUrl: cardClicked.find('.product-page').html(),
           buttonText: cardClicked.find('#cta-price').html(),
         };
@@ -125,15 +125,23 @@ $(() => {
       */
       renderCallToActionButton: (modalContainer) => {
         // Naive: No extension way for now
-        const hasExtension = false;
-        if (hasExtension) {
-
+        const hasExtension = document.getElementById('ratex-extension-is-installed');
+        const isChrome = !!window.chrome && !!window.chrome.webstore;
+        const isFirefox = (navigator.userAgent.indexOf("Firefox") > 0);
+        // Show download for Chrome users (temporary leave out firefox)
+        if (!hasExtension && isChrome) {
+          // Show the current button
+          modalContainer.find('.cta-wrapper').show();
+          modalContainer.find('#cta-buy').hide();
+          // Update the URL of the `skip to site`
+          modalContainer.find('.cta-wrapper').find('.link-11')
+            .attr('href', modalLogicHandler.selectedObject.itemUrl);
         } else {
           // Set itemURL
-          modalContainer.find('.column-14').find('a')
+          modalContainer.find('#cta-buy')
             .attr('href', modalLogicHandler.selectedObject.itemUrl);
           // Set button text
-          modalContainer.find('.column-14').find('a')
+          modalContainer.find('#cta-buy')
             .text(modalLogicHandler.selectedObject.buttonText);
         }
       },
