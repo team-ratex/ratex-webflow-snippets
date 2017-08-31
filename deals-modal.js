@@ -104,7 +104,7 @@ $(() => {
           .attr('src', modalLogicHandler.selectedObject.imageSrc);
         // Set Title
         modalContainer.find('.heading-9')
-          .text(modalLogicHandler.selectedObject.title);
+          .html(modalLogicHandler.selectedObject.title);
         // Set description (it's a list of <li>)
         modalContainer.find('.paragraph-2')
           .html(modalLogicHandler.selectedObject.description);
