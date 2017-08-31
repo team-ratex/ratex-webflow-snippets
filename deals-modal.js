@@ -6,32 +6,44 @@ const modalLogicHandler = (() => {
 	/************************ Init ************************/
 	/** Basically setting up modal observers
 	  * So that we know when to mutate the data of the modal
+    * This is a self-calling function (it gets called upon declaration)
 	*/
-	const modalSelector = '.product-modal-popup-wrapper';
-	const modalMutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-	const modalObserver = new MutationObserver((mutations) => {
-	  mutations.forEach(function(mutation) {
-	  	// Check if style chagned, and value is different from previously
-	  	if ((mutation.attributeName == 'style') && (mutation.target.style.display != modalLogicHandler.modalPreviousState)) {
-      	if (mutation.type == "attributes") {
-		      // Modal did get activated
-		      if ($(modalSelector).is(':visible')) {
-		      	modalLogicHandler.onModalShow();
-		      	modalLogicHandler.modalPreviousState = "block";
-		      }
-		      // Modal did get dismissed
-		      if ($(modalSelector).is(':hidden')) {
-						modalLogicHandler.onModalDismiss();
-		      	modalLogicHandler.modalPreviousState = "none";
-		      }
-		    }
-      }
-	  });
-	});
-	modalObserver.observe(document.querySelector(modalSelector), {
-		attributes: true,
-			});
-	// Set up additonal onclick handlers for all cards in deals	
+  const setUpModalObservers = (() => {
+    const modalSelector = '.product-modal-popup-wrapper';
+    const modalMutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+    const modalObserver = new MutationObserver((mutations) => {
+      mutations.forEach(function(mutation) {
+        // Check if style chagned, and value is different from previously
+        if ((mutation.attributeName == 'style') && (mutation.target.style.display != modalLogicHandler.modalPreviousState)) {
+          if (mutation.type == "attributes") {
+            // Modal did get activated
+            if ($(modalSelector).is(':visible')) {
+              modalLogicHandler.onModalShow();
+              modalLogicHandler.modalPreviousState = "block";
+            }
+            // Modal did get dismissed
+            if ($(modalSelector).is(':hidden')) {
+              modalLogicHandler.onModalDismiss();
+              modalLogicHandler.modalPreviousState = "none";
+            }
+          }
+        }
+      });
+    });
+    modalObserver.observe(document.querySelector(modalSelector), {
+      attributes: true,
+    });
+  })();
+	/** Set up additonal onclick handlers for all cards in deals	
+    * This is a self-calling function (it gets called upon declaration)
+  */
+  const setUpCardsToHaveAdditionalOnClickListener = (() => {
+    $('.shop > .deals').each((idx, item)=> {
+      item.on("click", () => {
+        modalLogicHandler.onCardClicked();
+      });
+    });
+  })();
 
 
   return {
@@ -48,6 +60,7 @@ const modalLogicHandler = (() => {
   	onCardClicked: (element) => {
   		// Grab card object
   		const cardClicked = $(element);
+      console.log(cardClicked);
   		// Grab attributes of the card
   		modalLogicHandler.selectedObject = {
   			title: cardClicked.find('.product-name').html(),
