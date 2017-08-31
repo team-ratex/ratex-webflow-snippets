@@ -130,13 +130,16 @@ $(() => {
         const isFirefox = (navigator.userAgent.indexOf("Firefox") > 0);
         // Show download for Chrome users (temporary leave out firefox)
         if (!hasExtension && isChrome) {
-          // Show the current button
+          // Show install button
           modalContainer.find('.cta-wrapper').show();
           modalContainer.find('#cta-buy').hide();
           // Update the URL of the `skip to site`
           modalContainer.find('.cta-wrapper').find('.link-11')
             .attr('href', modalLogicHandler.selectedObject.itemUrl);
         } else {
+          // Show buy button
+          modalContainer.find('.cta-wrapper').hide();
+          modalContainer.find('#cta-buy').show();          
           // Set itemURL
           modalContainer.find('#cta-buy')
             .attr('href', modalLogicHandler.selectedObject.itemUrl);
