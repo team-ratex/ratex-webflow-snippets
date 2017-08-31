@@ -39,8 +39,8 @@ const modalLogicHandler = (() => {
   */
   const setUpCardsToHaveAdditionalOnClickListener = (() => {
     $('.shop > .deals').each((idx, item)=> {
-      item.on("click", () => {
-        modalLogicHandler.onCardClicked();
+      $(item).on("click", () => {
+        modalLogicHandler.onCardClicked(item);
       });
     });
   })();
@@ -58,18 +58,20 @@ const modalLogicHandler = (() => {
   	 *  Render the modal based on said data
   	*/
   	onCardClicked: (element) => {
+      console.log('Card is clicked');
   		// Grab card object
   		const cardClicked = $(element);
-      console.log(cardClicked);
   		// Grab attributes of the card
   		modalLogicHandler.selectedObject = {
+        imageSrc: cardClicked.find('#thumbnail-image').style.backgroundImage,
   			title: cardClicked.find('.product-name').html(),
   			description: cardClicked.find('#description-container ul li'), // Will be an array of text
-  			reviewsCount: '16',
-  			stars: '4', // Should be URL
+  			reviewsCount: cardClicked.find('#reviews-count').html(),
+  			stars: cardClicked.find('#star-rating').html(), // Should be URL
   			itemUrl: cardClicked.find('.product-page').html(),
-  			buttonText: '$$$$ on Amazon',
+  			buttonText: cardClicked.find('#cta-price').html(),
   		};
+      console.log(modalLogicHandler.selectedObject);
   	},
   	/** On modal dismiss, we basically - 
   	 * Set our selected object to null
