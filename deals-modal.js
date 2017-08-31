@@ -2,24 +2,27 @@
  * Javascript object to encapsulate the modal selection
  * Basically, we are emulating a front-end 'state' of selected card to show in the modal
  */ 
-var modalPreviousState = "none";
 const modalLogicHandler = (() => {
 	/************************ Init ************************/
-	// Set up observers
+	/** Basically setting up modal observers
+	  * So that we know when to mutate the data of the modal
+	*/
 	const modalSelector = '.product-modal-popup-wrapper';
 	const modalMutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
 	const modalObserver = new MutationObserver((mutations) => {
 	  mutations.forEach(function(mutation) {
-	  	if (mutation.attributeName !== 'style') return;
-			let currentValue = mutation.target.style.display;
-      if (currentValue != previousValue) {
+	  	// Check if style chagned, and value is different from previously
+	  	if ((mutation.attributeName == 'style') && (mutation.target.style.display != modalLogicHandler.modalPreviousState)) {
       	if (mutation.type == "attributes") {
 		      // Modal did get activated
 		      if ($(modalSelector).is(':visible')) {
-		      	console.log('Modal is shown');
+		      	modalLogicHandler.onModalShow();
+		      	modalLogicHandler.modalPreviousState = "block";
 		      }
+		      // Modal did get dismissed
 		      if ($(modalSelector).is(':hidden')) {
-		      	console.log('Modal is hidden');
+						modalLogicHandler.onModalDismiss();
+		      	modalLogicHandler.modalPreviousState = "none";
 		      }
 		    }
       }
@@ -27,22 +30,17 @@ const modalLogicHandler = (() => {
 	});
 	modalObserver.observe(document.querySelector(modalSelector), {
 		attributes: true,
-	});
+			});
+	// Set up additonal onclick handlers for all cards in deals	
 
 
   return {
   	/************************ Variables ************************/
   	defaultObject: {}, // Placeholder items, essentially
   	selectedObject: {}, // Empty object, ready to get set by the current card clicked
-
-  	/************************ Functions ************************/
-  	/** On modal dismiss, we basically - 
-  	 * Set our selected object to null
-  	 * Reset the modal data to default object
-  	 */
-  	onModalDismiss: () => {
-
-  	},
+		modalPreviousState: "none", // State to know whether modal is currently showing or hidden
+  	
+		/************************ Functions ************************/
   	/** On card clicked, we basically - 
   	 *  Update the selected object based on the card's data
   	 *  Render the modal based on said data
@@ -54,16 +52,28 @@ const modalLogicHandler = (() => {
   		modalLogicHandler.selectedObject = {
   			title: cardClicked.find('.product-name').html(),
   			description: cardClicked.find('#description-container ul li'), // Will be an array of text
-  			reviewsCount: '',
-  			stars: '',
+  			reviewsCount: '16',
+  			stars: '4', // Should be URL
   			itemUrl: cardClicked.find('.product-page').html(),
+  			buttonText: '$$$$ on Amazon',
   		};
+  	},
+  	/** On modal dismiss, we basically - 
+  	 * Set our selected object to null
+  	 * Reset the modal data to default object
+  	 */
+  	onModalDismiss: () => {
+  		console.log('dismissed')
+  		modalLogicHandler.selectedObject = {}; // TEMP HACK - JUST DELETE OBJECT
   	},
   	/** 
   	  * Updates the modal data on click
   	*/
-  	renderModalData: () => {
-
+  	onModalShow: () => {
+  		console.log('shown')
+  		const modalContainer = $('.product-modal-popup-wrapper .product-content-wraper');
+  		// Set title
+  		// modalContainer.
   	},  	
   	/** Renders the call to action button when user opens the modal
   	 *  There's 2 options
