@@ -48,7 +48,20 @@ const modalLogicHandler = (() => {
 
   return {
   	/************************ Variables ************************/
-  	defaultObject: {}, // Placeholder items, essentially
+  	// Placeholder items, essentially
+    defaultObject: {
+      imageSrc: $('.product-modal-popup-wrapper .product-content-wraper')
+                  .find('.image-43').attr("src"),
+      title: $('.product-modal-popup-wrapper .product-content-wraper')
+                  .find('.heading-9').html(),
+      description: null, // Will be an array of text
+      starsSrc: $('.product-modal-popup-wrapper .product-content-wraper')
+                  .find('.image-46').attr("src"), // Should be URL
+      reviewsCount: $('.product-modal-popup-wrapper .product-content-wraper')
+                  .find('#reviews-count').html(),
+      itemUrl: '#',
+      buttonText: '',
+    },
   	selectedObject: {}, // Empty object, ready to get set by the current card clicked
 		modalPreviousState: "none", // State to know whether modal is currently showing or hidden
   	
@@ -58,44 +71,67 @@ const modalLogicHandler = (() => {
   	 *  Render the modal based on said data
   	*/
   	onCardClicked: (element) => {
-      console.log('Card is clicked');
   		// Grab card object
   		const cardClicked = $(element);
   		// Grab attributes of the card
   		modalLogicHandler.selectedObject = {
-        imageSrc: cardClicked.find('#thumbnail-image').style.backgroundImage,
+        imageSrc: cardClicked.find('.thumbnail-image').attr("src"),
   			title: cardClicked.find('.product-name').html(),
-  			description: cardClicked.find('#description-container ul li'), // Will be an array of text
-  			reviewsCount: cardClicked.find('#reviews-count').html(),
-  			stars: cardClicked.find('#star-rating').html(), // Should be URL
+  			description: cardClicked.find('#description-container ul').html(), // Will be an array of text
+  			starsSrc: cardClicked.find('#star-rating').attr("src"), // Should be URL
+        reviewsCount: cardClicked.find('.text-block-19').html(),
   			itemUrl: cardClicked.find('.product-page').html(),
   			buttonText: cardClicked.find('#cta-price').html(),
   		};
-      console.log(modalLogicHandler.selectedObject);
   	},
   	/** On modal dismiss, we basically - 
   	 * Set our selected object to null
   	 * Reset the modal data to default object
   	 */
   	onModalDismiss: () => {
-  		console.log('dismissed')
-  		modalLogicHandler.selectedObject = {}; // TEMP HACK - JUST DELETE OBJECT
+  		modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
   	},
   	/** 
   	  * Updates the modal data on click
   	*/
   	onModalShow: () => {
-  		console.log('shown')
   		const modalContainer = $('.product-modal-popup-wrapper .product-content-wraper');
-  		// Set title
-  		// modalContainer.
+  		// Set image
+  		modalContainer.find('.image-43')
+        .attr('src', modalLogicHandler.selectedObject.imageSrc);
+      // Set Title
+      modalContainer.find('.heading-9')
+        .text(modalLogicHandler.selectedObject.title);
+      // Set description (it's a list of <li>)
+      modalContainer.find('.paragraph-2')
+        .html(modalLogicHandler.selectedObject.description);
+      // Set stars image
+      modalContainer.find('.image-46')
+        .attr('src', modalLogicHandler.selectedObject.starsSrc);
+      // Set reviews count
+      modalContainer.find('.text-block-19')
+        .text(modalLogicHandler.selectedObject.reviewsCount);
+      // Render CTA on modal
+      modalLogicHandler.renderCallToActionButton(modalContainer);      
   	},  	
   	/** Renders the call to action button when user opens the modal
   	 *  There's 2 options
   	   * Download RateX (For CHROME users who do not have our extension)
   	   * Go to Amazon (For users who have our extension OR users not on chrome)
   	*/
-  	renderCallToActionButton: () => {
+  	renderCallToActionButton: (modalContainer) => {
+      // Naive: No extension way for now
+      const hasExtension = false;
+      if (hasExtension) {
+
+      } else {
+        // Set itemURL
+        modalContainer.find('.column-14').find('a')
+          .attr('href', modalLogicHandler.selectedObject.itemUrl);
+        // Set button text
+        modalContainer.find('.column-14').find('a')
+          .text(modalLogicHandler.selectedObject.buttonText);
+      }
 
   	},
   };
