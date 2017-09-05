@@ -91,6 +91,7 @@ $(() => {
        * Reset the modal data to default object
        */
       onModalDismiss: () => {
+        $('html, body').css({ overflow: 'auto', height: 'auto' });
         modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
       },
 
@@ -98,6 +99,8 @@ $(() => {
         * Updates the modal data on click
       */
       onModalShow: () => {
+        // Disable scrolling on background
+        $('html, body').css({ overflow: 'hidden', height: '100%' });
         const modalContainer = $('.product-modal-popup-wrapper .product-content-wraper');
         // Set image
         modalContainer.find('.image-43')
