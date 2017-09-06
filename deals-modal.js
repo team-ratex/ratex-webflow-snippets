@@ -35,6 +35,7 @@ $(() => {
         attributes: true,
       });
     })();
+
     /** Set up additonal onclick handlers for all cards in deals  
       * This is a self-calling function (it gets called upon declaration)
     */
@@ -46,6 +47,32 @@ $(() => {
       });
     })();
 
+    /** Set up additonal interaction handlers to prevent touch-events on mobile from propagating (From modal->body)
+      * Source: https://stackoverflow.com/a/16898264
+      * This is a self-calling function (it gets called upon declaration)
+    */
+    const setUpTouchEventsScrollingForMobile = (() => {
+      const elem = (document.getElementsByClassName('product-content-wraper'))[0];
+      elem.addEventListener('touchstart', function(event){
+          this.allowUp = (this.scrollTop > 0);
+          this.allowDown = (this.scrollTop < this.scrollHeight - this.clientHeight);
+          this.prevTop = null; 
+          this.prevBot = null;
+          this.lastY = event.pageY;
+      });
+
+      elem.addEventListener('touchmove', function(event){
+          var up = (event.pageY > this.lastY), 
+              down = !up;
+
+          this.lastY = event.pageY;
+
+          if ((up && this.allowUp) || (down && this.allowDown)) 
+              event.stopPropagation();
+          else 
+              event.preventDefault();
+      });
+    })();
 
     return {
       /************************ Variables ************************/
@@ -92,7 +119,6 @@ $(() => {
        */
       onModalDismiss: () => {
         $('html, body').css({ overflow: 'auto'});
-        document.body.ontouchmove = function(e){ return true; }      
         modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
       },
 
@@ -102,7 +128,6 @@ $(() => {
       onModalShow: () => {
         // Disable scrolling on background
         $('html, body').css({ overflow: 'hidden'});
-        document.body.ontouchmove = function(e){ e.preventDefault(); }
         const modalContainer = $('.product-modal-popup-wrapper .product-content-wraper');
         // Set image
         modalContainer.find('.image-43')
