@@ -91,7 +91,8 @@ $(() => {
        * Reset the modal data to default object
        */
       onModalDismiss: () => {
-        $('html, body').css({ overflow: 'auto' });
+        $('html, body').css({ overflow: 'auto'});
+        document.body.ontouchmove = function(e){ return true; }      
         modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
       },
 
@@ -100,7 +101,8 @@ $(() => {
       */
       onModalShow: () => {
         // Disable scrolling on background
-        $('html, body').css({ overflow: 'hidden' });
+        $('html, body').css({ overflow: 'hidden'});
+        document.body.ontouchmove = function(e){ e.preventDefault(); }
         const modalContainer = $('.product-modal-popup-wrapper .product-content-wraper');
         // Set image
         modalContainer.find('.image-43')
