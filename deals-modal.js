@@ -92,7 +92,8 @@ $(() => {
       },
       selectedObject: {}, // Empty object, ready to get set by the current card clicked
       modalPreviousState: "none", // State to know whether modal is currently showing or hidden
-      
+      modalContainer: $('.product-modal-popup-wrapper .product-content-wraper'),
+
       /************************ Functions ************************/
       /** On card clicked, we basically - 
        *  Update the selected object based on the card's data
@@ -120,6 +121,10 @@ $(() => {
       onModalDismiss: () => {
         $('html, body').css({ overflow: 'auto'});
         modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
+        modalLogicHandler.renderModal(
+          modalLogicHandler.modalContainer
+          modalLogicHandler.defaultObject
+        );
       },
 
       /** 
@@ -128,25 +133,35 @@ $(() => {
       onModalShow: () => {
         // Disable scrolling on background
         $('html, body').css({ overflow: 'hidden'});
-        const modalContainer = $('.product-modal-popup-wrapper .product-content-wraper');
+        // Render modal data
+        modalLogicHandler.renderModal(
+          modalLogicHandler.modalContainer
+          modalLogicHandler.selectedObject
+        );
+        // Render CTA on modal
+        modalLogicHandler.renderCallToActionButton(modalLogicHandler.modalContainer);      
+      },
+
+      /**
+        * Render modal data
+      */
+      renderModal: (modalContainer, data) => {
         // Set image
         modalContainer.find('.image-43')
-          .attr('src', modalLogicHandler.selectedObject.imageSrc);
+          .attr('src', data.imageSrc);
         // Set Title
         modalContainer.find('.heading-9')
-          .html(modalLogicHandler.selectedObject.title);
+          .html(data.title);
         // Set description (it's a list of <li>)
         modalContainer.find('.paragraph-2')
-          .html(modalLogicHandler.selectedObject.description);
+          .html(data.description);
         // Set stars image
         modalContainer.find('.image-46')
-          .attr('src', modalLogicHandler.selectedObject.starsSrc);
+          .attr('src', data.starsSrc);
         // Set reviews count
         modalContainer.find('.text-block-19')
-          .text(modalLogicHandler.selectedObject.reviewsCount);
-        // Render CTA on modal
-        modalLogicHandler.renderCallToActionButton(modalContainer);      
-      },    
+          .text(data.reviewsCount);
+      },
 
       /** Renders the call to action button when user opens the modal
        *  There's 2 options
