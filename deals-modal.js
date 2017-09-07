@@ -122,7 +122,7 @@ $(() => {
         $('html, body').css({ overflow: 'auto'});
         modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
         modalLogicHandler.renderModal(
-          modalLogicHandler.modalContainer
+          modalLogicHandler.modalContainer,
           modalLogicHandler.defaultObject
         );
       },
@@ -135,7 +135,7 @@ $(() => {
         $('html, body').css({ overflow: 'hidden'});
         // Render modal data
         modalLogicHandler.renderModal(
-          modalLogicHandler.modalContainer
+          modalLogicHandler.modalContainer,
           modalLogicHandler.selectedObject
         );
         // Render CTA on modal
