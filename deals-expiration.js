@@ -1,9 +1,5 @@
 // Filters expiration for items
 const filterExpiredProducts = (() => {
-  const categoryStrEle = $
-    ('<span/>')
-      .css('color','#1f3541')
-      .text('"' + $('.div-block-3 .div-block-4 .deals.merchant-title')[0].innerHTML + '"');
   const allExpiredEle = 
     $('<h2/>')
       .attr('id', 'all-expired')
@@ -12,10 +8,9 @@ const filterExpiredProducts = (() => {
         'text-align': 'center',
         'width': '100%',
       })
-      .text("No deals available for ")
-      .append(categoryStrEle);
+      .text("No deals available for")
 
-  $('.shop > .deals').each(function(idx, item) {
+  $('.slick-track > .deals').each(function(idx, item) {
     const expiryClassName = 'div.expiration-time';
     const expiryTimestamp = $(item).find(expiryClassName).html();
     if (expiryTimestamp) {
@@ -26,8 +21,8 @@ const filterExpiredProducts = (() => {
       if (currentDate > currentProductExpiryDateObject) $(item).remove();
     }
   });
-  if ($('.shop > .deals').length === 0 ) {
+  if ($('.slick-track > .deals').length === 0 ) {
     // Empty list
-    $('.shop').append(allExpiredEle);
+    $('.slick-track').append(allExpiredEle);
   }
 })();
