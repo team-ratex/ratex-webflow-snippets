@@ -40,7 +40,7 @@ $(() => {
       * This is a self-calling function (it gets called upon declaration)
     */
     const setUpCardsToHaveAdditionalOnClickListener = (() => {
-      $('.shop > .deals').each((idx, item)=> {
+      $('.slick-track > .deals').each((idx, item)=> {
         $(item).on("click", () => {
           modalLogicHandler.onCardClicked(item);
         });
