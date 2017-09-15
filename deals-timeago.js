@@ -27,21 +27,23 @@ function parseWebflowDateToISO(timestamp) {
  * Reliant on library: http://timeago.yarp.com/
  */
 // Change logic to open deal in new tab instead of modal opening for all deals on page.
-$('.slick-track > .deals').each((idx, item)=> {
-  const timestampClassName = 'div.date-of-post';
-  // Grab the timestamp in webflow format
-  const timestamp = $(item).find(timestampClassName).html();
-  const timestampInISO = parseWebflowDateToISO(timestamp);
-  
-  // Create new time tag for jQuery timeago 
-  const timeTag = $('<time/>')
-                  .attr('datetime', timestamp)
-                  .attr('class', 'timeago')
-  // Append it in
-  $(item).find('.posted-by-who').append('<span> </span>');
-  $(item).find('.posted-by-who').append(timeTag);
-});
-// On finish, wait for 1s before invoking timeago function
-setTimeout(() => {
-  jQuery("time.timeago").timeago();
-}, 1000);
+$(() => {
+  $('.slick-track > .deals').each((idx, item) => {
+    const timestampClassName = 'div.date-of-post';
+    // Grab the timestamp in webflow format
+    const timestamp = $(item).find(timestampClassName).html();
+    const timestampInISO = parseWebflowDateToISO(timestamp);
+
+    // Create new time tag for jQuery timeago 
+    const timeTag = $('<time/>')
+      .attr('datetime', timestamp)
+      .attr('class', 'timeago')
+    // Append it in
+    $(item).find('.posted-by-who').append('<span> </span>');
+    $(item).find('.posted-by-who').append(timeTag);
+  });
+  // On finish, wait for 1s before invoking timeago function
+  setTimeout(() => {
+    jQuery("time.timeago").timeago();
+  }, 1000);
+})
