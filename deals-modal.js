@@ -1,18 +1,18 @@
-$(() => {
+$(function() {
   /**
    * Javascript object to encapsulate the modal selection
    * Basically, we are emulating a front-end 'state' of selected card to show in the modal
    */ 
-  const modalLogicHandler = (() => {
+  const modalLogicHandler = (function() {
     /************************ Init ************************/
     /** Basically setting up modal observers
       * So that we know when to mutate the data of the modal
       * This is a self-calling function (it gets called upon declaration)
     */
-    const setUpModalObservers = (() => {
+    const setUpModalObservers = (function() {
       const modalSelector = '.product-modal-popup-wrapper';
       const modalMutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
-      const modalObserver = new MutationObserver((mutations) => {
+      const modalObserver = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
           // Check if style chagned, and value is different from previously
           if ((mutation.attributeName == 'style') && (mutation.target.style.display != modalLogicHandler.modalPreviousState)) {
@@ -39,9 +39,9 @@ $(() => {
     /** Set up additonal onclick handlers for all cards in deals  
       * This is a self-calling function (it gets called upon declaration)
     */
-    const setUpCardsToHaveAdditionalOnClickListener = (() => {
-      $('.slick-track > .deals').each((idx, item)=> {
-        $(item).on("click", () => {
+    const setUpCardsToHaveAdditionalOnClickListener = (function() {
+      $('.slick-track > .deals').each(function(idx, item) {
+        $(item).on("click", function() {
           modalLogicHandler.onCardClicked(item);
         });
       });
@@ -51,7 +51,7 @@ $(() => {
       * Source: https://stackoverflow.com/a/16898264
       * This is a self-calling function (it gets called upon declaration)
     */
-    const setUpTouchEventsScrollingForMobile = (() => {
+    const setUpTouchEventsScrollingForMobile = (function() {
       const elem = (document.getElementsByClassName('product-content-wraper'))[0];
       elem.addEventListener('touchstart', function(event){
           this.allowUp = (this.scrollTop > 0);
@@ -99,7 +99,7 @@ $(() => {
        *  Update the selected object based on the card's data
        *  Render the modal based on said data
       */
-      onCardClicked: (element) => {
+      onCardClicked: function(element) {
         // Grab card object
         const cardClicked = $(element);
         // Grab attributes of the card
@@ -118,7 +118,7 @@ $(() => {
        * Set our selected object to null
        * Reset the modal data to default object
        */
-      onModalDismiss: () => {
+      onModalDismiss: function() {
         $('html, body').css({ overflow: 'auto'});
         modalLogicHandler.selectedObject = modalLogicHandler.defaultObject;
         modalLogicHandler.renderModal(
@@ -130,7 +130,7 @@ $(() => {
       /** 
         * Updates the modal data on click
       */
-      onModalShow: () => {
+      onModalShow: function() {
         // Disable scrolling on background
         $('html, body').css({ overflow: 'hidden'});
         // Render modal data
@@ -145,7 +145,7 @@ $(() => {
       /**
         * Render modal data
       */
-      renderModal: (modalContainer, data) => {
+      renderModal: function(modalContainer, data) {
         // Set image
         modalContainer.find('.image-43')
           .attr('src', data.imageSrc);
@@ -168,7 +168,7 @@ $(() => {
          * Download RateX (For CHROME users who do not have our extension)
          * Go to Amazon (For users who have our extension OR users not on chrome)
       */
-      renderCallToActionButton: (modalContainer) => {
+      renderCallToActionButton: function(modalContainer) {
         // Naive: No extension way for now
         const hasExtension = document.getElementById('ratex-extension-is-installed');
         const isChrome = !!window.chrome && !!window.chrome.webstore;
