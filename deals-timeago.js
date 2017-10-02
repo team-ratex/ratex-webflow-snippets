@@ -27,8 +27,8 @@ function parseWebflowDateToISO(timestamp) {
  * Reliant on library: http://timeago.yarp.com/
  */
 // Change logic to open deal in new tab instead of modal opening for all deals on page.
-$(() => {
-  $('.slick-track > .deals').each((idx, item) => {
+$(function() {
+  $('.slick-track > .deals').each(function(idx, item) {
     const timestampClassName = 'div.date-of-post';
     // Grab the timestamp in webflow format
     const timestamp = $(item).find(timestampClassName).html();
@@ -43,7 +43,7 @@ $(() => {
     $(item).find('.posted-by-who').append(timeTag);
   });
   // On finish, wait for 1s before invoking timeago function
-  setTimeout(() => {
+  setTimeout(function() {
     jQuery("time.timeago").timeago();
   }, 1000);
 })
