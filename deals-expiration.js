@@ -1,5 +1,5 @@
 // Filters expiration for items
-const filterExpiredProducts = (() => {
+const filterExpiredProducts = (function() {
   const allExpiredEle = 
     $('<h2/>')
       .attr('id', 'all-expired')
