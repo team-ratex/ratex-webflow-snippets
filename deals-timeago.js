@@ -28,7 +28,11 @@ function parseWebflowDateToISO(timestamp) {
  */
 // Change logic to open deal in new tab instead of modal opening for all deals on page.
 $(function() {
-  $('.slick-track > .deals').each(function(idx, item) {
+  let iterableDeals = '.shop > .deals';
+  if ($('.slick-track').length > 0) {
+    iterableDeals = '.slick-track > .deals';
+  }
+  $(iterableDeals).each(function(idx, item) {
     const timestampClassName = 'div.date-of-post';
     // Grab the timestamp in webflow format
     const timestamp = $(item).find(timestampClassName).html();
