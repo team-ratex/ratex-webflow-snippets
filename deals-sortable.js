@@ -153,7 +153,7 @@ $(function () {
       case 'savings-descending':
         DealsSortable.sortBySavingsDescending();
         break;
-      case 'time-latest':
+      case 'time-newest':
         DealsSortable.sortByTimeAddedDescending();
         break;
       case 'time-oldest':
