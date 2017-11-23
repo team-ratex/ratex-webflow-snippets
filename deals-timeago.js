@@ -36,15 +36,17 @@ $(function() {
     const timestampClassName = 'div.date-of-post';
     // Grab the timestamp in webflow format
     const timestamp = $(item).find(timestampClassName).html();
-    const timestampInISO = parseWebflowDateToISO(timestamp);
+    if (timestamp) {
+      const timestampInISO = parseWebflowDateToISO(timestamp);
 
-    // Create new time tag for jQuery timeago 
-    const timeTag = $('<time/>')
-      .attr('datetime', timestamp)
-      .attr('class', 'timeago')
-    // Append it in
-    $(item).find('.posted-by-who').append('<span> </span>');
-    $(item).find('.posted-by-who').append(timeTag);
+      // Create new time tag for jQuery timeago 
+      const timeTag = $('<time/>')
+        .attr('datetime', timestamp)
+        .attr('class', 'timeago')
+      // Append it in
+      $(item).find('.posted-by-who').append('<span> </span>');
+      $(item).find('.posted-by-who').append(timeTag);
+    }
   });
   // On finish, wait for 1s before invoking timeago function
   setTimeout(function() {
