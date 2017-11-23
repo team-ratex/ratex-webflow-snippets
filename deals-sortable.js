@@ -136,10 +136,37 @@ $(function () {
       },
     }
   })();
-  $('#price-ascending').on("click", DealsSortable.sortByPriceAscending);
-  $('#price-descending').on("click", DealsSortable.sortByPriceDescending);
-  $('#savings-ascending').on("click", DealsSortable.sortBySavingsAscending);
-  $('#savings-descending').on("click", DealsSortable.sortBySavingsDescending);
-  $('#time-latest').on("click", DealsSortable.sortByTimeAddedDescending);
-  $('#time-oldest').on("click", DealsSortable.sortByTimeAddedAscending);
+  // Set up listeners
+  const DropdownOptionClickedHandler = (elementId, value) => {
+    const dropdownTextElement = $($('.w-dropdown > .w-dropdown-toggle > div')[1]);
+    dropdownTextElement.html(value); // Set up value of dropdown
+    switch(elementId) {
+      case 'price-ascending':
+        DealsSortable.sortByPriceAscending();
+        break;
+      case 'price-descending':
+        DealsSortable.sortByPriceDescending();
+        break;
+      case 'savings-ascending':
+        DealsSortable.sortBySavingsAscending();
+        break;
+      case 'savings-descending':
+        DealsSortable.sortBySavingsDescending();
+        break;
+      case 'time-latest':
+        DealsSortable.sortByTimeAddedDescending();
+        break;
+      case 'time-oldest':
+        DealsSortable.sortByTimeAddedAscending();
+        break;
+    }
+  };
+  const dropdownOptionsSelector = 'div.w-dropdown > nav > a';
+  $(dropdownOptionsSelector).each((idx, item) => {
+    const identifier = item.id;
+    const value = $(item).html();
+    $(`#${identifier}`).on("click", () => {
+      DropdownOptionClickedHandler(identifier, value);
+    });
+  });
 });
