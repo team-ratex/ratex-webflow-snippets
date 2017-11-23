@@ -1,4 +1,5 @@
 const DealsSortable = (() => {
+  // Constructor
   return {
     /****************** Price ******************/
     sortByPriceAscending: function () {
@@ -133,3 +134,25 @@ const DealsSortable = (() => {
     },
   }
 })();
+// Set up the listeners 
+$(function () {
+  var randomAssElement = "body > div.bg_hooray.blackfriday.bottomborder.primeday.quarter.v2_sectiontopmain > div > div > div > div.text-block-44.w-hidden-small.w-hidden-tiny";
+  const arr = [
+    'Price-Ascending',
+    'Price-Descending',
+    'Savings-Ascending',
+    'Savings-Descending',
+    'Latest',
+    'Oldest',
+  ];
+  $(randomAssElement).append('<div style="height: 25px;" />');
+  arr.map((text) => {
+    $(randomAssElement).append(`<button style="padding: 5px 10px; margin: 8px;" id=${text}>${text}</button>`);
+  })
+  $('#Price-Ascending').on("click", DealsSortable.sortByPriceAscending);
+  $('#Price-Descending').on("click", DealsSortable.sortByPriceDescending);
+  $('#Savings-Ascending').on("click", DealsSortable.sortBySavingsAscending);
+  $('#Savings-Descending').on("click", DealsSortable.sortBySavingsDescending);
+  $('#Latest').on("click", DealsSortable.sortByTimeAddedDescending);
+  $('#Oldest').on("click", DealsSortable.sortByTimeAddedAscending);
+});
