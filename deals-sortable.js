@@ -139,7 +139,7 @@ $(function () {
   $('#price-ascending').on("click", DealsSortable.sortByPriceAscending);
   $('#price-descending').on("click", DealsSortable.sortByPriceDescending);
   $('#savings-ascending').on("click", DealsSortable.sortBySavingsAscending);
-  $('#savings-descending').on("click", DealsSortable.sortBySavingsDescending); // Not actually used
+  $('#savings-descending').on("click", DealsSortable.sortBySavingsDescending);
   $('#time-latest').on("click", DealsSortable.sortByTimeAddedDescending);
   $('#time-oldest').on("click", DealsSortable.sortByTimeAddedAscending);
 });
