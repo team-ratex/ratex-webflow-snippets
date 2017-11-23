@@ -28,19 +28,25 @@ function parseWebflowDateToISO(timestamp) {
  */
 // Change logic to open deal in new tab instead of modal opening for all deals on page.
 $(function() {
-  $('.slick-track > .deals').each(function(idx, item) {
+  let iterableDeals = '.shop > .deals';
+  if ($('.slick-track').length > 0) {
+    iterableDeals = '.slick-track > .deals';
+  }
+  $(iterableDeals).each(function(idx, item) {
     const timestampClassName = 'div.date-of-post';
     // Grab the timestamp in webflow format
     const timestamp = $(item).find(timestampClassName).html();
-    const timestampInISO = parseWebflowDateToISO(timestamp);
+    if (timestamp) {
+      const timestampInISO = parseWebflowDateToISO(timestamp);
 
-    // Create new time tag for jQuery timeago 
-    const timeTag = $('<time/>')
-      .attr('datetime', timestamp)
-      .attr('class', 'timeago')
-    // Append it in
-    $(item).find('.posted-by-who').append('<span> </span>');
-    $(item).find('.posted-by-who').append(timeTag);
+      // Create new time tag for jQuery timeago 
+      const timeTag = $('<time/>')
+        .attr('datetime', timestamp)
+        .attr('class', 'timeago')
+      // Append it in
+      $(item).find('.posted-by-who').append('<span> </span>');
+      $(item).find('.posted-by-who').append(timeTag);
+    }
   });
   // On finish, wait for 1s before invoking timeago function
   setTimeout(function() {
