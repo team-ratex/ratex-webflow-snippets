@@ -14,7 +14,7 @@ function parseWebflowDateToISO(timestamp) {
   const time = timestamp.split(' ')[3];
   const hours = parseInt(time.split(':')[0]);
   const minutes = parseInt(time.split(':')[1]);
-  if (timestamp.split(' ')[4] === 'pm' && hours < 12) {
+  if (timestamp.split(' ')[4].toLowerCase() === 'pm' && hours < 12) {
     // Special calculations for hour. Format: "7:51am"
     dateObject.setHours(hours+12, minutes);
   } else {
