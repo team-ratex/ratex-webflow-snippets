@@ -10,7 +10,7 @@ const filterExpiredProducts = (function() {
       })
       .text("No deals available for")
 
-  $('.slick-track > .deals').each(function(idx, item) {
+  $('.shop > .deals').each(function(idx, item) {
     const expiryClassName = 'div.expiration-time';
     const expiryTimestamp = $(item).find(expiryClassName).html();
     if (expiryTimestamp) {
