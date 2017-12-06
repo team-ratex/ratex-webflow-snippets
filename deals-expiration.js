@@ -21,8 +21,8 @@ const filterExpiredProducts = (function() {
       if (currentDate > currentProductExpiryDateObject) $(item).remove();
     }
   });
-  if ($('.slick-track > .deals').length === 0 ) {
+  if ($('.shop > .deals').length === 0 ) {
     // Empty list
-    $('.slick-track').append(allExpiredEle);
+    $('.shop').append(allExpiredEle);
   }
 })();
