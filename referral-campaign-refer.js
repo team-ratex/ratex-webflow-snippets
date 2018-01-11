@@ -24,9 +24,17 @@ $(function () {
     return baseUrl;
   }
 
+  // Configurations
+  var SHARE_LINK_BASE_URL = 'http://ratex.webflow.io/rates';
+  var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';
+
   // Get page url params object
   var pageUrlParams = parseQueryString(window.location.search);
 
+  // Flag to determine if handle exists in server
+  var handleExists = false; // default to false before server check
+
+  var shareLinkUrl = SHARE_LINK_BASE_URL;
 
   // HTML DOM node references
   var uniqueLinkDiv = document.getElementById('Unique-Link');
@@ -44,24 +52,22 @@ $(function () {
     // Get Name and Points from backend
     $.ajax({
       method: 'GET',
-      url: 'http://192.168.0.137:5000/api/referral_campaign/' + pageUrlParams.h // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign/' + pageUrlParams.h // TODO: Change to actual URL values
     })
-    .done(function (response) {
+    .done(function (response) { // Handle exists
       // Set share link url
-      uniqueLinkDiv.textContent = 'http://ratex.webflow.io/rates' + '?r=' + pageUrlParams.h;
+      shareLinkUrl += '?r=' + pageUrlParams.h;  // Add referrer param to share link
+      uniqueLinkDiv.textContent = shareLinkUrl;
       // Set name/points
       textNamePoints.textContent = textNamePoints.textContent.replace('{{name}}', response.data.name);
       textNamePoints.textContent = textNamePoints.textContent.replace('{{points}}', response.data.points);
       
-      console.log('name:', response.data.name);
-      console.log('points:', response.data.points);
     })
     .fail(function (jqxhr) {
-      // TODO: replace with error
       console.log('retrieve handle info error:', jqxhr);
       // TODO: if 404, redirect to first page
       if (jqxhr.status === 404) { // HTTP 404 Not Found
-        window.location.href = 'http://ratex.webflow.io/rates';
+        window.location.href = shareLinkUrl;
       } else {
         // Do nothing (may consider reloading page)
       }
@@ -107,7 +113,7 @@ $(function () {
           method: 'share',
           display: 'popup',
           // href: ''  // TODO: confirm URL to share
-          href: window.location.href,
+          href: shareLinkUrl, // url to go to when users click on shared post
         })
         console.log('clicked');
       };
@@ -116,18 +122,21 @@ $(function () {
   // Twitter web intent config
   // ref: https://dev.twitter.com/web/tweet-button/parameters
   var twitterShareConfig = {
-    url: 'http://ratex.webflow.io/landing-page-1-copy',
+    url: shareLinkUrl,
     text: 'Custom share text',
     hashtags: 'RateX' // e.g. #RateX
     // via: '',  // e.g. @RateX
     // related: ''
   };
 
-  // Create sharing url
-  var twitterShareUrl = createUrlString('https://twitter.com/share', twitterShareConfig);
   // Setup share button
   twitterShareButton.onclick = function () {
-    // window.open(twitterShareUrl, '_blank', 'resizable=yes,width=550,height=420');  // Twitter default but doesn't fully fit content
-    window.open(twitterShareUrl, '_blank', 'resizable=yes,width=550,height=450'); // Fits content nicely
+    window.open(createUrlString('https://twitter.com/share', {
+      url: shareLinkUrl,
+      text: 'Custom share text',
+      hashtags: 'RateX'
+    }),
+      // '_blank', 'resizable=yes,width=550,height=420');  // Twitter default but doesn't fully fit content
+    '_blank', 'resizable=yes,width=550,height=450'); // Fits content nicely
   };
 });

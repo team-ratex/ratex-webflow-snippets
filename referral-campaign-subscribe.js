@@ -35,6 +35,7 @@ $(function () {
 
 
   // -- Configurations
+  var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';
   var OTP_COOLDOWN_DURATION = 30; // cooldown duration in seconds (must be > 0)
 
 
@@ -81,6 +82,7 @@ $(function () {
   // Save original submit button texts
   var ORIGINAL_EMAIL_SUBMIT_BUTTON_TEXT = emailFormSubmitButtonNode.value;
   var ORIGINAL_PHONE_NUMBER_SUBMIT_BUTTON_TEXT = enrollFormSubmitButtonNode.value;
+  var ORIGINAL_OTP_SUBMIT_BUTTON_TEXT = otpFormSubmitNode.value;
 
 
   // -- DOM manipulation functions
@@ -137,6 +139,7 @@ $(function () {
   function enableEnrollFormElements() {
     enrollFormInputNameNode.removeAttribute('disabled');
     enrollFormInputPhoneNumberNode.removeAttribute('disabled');
+    enrollFormSubmitButtonNode.removeAttribute('disabled');
     enrollFormSubmitButtonNode.value = ORIGINAL_PHONE_NUMBER_SUBMIT_BUTTON_TEXT;
   }
   function showEnrollFormError(errorMessage) {
@@ -165,6 +168,7 @@ $(function () {
   function enableOtpFormElements() {
     otpFormInputNode.removeAttribute('disabled');
     otpFormInputNode.removeAttribute('disabled');
+    otpFormSubmitNode.value = ORIGINAL_OTP_SUBMIT_BUTTON_TEXT;
   }
   function showOtpForm() {
     // otpFormNode.style.display = 'block';
@@ -173,6 +177,12 @@ $(function () {
   function showOtpFormProcessing() {
     otpFormInputNode.setAttribute('disable', true);
     otpFormSubmitNode.setAttribute('disable', true);
+    otpFormSubmitNode.value = otpFormSubmitNode.dataset.wait;
+  }
+  function showOtpFormError(errorMessage) {
+    otpFormFeedbackFailMessageNode.textContent = errorMessage;
+    otpFormFeedbackFailNode.style.display = 'block';
+    enableOtpFormElements();
   }
   function hideOtpForm() {
     // otpFormNode.style.display = 'none';
@@ -209,6 +219,10 @@ $(function () {
   //   showEmailFormDone();
   //   showEnrollForm();
   // }
+  // If email param supplied in page (user clicks from welcome email after subscribing)
+  if (pageUrlParams.m) {
+    // TODO: query server api to check if handle exists
+  }
 
 
   // -- Logic functions and code
@@ -280,24 +294,21 @@ $(function () {
     // Perform API call to server endpoint (Subscribe)
     $.ajax({
       method: 'POST',
-      url: 'http://192.168.0.137:5000/api/referral_campaign/subscribe', // TODO: Change to actual URL values
+      // url: 'http://192.168.0.137:5000/api/referral_campaign/subscribe', // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign/subscribe', // TODO: Change to actual URL values
       data: postData
     })
     .done(function (response) {
-      console.log('data:', response);
       // If handle received from response (user has registered)
       if (response.data && response.data.handle) {
-        console.log('handle available');
-        // TODO: redirect to handle page
-        window.location.href = 'http://ratex.webflow.io/rates-refer?h=' + response.data.handle;
+        // Redirect to handle page
+        window.location.href = 'https://ratex.webflow.io/rates-refer?h=' + response.data.handle;
       } else {
-        console.log('handle unavailable');
         showEmailFormDone();
         showEnrollForm();
       }
     })
     .fail(function (jqxhr) {
-      console.log('response:', jqxhr.response);
       // On error, attempt to retrieve `message` field in response for display
       var responseErrorMessage;
       try {
@@ -348,19 +359,16 @@ $(function () {
     // Perform API call to server endpoint (Enroll)
     $.ajax({
       method: 'POST',
-      url: 'http://192.168.0.137:5000/api/referral_campaign', // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign', // TODO: Change to actual URL values
       data: postData
     })
     .done(function (response) {
-      console.log('phone number sent successfully');
       hideEnrollForm();
       setOtpFormTextPhoneNumber(postData.phone_no);
       showOtpForm();
       setOtpCooldown();
     })
     .fail(function (jqxhr) {
-      console.log('phone number sending failed');
-      console.log('fail jqxhr:', jqxhr);
       // On error, attempt to retrieve `message` field in response for display
       var responseErrorMessage;
       try {
@@ -377,8 +385,11 @@ $(function () {
 
   // TODO: On OTP submit
   otpFormSubmitNode.onclick = function (e) {
-    // TODO: Check if valid?
-    // if invalid -> return
+    var inputTokenValue = otpFormInputNode.value;
+    // Exit if otp field falsey (i.e. empty string)
+    if (!inputTokenValue) {
+      return;
+    }
     e.preventDefault();
 
     // Prepare data for sending
@@ -395,19 +406,26 @@ $(function () {
     // Perform API call to server endpoint (Verify OTP)
     $.ajax({
       method: 'POST',
-      url: 'http://192.168.0.137:5000/api/referral_campaign',
+      url: SERVER_API_BASE_URL + 'referral_campaign',
       data: postData,
     })
     .done(function (response) {
-      console.log('otp verified successfully');
-      console.log('success response obj:', response);
       var handle = response.data.handle;
-      // window.location.href = 'http://ratex.webflow.io/landing-page-1-copy?h=' + handle;
-      window.location.href = 'http://ratex.webflow.io/rates-refer?h=' + handle;
+      window.location.href = 'https://ratex.webflow.io/rates-refer?h=' + handle;
     })
     .fail(function (jqxhr) {
-      console.log('fail jqxhr:', jqxhr);
-      // TODO:
+      // Clear OTP input field
+      otpFormInputNode.value = '';
+
+      // On error, attempt to retrieve `message` field in response for display
+      var responseErrorMessage;
+      try {
+        responseErrorMessage = JSON.parse(jqxhr.responseText).message;
+      } catch (error) {
+        // Do nothing on error
+      }
+      // Display message in response if available, default to general failure message
+      showOtpFormError(responseErrorMessage || ERROR_GENERAL_FAILURE);
     });
 
     showOtpFormProcessing();
@@ -415,7 +433,6 @@ $(function () {
 
   // Onclick resend
   otpLinkResendNode.onclick = function () {
-    console.log('resend clicked');
     // COPY-PASTED FROM EnrollFormSubmit onclick
     // Prepare data for sending
     var postData = {
@@ -430,11 +447,10 @@ $(function () {
     // Perform API call to server endpoint (Resend) -> same as enroll
     $.ajax({
       method: 'POST',
-      url: 'http://192.168.0.137:5000/api/referral_campaign', // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign', // TODO: Change to actual URL values
       data: postData
     })
       .done(function (response) {
-        console.log('phone number re-sent successfully');
         hideEnrollForm();
         setOtpFormTextPhoneNumber(postData.phone_no);
         showOtpForm();
@@ -445,8 +461,6 @@ $(function () {
         enableLinkOtpResend();
         otpLinkResendNode.textContent = ORIGINAL_OTP_RESEND_TEXT;
 
-        console.log('phone number re-sending failed');
-        console.log('fail jqxhr:', jqxhr);
         // On error, attempt to retrieve `message` field in response for display
         var responseErrorMessage;
         try {
@@ -457,7 +471,7 @@ $(function () {
         // Display message in response if available, default to general failure message
         showOtpFormError(responseErrorMessage || ERROR_GENERAL_FAILURE);
       });
-
+ 
     // Show resending
     disableLinkOtpResend();
     otpLinkResendNode.textContent = 'Resending..';
@@ -465,7 +479,6 @@ $(function () {
 
   // On entered wrongly
   otpLinkBackToEnrollNode.onclick = function () {
-    console.log('clicked entered wrongly');
     hideOtpForm();
     showEnrollForm();
     enableEnrollFormInputs();
