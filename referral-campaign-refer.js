@@ -72,6 +72,9 @@ $(function () {
         // Do nothing (may consider reloading page)
       }
     });
+  } else {
+    // Handle not supplied, redirect to sign up page (share link url)
+    window.location.href = shareLinkUrl;
   }
 
   // Load Clipboard.js
