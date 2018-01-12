@@ -121,21 +121,14 @@ $(function () {
     });
 
   // Twitter web intent config
-  // ref: https://dev.twitter.com/web/tweet-button/parameters
-  var twitterShareConfig = {
-    url: shareLinkUrl,
-    text: 'Custom share text',
-    hashtags: 'RateX' // e.g. #RateX
-    // via: '',  // e.g. @RateX
-    // related: ''
-  };
-
   // Setup share button
   twitterShareButton.onclick = function () {
     window.open(createUrlString('https://twitter.com/share', {
       url: shareLinkUrl,
-      text: 'Custom share text',
-      hashtags: 'RateX'
+      text: 'Can’t wait for RateX’s new mobile launch - use my referral link and we’ll both get points to redeem cool prizes:',
+      // hashtags: 'RateX',
+      via: 'ratex_sg',
+      // related: '',
     }),
       // '_blank', 'resizable=yes,width=550,height=420');  // Twitter default but doesn't fully fit content
     '_blank', 'resizable=yes,width=550,height=450'); // Fits content nicely
