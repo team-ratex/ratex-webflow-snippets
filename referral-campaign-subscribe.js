@@ -35,7 +35,10 @@ $(function () {
 
 
   // -- Configurations
-  var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';
+  // var WEBSITE_URL = 'https://ratex.webflow.io/';  // staging
+  var WEBSITE_URL = 'https://www.ratex.co/';  // production
+  // var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';  // staging
+  var SERVER_API_BASE_URL = 'https://ratex.co/api/';  // production
   var OTP_COOLDOWN_DURATION = 30; // cooldown duration in seconds (must be > 0)
 
 
@@ -292,7 +295,7 @@ $(function () {
       // If handle received from response (user has registered)
       if (response.data && response.data.handle) {
         // Redirect to handle page
-        window.location.href = 'https://ratex.webflow.io/rates-refer?h=' + response.data.handle;
+        window.location.href = WEBSITE_URL + 'rates-refer?h=' + response.data.handle;
       } else {
         showEmailFormDone();
         showEnrollForm();
@@ -403,7 +406,7 @@ $(function () {
     })
     .done(function (response) {
       var handle = response.data.handle;
-      window.location.href = 'https://ratex.webflow.io/rates-refer?h=' + handle;
+      window.location.href = WEBSITE_URL + 'rates-refer?h=' + handle;
     })
     .fail(function (jqxhr) {
       // Clear OTP input field

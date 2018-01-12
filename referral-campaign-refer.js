@@ -25,8 +25,11 @@ $(function () {
   }
 
   // Configurations
-  var SHARE_LINK_BASE_URL = 'https://ratex.webflow.io/rates'; // TODO: change to actual url
-  var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';  // TODO: change to actual url
+  // var SHARE_LINK_BASE_URL = 'https://ratex.webflow.io/rates'; // staging
+  // var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';  // staging
+  var SHARE_LINK_BASE_URL = 'https://www.ratex.co/rates'; // production
+  var SERVER_API_BASE_URL = 'https://ratex.co/api/';  // production
+
 
   // Get page url params object
   var pageUrlParams = parseQueryString(window.location.search);
@@ -104,8 +107,8 @@ $(function () {
       // Init must be done after Facebook script loaded
       FB.init({
         // Config params ref: https://developers.facebook.com/docs/javascript/advanced-setup
-        // appId: '1937545656511187', // prod
-        appId: '115930669029566',
+        appId: '1937545656511187', // prod
+        // appId: '115930669029566', // dev
         xfbml: false,
         version: 'v2.11'
       });
