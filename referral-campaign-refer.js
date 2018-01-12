@@ -27,7 +27,7 @@ $(function () {
   // Configurations
   // var SHARE_LINK_BASE_URL = 'https://ratex.webflow.io/rates'; // staging
   // var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';  // staging
-  var SHARE_LINK_BASE_URL = 'https://www.ratex.co/rates'; // production
+  var SHARE_LINK_BASE_URL = 'www.ratex.co/rates'; // production
   var SERVER_API_BASE_URL = 'https://ratex.co/api/';  // production
 
 
