@@ -25,8 +25,8 @@ $(function () {
   }
 
   // Configurations
-  var SHARE_LINK_BASE_URL = 'https://ratex.webflow.io/rates';
-  var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';
+  var SHARE_LINK_BASE_URL = 'https://ratex.webflow.io/rates'; // TODO: change to actual url
+  var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';  // TODO: change to actual url
 
   // Get page url params object
   var pageUrlParams = parseQueryString(window.location.search);
@@ -52,7 +52,7 @@ $(function () {
     // Get Name and Points from backend
     $.ajax({
       method: 'GET',
-      url: SERVER_API_BASE_URL + 'referral_campaign/' + pageUrlParams.h // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign/' + pageUrlParams.h
     })
     .done(function (response) { // Handle exists
       // Set share link url
@@ -65,7 +65,7 @@ $(function () {
     })
     .fail(function (jqxhr) {
       console.log('retrieve handle info error:', jqxhr);
-      // TODO: if 404, redirect to first page
+      // If 404, redirect to first page
       if (jqxhr.status === 404) { // HTTP 404 Not Found
         window.location.href = shareLinkUrl;
       } else {
@@ -112,7 +112,6 @@ $(function () {
           // Dialog config params ref: https://developers.facebook.com/docs/sharing/reference/share-dialog
           method: 'share',
           display: 'popup',
-          // href: ''  // TODO: confirm URL to share
           href: shareLinkUrl, // url to go to when users click on shared post
         })
         console.log('clicked');

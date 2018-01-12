@@ -8,13 +8,13 @@
 // -- DOM interaction listeners (e.g. onclick, oninput, etc)
 
 $(function () {
-  // Global ajax setup
-  $.ajaxSetup({
-    crossDomain: true,
-    xhrFields: {
-      withCredentials: true,
-    },
-  });
+  // Global ajax setup (no longer using cookies as Safari mobile blocks by default)
+  // $.ajaxSetup({
+  //   crossDomain: true,
+  //   xhrFields: {
+  //     withCredentials: true,
+  //   },
+  // });
 
   // -- Helper functions
   // Function to parse url params
@@ -59,7 +59,7 @@ $(function () {
   var emailFormFeedbackFailNode = emailFormBlockNode.querySelector('.w-form-fail');
   var emailFormFeedbackFailMessageNode = emailFormFeedbackFailNode.querySelector('div');
   // Enroll form node references
-  var enrollFormNode = document.getElementById('wf-form-enter-phone-number');  // TODO
+  var enrollFormNode = document.getElementById('wf-form-enter-phone-number');
   var enrollFormInputNameNode = document.getElementById('input-name');
   var enrollFormInputPhoneNumberNode = document.getElementById('input-phone-number');
   var enrollFormSubmitButtonNode = document.getElementById('submit-phone-number');
@@ -210,22 +210,13 @@ $(function () {
       otpLinkResendNode.textContent = ORIGINAL_OTP_RESEND_TEXT;
     }
   }
-
-
   // --
-  // -- TODO: HACKY FLOW
-  // if (pageUrlParams.m === '1') {  // Magic param to bypass first step
-  //   // Show enroll form
-  //   showEmailFormDone();
-  //   showEnrollForm();
-  // }
-  // If email param supplied in page (user clicks from welcome email after subscribing)
-  if (pageUrlParams.m) {
-    // TODO: query server api to check if handle exists
-  }
 
 
   // -- Logic functions and code
+  // Token id (for request/verify OTP)
+  var token_id;
+
   // Input validation
   function isValidName(name) { return /^[a-zA-Z]+(\s?[a-zA-Z])*$/.test(name); }
   function isValidPhoneNumber(number) { return /^[9863]\d{7}$/.test(number); }
@@ -294,8 +285,7 @@ $(function () {
     // Perform API call to server endpoint (Subscribe)
     $.ajax({
       method: 'POST',
-      // url: 'http://192.168.0.137:5000/api/referral_campaign/subscribe', // TODO: Change to actual URL values
-      url: SERVER_API_BASE_URL + 'referral_campaign/subscribe', // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign/subscribe',
       data: postData
     })
     .done(function (response) {
@@ -359,10 +349,11 @@ $(function () {
     // Perform API call to server endpoint (Enroll)
     $.ajax({
       method: 'POST',
-      url: SERVER_API_BASE_URL + 'referral_campaign', // TODO: Change to actual URL values
+      url: SERVER_API_BASE_URL + 'referral_campaign',
       data: postData
     })
     .done(function (response) {
+      token_id = response.data.token_id;
       hideEnrollForm();
       setOtpFormTextPhoneNumber(postData.phone_no);
       showOtpForm();
@@ -383,7 +374,7 @@ $(function () {
     showEnrollFormProcessing();
   };
 
-  // TODO: On OTP submit
+  // On OTP submit
   otpFormSubmitNode.onclick = function (e) {
     var inputTokenValue = otpFormInputNode.value;
     // Exit if otp field falsey (i.e. empty string)
@@ -397,7 +388,8 @@ $(function () {
       email: emailFormInputNode.value,
       name: enrollFormInputNameNode.value,
       phone_no: enrollFormInputPhoneNumberNode.value,
-      token: otpFormInputNode.value
+      token: otpFormInputNode.value,
+      token_id: token_id
     };
     if (pageUrlParams.r) {
       postData.referrer = pageUrlParams.r;
@@ -451,6 +443,7 @@ $(function () {
       data: postData
     })
       .done(function (response) {
+        token_id = response.data.token_id;
         hideEnrollForm();
         setOtpFormTextPhoneNumber(postData.phone_no);
         showOtpForm();
