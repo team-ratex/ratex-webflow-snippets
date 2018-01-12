@@ -199,7 +199,7 @@ $(function () {
   }
   function disableLinkOtpResend() {
     otpLinkResendNode.style.pointerEvents = 'none';
-    otpLinkResendNode.style.color = 'lightgrey';
+    otpLinkResendNode.style.color = 'grey';
   }
   function enableLinkOtpResend() {
     otpLinkResendNode.style.pointerEvents = null;
