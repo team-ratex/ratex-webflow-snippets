@@ -37,14 +37,14 @@ $(function () {
   var shareLinkUrl = SHARE_LINK_BASE_URL;
 
   // HTML DOM node references
-  var uniqueLinkDiv = document.getElementById('Unique-Link');
+  var uniqueLinkNode = document.getElementById('Unique-Link');
   var copyLinkButton = document.getElementById('copy-link');
   var facebookShareButton = document.getElementById('facebook-share');
   var twitterShareButton = document.getElementById('twitter-share');
   var textNamePoints = document.getElementById('text-name-points');
 
   function getUniqueShareLink() {
-    return uniqueLinkDiv.textContent;
+    return uniqueLinkNode.value;
   }
 
   // If page has url params for handle,
@@ -57,7 +57,7 @@ $(function () {
     .done(function (response) { // Handle exists
       // Set share link url
       shareLinkUrl += '?r=' + pageUrlParams.h;  // Add referrer param to share link
-      uniqueLinkDiv.textContent = shareLinkUrl;
+      uniqueLinkNode.value = shareLinkUrl;
       // Set name/points
       textNamePoints.textContent = textNamePoints.textContent.replace('{{name}}', response.data.name);
       textNamePoints.textContent = textNamePoints.textContent.replace('{{points}}', response.data.points);
@@ -77,6 +77,8 @@ $(function () {
   // Load Clipboard.js
   $.getScript('https://cdn.rawgit.com/zenorocha/clipboard.js/v1.7.1/dist/clipboard.min.js')
     .done(function () {
+      // Disable default form submit action
+      copyLinkButton.onclick = function (e) { e.preventDefault(); };
       // Use Clipboard.js to handle link copy
       // ref: https://clipboardjs.com/  -> under Advanced Usage
       var clipboard = new Clipboard(copyLinkButton, {
