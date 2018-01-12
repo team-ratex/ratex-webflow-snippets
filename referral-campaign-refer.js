@@ -61,10 +61,13 @@ $(function () {
       // Set share link url
       shareLinkUrl += '?r=' + pageUrlParams.h;  // Add referrer param to share link
       uniqueLinkNode.value = shareLinkUrl;
+      // Prepend https when link has been rendered for unique link
+      // Required for twitter url to work
+      shareLinkUrl = 'https://' + shareLinkUrl
       // Set name/points
       textNamePoints.textContent = textNamePoints.textContent.replace('{{name}}', response.data.name);
       textNamePoints.textContent = textNamePoints.textContent.replace('{{points}}', response.data.points);
-      
+
     })
     .fail(function (jqxhr) {
       console.log('retrieve handle info error:', jqxhr);
