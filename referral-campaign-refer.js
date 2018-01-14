@@ -25,10 +25,9 @@ $(function () {
   }
 
   // Configurations
-  // var SHARE_LINK_BASE_URL = 'ratex.webflow.io/rates'; // staging
+  // var SHARE_LINK_BASE_URL = 'https://ratex.webflow.io/rates'; // staging
   // var SERVER_API_BASE_URL = 'https://staging.ratex.co/api/';  // staging
-  // remove https string in share box for cleaner look
-  var SHARE_LINK_BASE_URL = 'www.ratex.co/rates'; // production
+  var SHARE_LINK_BASE_URL = 'https://www.ratex.co/rates'; // production
   var SERVER_API_BASE_URL = 'https://ratex.co/api/';  // production
 
 
@@ -38,8 +37,7 @@ $(function () {
   // Flag to determine if handle exists in server
   var handleExists = false; // default to false before server check
 
-  // Add https for href to work
-  var shareLinkUrl = "https://" + SHARE_LINK_BASE_URL;
+  var shareLinkUrl = SHARE_LINK_BASE_URL;
 
   // HTML DOM node references
   var uniqueLinkNode = document.getElementById('Unique-Link');
@@ -62,11 +60,11 @@ $(function () {
     .done(function (response) { // Handle exists
       // Set share link url
       shareLinkUrl += '?r=' + pageUrlParams.h;  // Add referrer param to share link
-      uniqueLinkNode.value = SHARE_LINK_BASE_URL; // does not include protocol
+      uniqueLinkNode.value = shareLinkUrl.replace('https://', '');
       // Set name/points
       textNamePoints.textContent = textNamePoints.textContent.replace('{{name}}', response.data.name);
       textNamePoints.textContent = textNamePoints.textContent.replace('{{points}}', response.data.points);
-
+      
     })
     .fail(function (jqxhr) {
       console.log('retrieve handle info error:', jqxhr);
