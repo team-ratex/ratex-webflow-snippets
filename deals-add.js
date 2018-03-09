@@ -165,7 +165,7 @@ $(function () {
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
 					// sets address bar with parameters
-					window.history.pushState({ urlPath: '/trending-deals-rates?category=' + Config.currentCategory }, "", '/trending-deals-rates?category=' + Config.currentCategory);
+					window.history.pushState({ urlPath: '/deals?category=' + Config.currentCategory }, "", '/deals?category=' + Config.currentCategory);
 
 					// make first card on page visible
 					Config.dealsContainer.firstChild.style.visibility = 'visible';
