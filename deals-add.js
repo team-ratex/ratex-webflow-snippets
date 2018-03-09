@@ -120,7 +120,7 @@ $(function () {
 			document.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
 
 			// set merchant of product and change it to Title case
-			document.getElementsByClassName("merchant")[cardNumber].innerHTML = "at " + toTitleCase(response.data[dataEntry].listing.merchant);
+			document.getElementsByClassName("merchant")[cardNumber].innerHTML = "at " + RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
 
 			// set deal title 
 			const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
@@ -135,14 +135,14 @@ $(function () {
 			*/
 
 			// set current price with correct currency
-			document.getElementsByClassName("current-price")[cardNumber].innerHTML = getCurrency(response.data[dataEntry]) + round(response.data[dataEntry].listing.currentPrice, 2);
+			document.getElementsByClassName("current-price")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
 
 			// set savings with correct currency and decimal format
 			if (response.data[dataEntry].listing.previousPrice !== "") {
 				// if there are savings, calculate and set
 				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'visible';
 				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'visible';
-				document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = getCurrency(response.data[dataEntry]) + calculateSavings(response.data[dataEntry]);
+				document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
 			}
 			else {
 				// if no savings, hide savings related elements
@@ -232,7 +232,7 @@ $(function () {
 		*/
 		initiate: function () {
 			const query = window.location.search.substring(1);
-			const qs = parse_query_string(query);
+			const qs = RatesDealsHandler.parse_query_string(query);
 			if (qs.category !== undefined) {
 				Config.currentCategory = qs.category;
 			}
