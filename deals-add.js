@@ -1,17 +1,17 @@
 // On document ready
 $(function () {
-	var RatesDealsHandler = RatesDealsHandler || {};
-	var Config = Config || {};
+	const RatesDealsHandler = RatesDealsHandler || {};
+    const Config = Config || {};
 
-	var Config = {
+	Config = {
 		dealsContainer: document.getElementsByClassName("deals-container")[0],
 		currentCategory: 'Daily',
 		offset: 0,
 		hasMore: true,
 		isFetchingDeals: false,
-	}
+	};
 
-	var RatesDealsHandler = {
+	RatesDealsHandler = {
 		/**
 		* Creates a new product card
 		*/
@@ -197,13 +197,13 @@ $(function () {
 			const vars = query.split("&");
 			const query_string = {};
 			for (const m = 0; m < vars.length; m++) {
-				const pair = vars[m].split("=");
+				let pair = vars[m].split("=");
 				// If first entry with this name
 				if (typeof query_string[pair[0]] === "undefined") {
 					query_string[pair[0]] = decodeURIComponent(pair[1]);
 					// If second entry with this name
 				} else if (typeof query_string[pair[0]] === "string") {
-					const arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+					let arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
 					query_string[pair[0]] = arr;
 					// If third or later entry with this name
 				} else {
@@ -239,7 +239,7 @@ $(function () {
 			RatesDealsHandler.setCurrentButton();
 			RatesDealsHandler.getDeals(Config.currentCategory);
 		}
-	}
+	};
 
 	//infinite scroll
 	window.onscroll = function (ev) {
