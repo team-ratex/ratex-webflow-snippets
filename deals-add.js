@@ -1,6 +1,6 @@
 // On document ready
 $(function () {
-	var dealsNamespace = dealsNamespace || {};
+	var RatesDealsHandler = RatesDealsHandler || {};
 	var Config = Config || {};
 
 	var Config = {
@@ -11,10 +11,10 @@ $(function () {
 		isFetchingDeals: false,
 	}
 
-	var dealsNamespace = {
+	var RatesDealsHandler = {
 		/**
-  	* Creates a new product card
-   	*/
+		 * Creates a new product card
+		 */
 		createNewCard: function () {
 			let newCard = Config.dealsContainer.firstElementChild.cloneNode(true);
 			Config.dealsContainer.appendChild(newCard);
@@ -74,8 +74,8 @@ $(function () {
 			date = date + ", " + lastCreated.substring(11, 16);
 
 			return moment(date, "YYYYMMDD, hh:mm").fromNow();
-
-		},*/
+		},
+		*/
 		/**
 		 * Change the string to title case
 		 *
@@ -124,7 +124,7 @@ $(function () {
 			clamp(dealTitle); 
 			
 			/*
-			* commented out for now, may be needed for activity feed in the future
+			 * commented out for now, may be needed for activity feed in the future
 			//set how long ago deal was posted
 			document.getElementsByClassName("deal-posted-date")[cardNumber].innerHTML = getTimeAgo(response.data[dataEntry].lastCreated);
 			*/
@@ -250,7 +250,7 @@ $(function () {
 			if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight/1.4)) {
 				if (!Config.isFetchingDeals && Config.hasMore) {
 					console.log("triggered");
-					dealsNamespace.getDeals(Config.currentCategory + '&offset=' + Config.offset.toString());
+					RatesDealsHandler.getDeals(Config.currentCategory + '&offset=' + Config.offset.toString());
 				}
 			}
 	};
@@ -258,23 +258,23 @@ $(function () {
 	//Buttons
 	document.getElementsByClassName("daily-button")[0].addEventListener("click", function() {
 		// reset feed to remove all cards currently on page
-		dealsNamespace.resetFeed();
+		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Daily'
-		dealsNamespace.getDeals(Config.currentCategory);
+		RatesDealsHandler.getDeals(Config.currentCategory);
 
 	});
 
 	document.getElementsByClassName("price-drop-button")[0].addEventListener("click", function() {
-		dealsNamespace.resetFeed();
+		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'PriceDrop'
-		dealsNamespace.getDeals(Config.currentCategory);
+		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
 
 	document.getElementsByClassName("popular-button")[0].addEventListener("click", function() {
-		dealsNamespace.resetFeed();
+		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Popular'
-		dealsNamespace.getDeals(Config.currentCategory);
+		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
 
-	dealsNamespace.initiate();
+	RatesDealsHandler.initiate();
 });
