@@ -1,17 +1,15 @@
 // On document ready
 $(function () {
-	const RatesDealsHandler = RatesDealsHandler || {};
-    const Config = Config || {};
 
-	Config = {
+	let Config = {
 		dealsContainer: document.getElementsByClassName("deals-container")[0],
 		currentCategory: 'Daily',
 		offset: 0,
-		hasMore: true,
+		hasMore: 'true',
 		isFetchingDeals: false,
 	};
 
-	RatesDealsHandler = {
+	let RatesDealsHandler = {
 		/**
 		* Creates a new product card
 		*/
@@ -95,7 +93,7 @@ $(function () {
 			Config.offset = 0;
 			Config.hasMore = true;
 			Config.dealsContainer.firstChild.style.visibility = 'hidden';
-			const j = 0;
+			let j = 0;
 			for (j = document.getElementsByClassName("deal-card").length; j > 1; j--) {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
 			}
@@ -173,12 +171,12 @@ $(function () {
 					Config.dealsContainer.firstChild.style.visibility = 'visible';
 
 					// create and populate cards with information from the data array
-					const dataEntry = 0;
+					let dataEntry = 0;
 					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
 						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
 					}
 					// checks if there are more deals that can be loaded for infinite scroll
-					Config.hasMore = response.Config.hasMore;
+					Config.hasMore = response.hasMore;
 
 					// updates offset to load the next batch of cards for infinite scroll
 					Config.offset += response.data.length;
@@ -195,8 +193,9 @@ $(function () {
 		*/
 		parse_query_string: function (query) {
 			const vars = query.split("&");
-			const query_string = {};
-			for (const m = 0; m < vars.length; m++) {
+            const query_string = {};
+            let m = 0;
+			for (m = 0; m < vars.length; m++) {
 				let pair = vars[m].split("=");
 				// If first entry with this name
 				if (typeof query_string[pair[0]] === "undefined") {
