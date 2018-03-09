@@ -1,21 +1,21 @@
 // On document ready
 $(function () {
 
-	var script = document.createElement('script');
+	let script = document.createElement('script');
 	script.type = 'text/javascript';
 	script.src = 'https://s.cdpn.io/3/clamp.js';
 	document.head.appendChild(script);
 
-	var script = document.createElement('script');
+	let script = document.createElement('script');
 	script.type = 'text/javascript';
 	script.src = 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment-with-locales.js';
 	document.head.appendChild(script);
 
-	var dealsContainer = document.getElementsByClassName("deals-container")[0];
-	var currentCategory = 'Daily';
-	var offset = 0;
-	var hasMore = true;
-	var isFetchingDeals = false;
+	let dealsContainer = document.getElementsByClassName("deals-container")[0];
+	const currentCategory = 'Daily';
+	const offset = 0;
+	const hasMore = true;
+	const isFetchingDeals = false;
 
 	//Buttons
 	document.getElementsByClassName("daily-button")[0].addEventListener("click", function() {
@@ -40,7 +40,7 @@ $(function () {
 
 	// creates a new product card
 	function createNewCard() {
-		var newCard = dealsContainer.firstElementChild.cloneNode(true);
+		let newCard = dealsContainer.firstElementChild.cloneNode(true);
 		dealsContainer.appendChild(newCard);
 	}
 
@@ -53,7 +53,7 @@ $(function () {
 
 	// rounds the currency to the specified decimal places
 	function round(value, decimals) {
-		var savings = Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+		const savings = Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 		if (savings % 1.00 > 0) { // if there are decimals, display with 2 decimal places
 			return savings.toFixed(2);
 		}
@@ -64,7 +64,7 @@ $(function () {
 
 	// calculate amount of savings from previousPrice and currentPrice
 	function calculateSavings(deal) {
-		var savings = parseFloat(deal.listing.previousPrice) - parseFloat(deal.listing.currentPrice);
+		const savings = parseFloat(deal.listing.previousPrice) - parseFloat(deal.listing.currentPrice);
 		return round(savings, 2); // more accurate rounding method
 	}
 
@@ -75,7 +75,7 @@ $(function () {
 
 	/* can be used for activities feed in future
 	function getTimeAgo(lastCreated) {
-		var date = lastCreated.substring(0, 10);
+		const date = lastCreated.substring(0, 10);
 		date = date.replace(/-/g, "");
 		date = date + ", " + lastCreated.substring(11, 16);
 
@@ -97,7 +97,7 @@ $(function () {
 		offset = 0;
 		hasMore = true;
 		dealsContainer.firstChild.style.visibility='hidden';
-		var j = 0;
+		const j = 0;
 		for (j = document.getElementsByClassName("deal-card").length; j > 1; j--) {
 			dealsContainer.removeChild(dealsContainer.lastChild);
 		}
@@ -117,7 +117,7 @@ $(function () {
 			
 			dealsContainer.firstChild.style.visibility='visible';
 			
-			var startOfData = 0;
+			const startOfData = 0;
 			for(i = offset; startOfData < response.data.length && hasMore; i++, startOfData++) {
 				if (i !== startOfData) {
 					createNewCard();
@@ -132,7 +132,7 @@ $(function () {
 				document.getElementsByClassName("merchant")[i].innerHTML = "at " + toTitleCase(response.data[startOfData].listing.merchant);
 
 				// set deal title 
-				var dealTitle = document.getElementsByClassName("deal-item-title")[i];
+				const dealTitle = document.getElementsByClassName("deal-item-title")[i];
 				dealTitle.innerHTML = response.data[startOfData].name;
 				clamp(dealTitle); // if deal title is too long, clamp it to show ellipsis
 				
@@ -183,16 +183,16 @@ $(function () {
 
 	// parses address entered to return parameters
 	function parse_query_string(query) {
-		var vars = query.split("&");
-		var query_string = {};
-		for (var i = 0; i < vars.length; i++) {
-			var pair = vars[i].split("=");
+		const vars = query.split("&");
+		const query_string = {};
+		for (const i = 0; i < vars.length; i++) {
+			const pair = vars[i].split("=");
 			// If first entry with this name
 			if (typeof query_string[pair[0]] === "undefined") {
 				query_string[pair[0]] = decodeURIComponent(pair[1]);
 				// If second entry with this name
 			} else if (typeof query_string[pair[0]] === "string") {
-				var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+				const arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
 				query_string[pair[0]] = arr;
 				// If third or later entry with this name
 			} else {
@@ -217,12 +217,11 @@ $(function () {
 	}
 
 	// checks the category in address then gets deals from that category
-	var query = window.location.search.substring(1);
-	var qs = parse_query_string(query);
+	const query = window.location.search.substring(1);
+	const qs = parse_query_string(query);
 	if(qs.category !== undefined) {
 		currentCategory = qs.category;
 	}
 	setCurrentButton();
 	getDeals(currentCategory);
-
 });
