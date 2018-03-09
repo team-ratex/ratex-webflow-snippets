@@ -136,7 +136,56 @@ $(function () {
 		}
 	}
 
-	// do API call, populate cards with deal info
+	/**
+   * Populate deal cards with information fetched from RateS endpoint
+   *
+   * @param {Object}    response				contains data array with product information to populate deal cards with.
+   * @param {Number}		cardNumber			the card to populate the information 			
+	 * @param {Number}		dataEntry				the entry in the data array to populate the cards with.
+   */
+	function populateDeals(response, cardNumber, dataEntry) {
+		// set product URL
+		document.getElementsByClassName("deal-link")[cardNumber].href = response.data[dataEntry].listing.merchantURL;
+				
+		// set product image
+		document.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
+		
+		// set merchant of product and change it to Title case
+		document.getElementsByClassName("merchant")[cardNumber].innerHTML = "at " + toTitleCase(response.data[dataEntry].listing.merchant);
+
+		// set deal title 
+		const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
+		dealTitle.innerHTML = response.data[dataEntry].name;
+		// if deal title is too long, clamp it to show ellipsis
+		clamp(dealTitle); 
+		
+		/*
+		 * commented out for now, may be needed for activity feed in the future
+		 //set how long ago deal was posted
+		 document.getElementsByClassName("deal-posted-date")[i].innerHTML = getTimeAgo(response.data[startOfData].lastCreated);
+		 */
+
+		// set current price with correct currency
+		document.getElementsByClassName("current-price")[cardNumber].innerHTML = getCurrency(response.data[dataEntry]) + round(response.data[dataEntry].listing.currentPrice, 2);
+		
+		// set savings with correct currency and decimal format
+		if (response.data[startOfData].listing.previousPrice !== "") { 
+			// if there are savings, calculate and set
+			document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility='visible';
+			document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility='visible';
+			document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = getCurrency(response.data[dataEntry]) + calculateSavings(response.data[dataEntry]);
+		}
+		else { 
+			// if no savings, hide savings related elements
+			document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility='hidden';
+			document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility='hidden';
+		}
+
+		// to account for first card already on the page
+		if (cardNumber < response.data.length - 1) {
+			createNewCard();
+		}
+	}
 
 	/**
    * Fetch deals from RateS endpoint and populate Deals page with them
@@ -165,42 +214,8 @@ $(function () {
 				if (i !== startOfData) {
 					createNewCard();
 				}
-				// set product URL
-				document.getElementsByClassName("deal-link")[i].href = response.data[startOfData].listing.merchantURL;
-				
-				// set product image
-				document.getElementsByClassName("deal-img")[i].src = response.data[startOfData].images[0];
-				
-				// set merchant of product and change it to Title case
-				document.getElementsByClassName("merchant")[i].innerHTML = "at " + toTitleCase(response.data[startOfData].listing.merchant);
-
-				// set deal title 
-				const dealTitle = document.getElementsByClassName("deal-item-title")[i];
-				dealTitle.innerHTML = response.data[startOfData].name;
-				clamp(dealTitle); // if deal title is too long, clamp it to show ellipsis
-				
-				// set how long ago deal was posted
-				// commented out for now, may be needed for activity feed in the future
-				//document.getElementsByClassName("deal-posted-date")[i].innerHTML = getTimeAgo(response.data[startOfData].lastCreated);
-				
-				// set current price with correct currency
-				document.getElementsByClassName("current-price")[i].innerHTML = getCurrency(response.data[startOfData]) + round(response.data[startOfData].listing.currentPrice, 2);
-				
-				// set savings with correct currency
-				if (response.data[startOfData].listing.previousPrice !== "") { // if there are savings, calculate and set
-					document.getElementsByClassName("save-container")[0].lastChild.style.visibility='visible';
-					document.getElementsByClassName("prices-container")[0].lastChild.style.visibility='visible';
-					document.getElementsByClassName("amount-saved")[i].innerHTML = getCurrency(response.data[startOfData]) + calculateSavings(response.data[startOfData]);
-				}
-				else { // if no savings, hide savings related elements
-					document.getElementsByClassName("save-container")[0].lastChild.style.visibility='hidden';
-					document.getElementsByClassName("prices-container")[0].lastChild.style.visibility='hidden';
-				}
-
-				// to account for first card already on the page
-				if (i < response.data.length - 1) {
-					createNewCard();
-				}
+				// starting with the i-th card, populate cards with information from start of the data array
+				populateDeals(response, i, startOfData);
 			}
 			// checks if there are more deals that can be loaded for infinite scroll
 			hasMore = response.hasMore;
