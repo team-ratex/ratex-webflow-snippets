@@ -22,8 +22,8 @@ $(function () {
 		/**
 		* Displays the correct currency format.
 		*
-		* @param {Object}			deal				Object representation of the deal to format the currency for.
-		* @returns {String} 	the formatted currency
+		* @param {Object}       deal		Object representation of the deal to format the currency for.
+		* @returns {String}     the formatted currency
 		*/
 		getCurrency: function (deal) {
 			if (deal.listing.currency == "SGD") {
