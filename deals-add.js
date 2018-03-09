@@ -49,6 +49,9 @@ $(function () {
 		if (deal.listing.currency == "SGD") {
 			return "S$";
 		}
+		else {
+			return "$";
+		}
 	}
 
 	// rounds the currency to the specified decimal places
