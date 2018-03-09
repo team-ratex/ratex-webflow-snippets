@@ -38,13 +38,21 @@ $(function () {
 		getDeals(currentCategory);
 	});
 
-	// creates a new product card
+	/**
+   * Creates a new product card
+   */
 	function createNewCard() {
 		let newCard = dealsContainer.firstElementChild.cloneNode(true);
 		dealsContainer.appendChild(newCard);
 	}
 
-	// displays the correct currency format
+	/**
+   * Displays the correct currency format.
+   *
+   * @param {Object}    deal				Object representation of the deal to format the currency for.
+   * @returns {String} 	the formatted currency
+   */
+	
 	function getCurrency(deal) {
 		if (deal.listing.currency == "SGD") {
 			return "S$";
@@ -54,7 +62,13 @@ $(function () {
 		}
 	}
 
-	// rounds the currency to the specified decimal places
+	/**
+   * Rounds the currency to the specified decimal places
+   *
+   * @param {Number}    value       Value to be rounded off.
+	 * @param {Number}		decimals		Number of decimal places to round off to if decimal places exist.
+   * @returns {Number} Savings, rounded to 2 d.p if decimal numbers exist, else rounded to 0 d.p.
+   */
 	function round(value, decimals) {
 		const savings = Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 		if (savings % 1.00 > 0) { // if there are decimals, display with 2 decimal places
@@ -65,13 +79,22 @@ $(function () {
 		}
 	}
 
-	// calculate amount of savings from previousPrice and currentPrice
+	/**
+   * Calculate savings for the deal based on current and previous price
+   *
+   * @param {Object}    deal				Object representation of the deal to calculate savings for.
+   * @returns {Number} Savings, rounded to 2 d.p if decimal numbers exist, else rounded to 0 d.p.
+   */
 	function calculateSavings(deal) {
 		const savings = parseFloat(deal.listing.previousPrice) - parseFloat(deal.listing.currentPrice);
 		return round(savings, 2); // more accurate rounding method
 	}
 
-	// add ellipsis where product name cuts off
+	/**
+   * Add ellipsis where product name cuts off
+   *
+   * @param {Object}    dealTitle         Object representation of the deal to add ellipsis to.
+   */
 	function clamp(dealTitle) {
 		$clamp(dealTitle, {clamp: 2});
 	}
@@ -86,7 +109,12 @@ $(function () {
 
 	}*/
 
-	// change the string to title case
+	/**
+   * Change the string to title case
+   *
+   * @param {String}    str				the String object to be changed to title case
+   * @returns {String} 	the string that has been formatted to title case
+   */
 	function toTitleCase(str)
 	{
 			return str.replace(/\w\S*/g, 
@@ -95,7 +123,9 @@ $(function () {
 				});
 	}
 
-	// removes all existing card except the first one, hides the first one
+	/**
+   * Removes all existing card except the first one, hides the first one
+   */
 	function resetFeed() {
 		offset = 0;
 		hasMore = true;
@@ -107,17 +137,27 @@ $(function () {
 	}
 
 	// do API call, populate cards with deal info
+
+	/**
+   * Fetch deals from RateS endpoint and populate Deals page with them
+   *
+   * @param {String}    filter				the parameters to request from RateS endpoint
+   */
 	function getDeals(filter) {
 		// sets isFetchingDeals to true to prevent multiple triggers
 		isFetchingDeals = true;
+
 		$.ajax ({
 			method: 'GET',
 			url: 'https://ratex.co/store/api/products' + '?filter=' + filter
 		})
+
+		// takes the data array from response and populate each new card with the information of each entry in this array
 		.done(function (response) {
 			// sets address bar with parameters
 			window.history.pushState({urlPath:'/trending-deals-rates?category=' + currentCategory},"",'/trending-deals-rates?category=' + currentCategory);
 			
+			// make first card on page visible
 			dealsContainer.firstChild.style.visibility='visible';
 			
 			const startOfData = 0;
@@ -168,7 +208,7 @@ $(function () {
 			// updates offset to load the next batch of cards for infinite scroll
 			offset += response.data.length;
 
-			// set isFetchingDeals to false so infinite scroll can fetch next batch when triggered
+			// set isFetchingDeals to false so infinite scroll can fetch next batch if triggered
 			isFetchingDeals = false;
 		})
 	}
@@ -184,7 +224,12 @@ $(function () {
 			}
 	};
 
-	// parses address entered to return parameters
+	/**
+   * Parses address entered to return parameters
+   *
+   * @param {String}    query				the address to retrieve parameters from
+   * @returns {String} 	the parameters in the address
+   */
 	function parse_query_string(query) {
 		const vars = query.split("&");
 		const query_string = {};
@@ -205,7 +250,9 @@ $(function () {
 		return query_string;
 	}
 
-	// if category in address is not 'Daily', set the respective tab as active
+	/**
+   * If category in address is not 'Daily', set the respective category tab as active
+   */
 	function setCurrentButton() {
 		document.getElementsByClassName("daily-button")[0].classList.remove("w--current");
 		if (currentCategory === "PriceDrop") {
