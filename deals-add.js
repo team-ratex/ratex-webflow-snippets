@@ -36,9 +36,9 @@ $(function () {
 		/**
 		* Rounds the currency to the specified decimal places
 		*
-		* @param {Number}			value       Value to be rounded off.
-		* @param {Number}			decimals		Number of decimal places to round off to if decimal places exist.
-		* @returns {Number} 	Savings, rounded to 2 d.p if decimal numbers exist, else rounded to 0 d.p.
+		* @param {Number}		value			Value to be rounded off.
+		* @param {Number}		decimals	Number of decimal places to round off to if decimal places exist.
+		* @returns {Number}		Savings, rounded to 2 d.p if decimal numbers exist, else rounded to 0 d.p.
 		*/
 		round: function (value, decimals) {
 			const savings = Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
@@ -52,8 +52,8 @@ $(function () {
 		/**
 		* Calculate savings for the deal based on current and previous price
 		*
-		* @param {Object}			deal				Object representation of the deal to calculate savings for.
-		* @returns {Number} 	Savings, rounded to 2 d.p if decimal numbers exist, else rounded to 0 d.p.
+		* @param {Object}		deal		Object representation of the deal to calculate savings for.
+		* @returns {Number}		Savings, rounded to 2 d.p if decimal numbers exist, else rounded to 0 d.p.
 		*/
 		calculateSavings: function (deal) {
 			const savings = parseFloat(deal.listing.previousPrice) - parseFloat(deal.listing.currentPrice);
@@ -62,7 +62,7 @@ $(function () {
 		/**
 		* Add ellipsis where product name cuts off
 		*
-		* @param {Object}			dealTitle         Object representation of the deal to add ellipsis to.
+		* @param {Object}		dealTitle		Object representation of the deal to add ellipsis to.
 		*/
 		clamp: function (dealTitle) {
 			$clamp(dealTitle, { clamp: 2 });
@@ -79,7 +79,7 @@ $(function () {
 		/**
 		* Change the string to title case
 		*
-		* @param {String}			str				the String object to be changed to title case
+		* @param {String}		str		the String object to be changed to title case
 		* @returns {String}		the string that has been formatted to title case
 		*/
 		toTitleCase: function (str) {
@@ -103,9 +103,9 @@ $(function () {
 		/**
 		* Populate deal cards with information fetched from RateS endpoint
 		*
-		* @param {Object}    response				contains data array with product information to populate deal cards with.
-		* @param {Number}		cardNumber			the card to populate the information 			
-		* @param {Number}		dataEntry				the entry in the data array to populate the cards with.
+		* @param {Object}		response		contains data array with product information to populate deal cards with.
+		* @param {Number}		cardNumber		the card to populate the information 			
+		* @param {Number}		dataEntry		the entry in the data array to populate the cards with.
 		*/
 		populateDeals: function (response, cardNumber, dataEntry) {
 			// there will already be one card on the page, so for subsequent data entries, create a card before populating
@@ -153,7 +153,7 @@ $(function () {
 		/**
 		* Fetch deals from RateS endpoint and populate Deals page with them
 		*
-		* @param {String}			filter			the parameters to request from RateS endpoint
+		* @param {String}		filter		the parameters to request from RateS endpoint
 		*/
 		getDeals: function (filter) {
 			// sets isFetchingDeals to true to prevent multiple triggers
@@ -190,7 +190,7 @@ $(function () {
 		/**
 		* Parses address entered to return parameters
 		*
-		* @param {String}			query				the address to retrieve parameters from
+		* @param {String}		query		the address to retrieve parameters from
 		* @returns {String}		the parameters in the address
 		*/
 		parse_query_string: function (query) {
