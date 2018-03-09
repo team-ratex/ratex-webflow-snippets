@@ -12,7 +12,7 @@ var dealsContainer = document.getElementsByClassName("deals-container")[0];
 var currentCategory = 'Daily';
 var offset = 0;
 var hasMore = true;
-var fetching = false;
+var isFetchingDeals = false;
 
 //Buttons
 document.getElementsByClassName("daily-button")[0].addEventListener("click", function() {
@@ -102,8 +102,8 @@ function resetFeed() {
 
 // do API call, populate cards with deal info
 function getDeals(filter) {
-	// sets isFetching to true to prevent multiple triggers
-	isFetching = true;
+	// sets isFetchingDeals to true to prevent multiple triggers
+	isFetchingDeals = true;
 	$.ajax ({
 		method: 'GET',
 		url: 'https://ratex.co/store/api/products' + '?filter=' + filter
@@ -162,8 +162,8 @@ function getDeals(filter) {
 		// updates offset to load the next batch of cards for infinite scroll
 		offset += response.data.length;
 
-		// set isFetching to false so infinite scroll can fetch next batch when triggered
-		isFetching = false;
+		// set isFetchingDeals to false so infinite scroll can fetch next batch when triggered
+		isFetchingDeals = false;
 	})
 }
 
@@ -171,7 +171,7 @@ function getDeals(filter) {
 window.onscroll = function(ev) {
 	// triggers when user scrolls past a certain window height
     if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight/1.4)) {
-    	if (!isFetching && hasMore) {
+    	if (!isFetchingDeals && hasMore) {
     		console.log("triggered");
     		getDeals(currentCategory + '&offset=' + offset.toString());
     	}
