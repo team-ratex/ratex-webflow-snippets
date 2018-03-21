@@ -369,7 +369,7 @@ $(function () {
 
 	$('.price-drop-button')[0].addEventListener("click", function () {
 		RatesDealsHandler.resetFeed();
-		Config.currentCategory = 'PriceDrop'
+		Config.currentCategory = 'Price Drops'
 		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
 
