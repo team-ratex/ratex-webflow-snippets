@@ -92,7 +92,7 @@ $(function () {
 		resetFeed: function () {
 			Config.offset = 0;
 			Config.hasMore = true;
-			Config.dealsContainer.firstChild.style.visibility = 'hidden';
+			$('.deal-card')[0].style.display = "none";
 			let j = 0;
 			for (j = $('.deal-card').length; j > 1; j--) {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
@@ -110,6 +110,8 @@ $(function () {
 			if (cardNumber !== 0) {
 				RatesDealsHandler.createNewCard();
 			}
+			// make the first card on the page visible
+			$('.deal-card')[0].style.display = "block";
 
 			// set product URL
 			$('.deal-link')[cardNumber].href = response.data[dataEntry].listing.merchantURL;
@@ -168,7 +170,7 @@ $(function () {
 					window.history.pushState({ urlPath: '/deals?category=' + Config.currentCategory }, "", '/deals?category=' + Config.currentCategory);
 
 					// make first card on page visible
-					Config.dealsContainer.firstChild.style.visibility = 'visible';
+					Config.dealsContainer.firstChild.style.display = 'block';
 
 					// create and populate cards with information from the data array
 					let dataEntry = 0;
