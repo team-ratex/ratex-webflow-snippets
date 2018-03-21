@@ -247,7 +247,6 @@ $(function () {
 		// triggers when user scrolls past a certain window height
 		if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight / 1.4)) {
 			if (!Config.isFetchingDeals && Config.hasMore) {
-				console.log("triggered");
 				RatesDealsHandler.getDeals(Config.currentCategory + '&offset=' + Config.offset.toString());
 			}
 		}
