@@ -317,7 +317,7 @@ $(function () {
 		*/
 		setCurrentButton: function () {
 			$('.daily-button')[0].classList.remove("w--current");
-			if (Config.currentCategory === "PriceDrop") {
+			if (Config.currentCategory === "Price Drops") {
 				$('.price-drop-button')[0].classList.add("w--current");
 			}
 			else if (Config.currentCategory === "Popular") {
