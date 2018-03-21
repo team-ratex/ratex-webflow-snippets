@@ -99,6 +99,32 @@ $(function () {
 			}
 		},
 		/**
+		* Prevents background scrolling on desktop
+		*/
+		noscroll: function () {
+			window.scrollTo(0, 0);
+		},
+		/**
+		* Toggles between showing and hiding modal
+		*/
+		toggleModal: function () {
+			if ($('.modal-bg')[0].style.display === "flex") {
+				$('.modal-bg')[0].style.display = "none";
+			} else {
+				$('.modal-bg')[0].style.display = "flex";
+			}
+		},
+		/**
+		* Toggles between showing and hiding the "Page Not Found" alert
+		*/
+		toggleError: function () {
+			if ($('.error-bg')[0].style.display === "flex") {
+				$('.error-bg')[0].style.display = "none";
+			} else {
+				$('.error-bg')[0].style.display = "flex";
+			}
+		},
+		/**
 		* Populate deal cards with information fetched from RateS endpoint
 		*
 		* @param {Object}		response		contains data array with product information to populate deal cards with.
@@ -151,6 +177,43 @@ $(function () {
 			}
 		},
 		/**
+		* Populate modal with product information fetched from RateS endpoint
+		*
+		* @param {Object}		response		contains data array with product information to populate deal cards with.
+		*/
+		populateModal: function (response) {
+			// set product image
+			$('.product-img')[0].srcset = response.data.images[0];
+
+			// set product URL
+			$('.see-deal-button')[0].href = response.data.listing.merchantURL;
+
+			// set merchant of product and change it to Title case
+			$('.product-merchant')[0].innerHTML = "at " + RatesDealsHandler.toTitleCase(response.data.listing.merchant);
+
+			// set deal title 
+			const dealTitle = $('.product-title')[0];
+			dealTitle.innerHTML = response.data.name;
+			// if deal title is too long, clamp it to show ellipsis
+			RatesDealsHandler.clamp(dealTitle);
+
+			// set current price with correct currency
+			$('.product-price-currency')[0].innerHTML = RatesDealsHandler.getCurrency(response.data);
+			$('.product-price')[0].innerHTML = response.data.listing.currentPrice.substring(0, response.data.listing.currentPrice.indexOf('.'));
+			$('.product-price-decimal')[0].innerHTML = response.data.listing.currentPrice.substring(response.data.listing.currentPrice.indexOf('.'));
+
+			// set previous price with correct currency, if previous price does not exist, hide element
+			if (response.data.listing.previousPrice !== "") {
+				$('.product-prev-price')[0].style.visibility = "visible";
+				$('.product-prev-price')[0].innerHTML = RatesDealsHandler.getCurrency(response.data) + response.data.listing.previousPrice;
+			} else {
+				$('.product-prev-price')[0].style.visibility = "hidden";
+			}
+
+			// set product description
+			$('.product-details')[0].innerHTML = response.data.description.replace(/\n/g, "<br />");
+		},
+		/**
 		* Fetch deals from RateS endpoint and populate Deals page with them
 		*
 		* @param {String}		filter		the parameters to request from RateS endpoint
@@ -185,6 +248,42 @@ $(function () {
 
 					// set isFetchingDeals to false so infinite scroll can fetch next batch if triggered
 					Config.isFetchingDeals = false;
+				})
+		},
+		/**
+		* Fetch deal from RateS endpoint and populate the product modal with them
+		*
+		* @param {String}		productId		the id of the product to request from RateS endpoint
+		*/
+		getProductModal: function (productId) {
+
+			$.ajax({
+				method: 'GET',
+				url: 'https://ratex.co/store/api/products/' + productId
+			})
+
+				// takes the product data from response and populate modal with it
+				.done(function (response) {
+
+					// check that it is a valid productId
+					if (response.data.id !== productId) {
+						// error
+						RatesDealsHandler.toggleError();
+					} else {
+
+						// sets address bar with parameters
+						window.history.pushState({ urlPath: '/deals?productId=' + productId }, "", '/deals?productId=' + productId);
+
+						// add listener to disable scroll
+						window.addEventListener('scroll', RatesDealsHandler.noscroll);
+
+						// display modal
+						RatesDealsHandler.toggleModal();
+
+						// populate data
+						RatesDealsHandler.populateModal(response);
+					}
+
 				})
 		},
 		/**
@@ -234,11 +333,18 @@ $(function () {
 		initiate: function () {
 			const query = window.location.search.substring(1);
 			const qs = RatesDealsHandler.parse_query_string(query);
+
+			// check for specified category to display
 			if (qs.category !== undefined) {
 				Config.currentCategory = qs.category;
 			}
 			RatesDealsHandler.setCurrentButton();
 			RatesDealsHandler.getDeals(Config.currentCategory);
+
+			// check for specified product to display
+			if (qs.productId !== undefined) {
+				RatesDealsHandler.getProductModal(parseInt(qs.productId));
+			}
 		}
 	};
 
@@ -272,6 +378,35 @@ $(function () {
 		Config.currentCategory = 'Popular'
 		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
+
+	$(".product-close-button")[0].addEventListener("click", function () {
+		// close modal
+		RatesDealsHandler.toggleModal();
+
+		// update address bar
+		window.history.pushState({ urlPath: '/deals?category=daily' }, "", '/deals?category=daily');
+
+		// Remove listener to disable scroll
+		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+	});
+
+	$(".error-close-button")[0].addEventListener("click", function () {
+		// close alert
+		RatesDealsHandler.toggleError();
+
+		// update address bar
+		window.history.pushState({ urlPath: '/deals?category=daily' }, "", '/deals?category=daily');
+
+		// Remove listener to disable scroll
+		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+	});
+
+	// When users press back, reinitiate
+	window.addEventListener('popstate', function (event) {
+
+		RatesDealsHandler.initiate();
+
+	}, false);
 
 	RatesDealsHandler.initiate();
 });
