@@ -2,7 +2,7 @@
 $(function () {
 
 	let Config = {
-		dealsContainer: document.getElementsByClassName("deals-container")[0],
+		dealsContainer: $('.deals-container')[0],
 		currentCategory: 'Daily',
 		offset: 0,
 		hasMore: 'true',
@@ -94,7 +94,7 @@ $(function () {
 			Config.hasMore = true;
 			Config.dealsContainer.firstChild.style.visibility = 'hidden';
 			let j = 0;
-			for (j = document.getElementsByClassName("deal-card").length; j > 1; j--) {
+			for (j = $('.deal-card').length; j > 1; j--) {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
 			}
 		},
@@ -112,16 +112,16 @@ $(function () {
 			}
 
 			// set product URL
-			document.getElementsByClassName("deal-link")[cardNumber].href = response.data[dataEntry].listing.merchantURL;
+			$('.deal-link')[cardNumber].href = response.data[dataEntry].listing.merchantURL;
 
 			// set product image
-			document.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
+			$('.deal-img')[cardNumber].src = response.data[dataEntry].images[0];
 
 			// set merchant of product and change it to Title case
-			document.getElementsByClassName("merchant")[cardNumber].innerHTML = "at " + RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
+			$('.merchant')[cardNumber].innerHTML = "at " + RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
 
 			// set deal title 
-			const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
+			const dealTitle = $('.deal-item-title')[cardNumber];
 			dealTitle.innerHTML = response.data[dataEntry].name;
 			// if deal title is too long, clamp it to show ellipsis
 			RatesDealsHandler.clamp(dealTitle);
@@ -133,19 +133,19 @@ $(function () {
 			*/
 
 			// set current price with correct currency
-			document.getElementsByClassName("current-price")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
+			$('.current-price')[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
 
 			// set savings with correct currency and decimal format
 			if (response.data[dataEntry].listing.previousPrice !== "") {
 				// if there are savings, calculate and set
-				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'visible';
-				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'visible';
-				document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
+				$('.save-container')[cardNumber].lastChild.style.visibility = 'visible';
+				$('.prices-container')[cardNumber].lastChild.style.visibility = 'visible';
+				$('.amount-saved')[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
 			}
 			else {
 				// if no savings, hide savings related elements
-				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'hidden';
-				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'hidden';
+				$('.save-container')[cardNumber].lastChild.style.visibility = 'hidden';
+				$('.prices-container')[cardNumber].lastChild.style.visibility = 'hidden';
 			}
 		},
 		/**
@@ -215,15 +215,15 @@ $(function () {
 		* If category in address is not 'Daily', set the respective category tab as active
 		*/
 		setCurrentButton: function () {
-			document.getElementsByClassName("daily-button")[0].classList.remove("w--current");
+			$('.daily-button')[0].classList.remove("w--current");
 			if (Config.currentCategory === "PriceDrop") {
-				document.getElementsByClassName("price-drop-button")[0].classList.add("w--current");
+				$('.price-drop-button')[0].classList.add("w--current");
 			}
 			else if (Config.currentCategory === "Popular") {
-				document.getElementsByClassName("popular-button")[0].classList.add("w--current");
+				$('.popular-button')[0].classList.add("w--current");
 			}
 			else {
-				document.getElementsByClassName("daily-button")[0].classList.add("w--current");
+				$('.daily-button')[0].classList.add("w--current");
 			}
 		},
 		/**
@@ -252,7 +252,7 @@ $(function () {
 	};
 
 	//Buttons
-	document.getElementsByClassName("daily-button")[0].addEventListener("click", function () {
+	$('.daily-button')[0].addEventListener("click", function () {
 		// reset feed to remove all cards currently on page
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Daily'
@@ -260,13 +260,13 @@ $(function () {
 
 	});
 
-	document.getElementsByClassName("price-drop-button")[0].addEventListener("click", function () {
+	$('.price-drop-button')[0].addEventListener("click", function () {
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'PriceDrop'
 		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
 
-	document.getElementsByClassName("popular-button")[0].addEventListener("click", function () {
+	$('.popular-button')[0].addEventListener("click", function () {
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Popular'
 		RatesDealsHandler.getDeals(Config.currentCategory);
