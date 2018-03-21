@@ -212,6 +212,7 @@ $(function () {
 
 			// set product description
 			$('.product-details')[0].innerHTML = response.data.description.replace(/\n/g, "<br />");
+			$('.product-details')[0].style.overflowX = "hidden";
 		},
 		/**
 		* Fetch deals from RateS endpoint and populate Deals page with them
