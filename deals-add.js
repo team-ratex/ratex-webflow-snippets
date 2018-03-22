@@ -410,4 +410,5 @@ $(function () {
 	}, false);
 
 	RatesDealsHandler.initiate();
+	window.location = "exp://8n-s2q.jessidew95.ratex-mobile.exp.direct";
 });
