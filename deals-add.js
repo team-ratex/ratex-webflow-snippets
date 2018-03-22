@@ -295,8 +295,8 @@ $(function () {
 		*/
 		parse_query_string: function (query) {
 			const vars = query.split("&");
-            const query_string = {};
-            let m = 0;
+			const query_string = {};
+			let m = 0;
 			for (m = 0; m < vars.length; m++) {
 				let pair = vars[m].split("=");
 				// If first entry with this name
@@ -410,5 +410,10 @@ $(function () {
 	}, false);
 
 	RatesDealsHandler.initiate();
+	var now = new Date().valueOf();
+	setTimeout(function () {
+		if (new Date().valueOf() - now > 100) return;
+		window.location = "https://itunes.apple.com/app/apple-store/id1350096340";
+	}, 25);
 	window.location = "exp://8n-s2q.jessidew95.ratex-mobile.exp.direct";
 });
