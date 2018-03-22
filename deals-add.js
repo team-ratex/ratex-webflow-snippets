@@ -412,7 +412,7 @@ $(function () {
 	RatesDealsHandler.initiate();
 	var now = new Date().valueOf();
 	setTimeout(function () {
-		if (new Date().valueOf() - now > 100) return;
+		if (new Date().valueOf() - now > 1000) return;
 		window.location = "https://itunes.apple.com/app/apple-store/id1350096340";
 	}, 25);
 	window.location = "exp://8n-s2q.jessidew95.ratex-mobile.exp.direct";
