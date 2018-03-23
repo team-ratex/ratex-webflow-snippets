@@ -231,7 +231,7 @@ $(function () {
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
 					// sets address bar with parameters
-					window.history.pushState({ urlPath: '/deals?category=' + Config.currentCategory }, "", '/deals?category=' + Config.currentCategory);
+					window.history.pushState({ urlPath: '/deals-copy?category=' + Config.currentCategory }, "", '/deals-copy?category=' + Config.currentCategory);
 
 					// make first card on page visible
 					Config.dealsContainer.firstChild.style.display = 'block';
@@ -273,7 +273,7 @@ $(function () {
 					} else {
 
 						// sets address bar with parameters
-						window.history.pushState({ urlPath: '/deals?productId=' + productId }, "", '/deals?productId=' + productId);
+						window.history.pushState({ urlPath: '/deals-copy?productId=' + productId }, "", '/deals-copy?productId=' + productId);
 
 						// add listener to disable scroll
 						window.addEventListener('scroll', RatesDealsHandler.noscroll);
@@ -385,7 +385,7 @@ $(function () {
 		RatesDealsHandler.toggleModal();
 
 		// update address bar
-		window.history.pushState({ urlPath: '/deals?category=daily' }, "", '/deals?category=daily');
+		window.history.pushState({ urlPath: '/deals-copy?category=daily' }, "", '/deals-copy?category=daily');
 
 		// Remove listener to disable scroll
 		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
@@ -396,7 +396,7 @@ $(function () {
 		RatesDealsHandler.toggleError();
 
 		// update address bar
-		window.history.pushState({ urlPath: '/deals?category=daily' }, "", '/deals?category=daily');
+		window.history.pushState({ urlPath: '/deals-copy?category=daily' }, "", '/deals-copy?category=daily');
 
 		// Remove listener to disable scroll
 		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
