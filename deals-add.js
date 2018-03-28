@@ -351,12 +351,12 @@ $(function () {
 				// Detect if user is currently using safari web browser
 				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 				// if yes, check for cookie
-				if (iOSSafari) {
+				if (iOSSafari) { // if in safari
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
-							this.timer = setTimeout(this.openWebApp, 1000);
+							this.timer = setTimeout(this.openWebApp, 100);
 						},
 
 						openWebApp: function () {
@@ -366,22 +366,18 @@ $(function () {
 
 					app.launchApp();
 				}
-				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) { // if in other mobile browsers
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
 							this.timer = setTimeout(this.openWebApp, 1000);
 						},
-
-						openWebApp: function () {
-							window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
-						}
 					};
 
 					app.launchApp();
 				}
-				else { // Desktop
+				else { // if on desktop
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 				}
 			}
