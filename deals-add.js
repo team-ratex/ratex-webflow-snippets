@@ -359,7 +359,10 @@ $(function () {
 						},
 
 						openWebApp: function () {
-							window.location.replace("https://itunes.apple.com/app/apple-store/id1350096340");
+							if (window.confirm('Would you like to view this in our RateS app?')) {
+								window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
+							}
+							else {}
 						}
 					};
 
@@ -373,7 +376,10 @@ $(function () {
 						},
 
 						openWebApp: function () {
-							window.location.replace("https://itunes.apple.com/app/apple-store/id1350096340");
+							if (window.confirm('Would you like to view this in our RateS app?')) {
+								window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
+							}
+							else {}
 						}
 					};
 
