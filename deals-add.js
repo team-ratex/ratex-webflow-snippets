@@ -352,6 +352,7 @@ $(function () {
 				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 				// if yes, check for cookie
 				if (iOSSafari) {
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
@@ -359,16 +360,14 @@ $(function () {
 						},
 
 						openWebApp: function () {
-							if (window.confirm('Would you like to view this in our RateS app?')) {
-								window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
-							}
-							else {}
+							window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
 						}
 					};
 
 					app.launchApp();
 				}
 				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
@@ -376,15 +375,11 @@ $(function () {
 						},
 
 						openWebApp: function () {
-							if (window.confirm('Would you like to view this in our RateS app?')) {
-								window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
-							}
-							else {}
+							window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
 						}
 					};
 
 					app.launchApp();
-					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 				}
 				else { // Desktop
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
