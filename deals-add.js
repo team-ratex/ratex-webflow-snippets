@@ -344,7 +344,34 @@ $(function () {
 
 			// check for specified product to display
 			if (qs.productId !== undefined) {
-				RatesDealsHandler.getProductModal(parseInt(qs.productId));
+				const ua = window.navigator.userAgent;
+				// Detect if user is on iOS
+				const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
+				const webkit = !!ua.match(/WebKit/i);
+				// Detect if user is currently using safari web browser
+				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+				// if yes, check for cookie
+				if (iOSSafari) {
+					RatesDealsHandler.toggleError();
+				}
+				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) {
+					var app = {
+						launchApp: function () {
+							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
+							this.timer = setTimeout(this.openWebApp, 1000);
+						},
+
+						openWebApp: function () {
+							window.location.replace("https://itunes.apple.com/app/apple-store/id1350096340");
+						}
+					};
+
+					app.launchApp();
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
+				}
+				else { // Desktop
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
+				}
 			}
 		}
 	};
@@ -410,12 +437,4 @@ $(function () {
 	}, false);
 
 	RatesDealsHandler.initiate();
-
-	const ua = window.navigator.userAgent;
-	const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
-	const webkit = !!ua.match(/WebKit/i);
-	const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
-	if (iOSSafari) {
-		RatesDealsHandler.toggleError();
-	}
 });
