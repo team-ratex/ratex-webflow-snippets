@@ -410,4 +410,12 @@ $(function () {
 	}, false);
 
 	RatesDealsHandler.initiate();
+
+	const ua = window.navigator.userAgent;
+	const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
+	const webkit = !!ua.match(/WebKit/i);
+	const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+	if (iOSSafari) {
+		RatesDealsHandler.toggleError();
+	}
 });
