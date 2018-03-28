@@ -352,7 +352,6 @@ $(function () {
 				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
-					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
@@ -365,9 +364,9 @@ $(function () {
 					};
 
 					app.launchApp();
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 				}
 				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) { // if in other mobile browsers
-					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
@@ -376,6 +375,7 @@ $(function () {
 					};
 
 					app.launchApp();
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 				}
 				else { // if on desktop
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
