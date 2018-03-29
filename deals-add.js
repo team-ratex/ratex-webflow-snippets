@@ -357,14 +357,10 @@ $(function () {
 							var now = new Date().valueOf();
 							setTimeout(function () {
 									if (new Date().valueOf() - now > 3000) return;
-									this.openWebApp();
+									window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
 							}, 25);
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
 						},
-
-						openWebApp: function () {
-							window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
-						}
 					};
 
 					app.launchApp();
