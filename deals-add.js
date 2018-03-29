@@ -356,7 +356,9 @@ $(function () {
 						launchApp: function () {
 							var now = new Date().valueOf();
 							setTimeout(function () {
-									if (new Date().valueOf() - now > 3000) return;
+									if (new Date().valueOf() - now > 3000) {
+										return;
+									}
 									window.location.replace("itms-apps://itunes.apple.com/sg/app/rates-mobile-app-by-ratex/id1350096340?mt=8");
 							}, 25);
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
@@ -370,7 +372,9 @@ $(function () {
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
-							this.timer = setTimeout(this.openWebApp, 1000);
+							setTimeout(function () {
+								RatesDealsHandler.getProductModal(parseInt(qs.productId));
+							}, 25);
 						},
 					};
 
