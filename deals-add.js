@@ -357,7 +357,7 @@ $(function () {
 							setTimeout(function () {
 								RatesDealsHandler.getProductModal(parseInt(qs.productId));
 							}, 25);
-							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct/+productId="+ qs.productId);
+							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
 						},
 					};
 
@@ -366,7 +366,7 @@ $(function () {
 				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) { // if in other mobile browsers
 					var app = {
 						launchApp: function () {
-							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct/+productId="+ qs.productId);
+							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
 							setTimeout(function () {
 								RatesDealsHandler.getProductModal(parseInt(qs.productId));
 							}, 25);
