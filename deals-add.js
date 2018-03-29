@@ -354,8 +354,12 @@ $(function () {
 				if (iOSSafari) { // if in safari
 					var app = {
 						launchApp: function () {
+							var now = new Date().valueOf();
+							setTimeout(function () {
+									if (new Date().valueOf() - now > 100) return;
+									app.openWebApp();
+							}, 25);
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
-							this.timer = setTimeout(this.openWebApp, 100);
 						},
 
 						openWebApp: function () {
