@@ -356,7 +356,7 @@ $(function () {
 						launchApp: function () {
 							var now = new Date().valueOf();
 							setTimeout(function () {
-									if (new Date().valueOf() - now > 100) return;
+									if (new Date().valueOf() - now > 500) return;
 									RatesDealsHandler.app.openWebApp();
 							}, 25);
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct");
