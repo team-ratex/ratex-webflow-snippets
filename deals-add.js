@@ -353,6 +353,7 @@ $(function () {
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
 					$('meta[name=apple-itunes-app]').attr('app-argument', 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId='+ qs.productId);
+					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 					/*var app = {
 						launchApp: function () {
 							setTimeout(function () {
