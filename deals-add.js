@@ -371,6 +371,9 @@ $(function () {
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
+							setTimeout(function () {
+								RatesDealsHandler.getProductModal(parseInt(qs.productId));
+							}, 25);
 							RatesDealsHandler.getProductModal(parseInt(qs.productId));
 						},
 					};
