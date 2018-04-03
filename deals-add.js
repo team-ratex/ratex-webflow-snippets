@@ -257,7 +257,7 @@ $(function () {
 		* @param {String}		productId		the id of the product to request from RateS endpoint
 		*/
 		getProductModal: function (productId) {
-
+			console.log("open product view modal");
 			$.ajax({
 				method: 'GET',
 				url: 'https://ratex.co/store/api/products/' + productId
