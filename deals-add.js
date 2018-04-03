@@ -350,14 +350,18 @@ $(function () {
 				const webkit = !!ua.match(/WebKit/i);
 				// Detect if user is currently using safari web browser
 				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
+				let hasSmartBanner = "false";
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
+					hasSmartBanner = window.innerHeight !== $(window).innerHeight();
 					var app = {
 						launchApp: function () {
 							setTimeout(function () {
 								RatesDealsHandler.getProductModal(parseInt(qs.productId));
 							}, 25);
-							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
+							if (!hasSmartBanner) {
+								window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
+							}
 						},
 					};
 
