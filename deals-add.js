@@ -353,7 +353,7 @@ $(function () {
 				let hasSmartBanner = "false";
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
-					hasSmartBanner = window.innerHeight !== $(window).innerHeight();
+					hasSmartBanner = window.innerHeight < $(window).innerHeight() < 50 ;
 					var app = {
 						launchApp: function () {
 							setTimeout(function () {
