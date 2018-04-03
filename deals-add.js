@@ -371,9 +371,7 @@ $(function () {
 					var app = {
 						launchApp: function () {
 							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
-							setTimeout(function () {
-								RatesDealsHandler.getProductModal(parseInt(qs.productId));
-							}, 25);
+							RatesDealsHandler.getProductModal(parseInt(qs.productId));
 						},
 					};
 
@@ -422,7 +420,7 @@ $(function () {
 		RatesDealsHandler.toggleModal();
 
 		// update address bar
-		window.history.pushState({ urlPath: '/deals-copy?category=daily' }, "", '/deals-copy?category=daily');
+		RatesDealsHandler.getDeals(Config.currentCategory);
 
 		// Remove listener to disable scroll
 		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
