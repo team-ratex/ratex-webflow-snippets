@@ -374,7 +374,6 @@ $(function () {
 							setTimeout(function () {
 								RatesDealsHandler.getProductModal(parseInt(qs.productId));
 							}, 25);
-							RatesDealsHandler.getProductModal(parseInt(qs.productId));
 						},
 					};
 
