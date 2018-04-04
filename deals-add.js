@@ -354,7 +354,10 @@ $(function () {
 				let hasSmartBanner = "false";
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
-					hasSmartBanner = window.innerHeight - 50 > $(window).innerHeight();
+					// hasSmartBanner = window.innerHeight > $(window).innerHeight() - 50;
+					if (window.innerHeight > $(window).innerHeight()) {
+						RatesDealsHandler.toggleError();
+					}
 					var app = {
 						launchApp: function () {
 							setTimeout(function () {
