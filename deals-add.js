@@ -386,7 +386,9 @@ $(function () {
 				branch.init('key_live_lpr2fkDgbAPf4QEMFMreWeppBxkw0l2O', function(err, data) {
 					console.log(err, data); 
 				});
-				console.log(data.has_app);
+				if (data.has_app) {
+					RatesDealsHandler.toggleError();
+				}
 
 				RatesDealsHandler.getProductModal(parseInt(qs.productId));
 			}
