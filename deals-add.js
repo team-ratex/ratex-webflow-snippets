@@ -344,7 +344,7 @@ $(function () {
 
 			// check for specified product to display
 			if (qs.productId !== undefined) {
-				const ua = window.navigator.userAgent;
+				/*const ua = window.navigator.userAgent;
 				// Detect if user is on iOS
 				const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
 				const webkit = !!ua.match(/WebKit/i);
@@ -353,14 +353,14 @@ $(function () {
 				let hasSmartBanner = "false";
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
-					hasSmartBanner = window.innerHeight < $(window).innerHeight() < 50 ;
+					hasSmartBanner = window.innerHeight < $(window).innerHeight() < 50;
 					var app = {
 						launchApp: function () {
 							setTimeout(function () {
 								RatesDealsHandler.getProductModal(parseInt(qs.productId));
 							}, 25);
 							if (!hasSmartBanner) {
-								window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
+								window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=" + qs.productId);
 							}
 						},
 					};
@@ -370,7 +370,7 @@ $(function () {
 				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) { // if in other mobile browsers
 					var app = {
 						launchApp: function () {
-							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ qs.productId);
+							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=" + qs.productId);
 							setTimeout(function () {
 								RatesDealsHandler.getProductModal(parseInt(qs.productId));
 							}, 25);
@@ -382,6 +382,13 @@ $(function () {
 				else { // if on desktop
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 				}
+				*/
+				branch.init('key_live_lpr2fkDgbAPf4QEMFMreWeppBxkw0l2O', function(err, data) {
+					console.log(err, data); 
+				});
+				console.log(data.has_app);
+
+				RatesDealsHandler.getProductModal(parseInt(qs.productId));
 			}
 		}
 	};
@@ -447,5 +454,5 @@ $(function () {
 	}, false);
 
 	RatesDealsHandler.initiate();
-	
+
 });
