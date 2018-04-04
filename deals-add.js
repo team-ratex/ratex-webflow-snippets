@@ -344,7 +344,8 @@ $(function () {
 
 			// check for specified product to display
 			if (qs.productId !== undefined) {
-				/*const ua = window.navigator.userAgent;
+
+				const ua = window.navigator.userAgent;
 				// Detect if user is on iOS
 				const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
 				const webkit = !!ua.match(/WebKit/i);
@@ -382,15 +383,6 @@ $(function () {
 				else { // if on desktop
 					RatesDealsHandler.getProductModal(parseInt(qs.productId));
 				}
-				*/
-				branch.init('key_live_lpr2fkDgbAPf4QEMFMreWeppBxkw0l2O', function(err, data) {
-					console.log(err, data); 
-				});
-				if (data.has_app) {
-					RatesDealsHandler.toggleError();
-				}
-
-				RatesDealsHandler.getProductModal(parseInt(qs.productId));
 			}
 		}
 	};
