@@ -351,12 +351,12 @@ $(function () {
 				const webkit = !!ua.match(/WebKit/i);
 				// Detect if user is currently using safari web browser
 				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
-				let hasSmartBanner = "false";
+				let hasSmartBanner = false;
 				// if yes, check for cookie
 				if (iOSSafari) { // if in safari
 					// hasSmartBanner = window.innerHeight > $(window).innerHeight() - 50;
 					if (window.innerHeight < $(window).innerHeight() - 50) {
-						RatesDealsHandler.toggleError();
+						hasSmartBanner = true;
 					}
 					var app = {
 						launchApp: function () {
