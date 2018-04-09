@@ -139,7 +139,7 @@ $(function () {
 			$('.top-banner')[0].style.display = "none";
 
 			// if bottom-banner was not close previously, open it
-			if(!Config.wasBottomBannerClosed) {
+			if (!Config.wasBottomBannerClosed) {
 				$('.bottom-banner')[0].style.display = "block";
 			}
 
@@ -391,6 +391,14 @@ $(function () {
 			if (qs.productId !== undefined) {
 				RatesDealsHandler.getProductModal(parseInt(qs.productId));
 			}
+
+			// initiate banner links
+			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
+
+			// check if ios or android
+			$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+			$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 		}
 	};
 
