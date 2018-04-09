@@ -344,48 +344,7 @@ $(function () {
 
 			// check for specified product to display
 			if (qs.productId !== undefined) {
-
-				const ua = window.navigator.userAgent;
-				// Detect if user is on iOS
-				const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
-				const webkit = !!ua.match(/WebKit/i);
-				// Detect if user is currently using safari web browser
-				const iOSSafari = iOS && webkit && !ua.match(/CriOS/i);
-				let hasSmartBanner = false;
-				// if yes, check for cookie
-				if (iOSSafari) { // if in safari
-					// hasSmartBanner = window.innerHeight > $(window).innerHeight() - 50;
-					if (window.innerHeight < $(window).innerHeight() - 50) {
-						hasSmartBanner = true;
-					}
-					var app = {
-						launchApp: function () {
-							setTimeout(function () {
-								RatesDealsHandler.getProductModal(parseInt(qs.productId));
-							}, 25);
-							if (!hasSmartBanner) {
-								window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=" + qs.productId);
-							}
-						},
-					};
-
-					app.launchApp();
-				}
-				else if (ua.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)) { // if in other mobile browsers
-					var app = {
-						launchApp: function () {
-							window.location.replace("exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=" + qs.productId);
-							setTimeout(function () {
-								RatesDealsHandler.getProductModal(parseInt(qs.productId));
-							}, 25);
-						},
-					};
-
-					app.launchApp();
-				}
-				else { // if on desktop
-					RatesDealsHandler.getProductModal(parseInt(qs.productId));
-				}
+				RatesDealsHandler.getProductModal(parseInt(qs.productId));
 			}
 		}
 	};
