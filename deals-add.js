@@ -317,15 +317,8 @@ $(function () {
 						// populate data
 						RatesDealsHandler.populateModal(response);
 
-						// make both banners appear
 						$('.top-banner')[0].style.display = "block";
-
-						if ($('.top-banner')[0].style.visibility === 'hidden') {
-							$('.bottom-banner')[0].style.display = "block";
-						} 
-						else {
-							$('.bottom-banner')[0].style.display = "none";
-						}						
+						$('.bottom-banner')[0].style.display = "none";				
 
 						// update banner link so that the app opens at product page
 						$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
@@ -405,6 +398,8 @@ $(function () {
 			// check if ios or android
 			$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 			$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+
+			$('.top-banner').style.display = "none";
 		}
 	};
 
