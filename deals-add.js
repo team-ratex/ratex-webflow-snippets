@@ -124,6 +124,33 @@ $(function () {
 				$('.error-bg')[0].style.display = "flex";
 			}
 		},
+		handleCloseProductModal: function () {
+			// close modal
+			RatesDealsHandler.toggleModal();
+
+			// update address bar
+			RatesDealsHandler.getDeals(Config.currentCategory);
+
+			// Remove listener to disable scroll
+			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+
+			// hide top banner
+			$('.top-banner')[0].style.display = "none";
+
+			// update banner link to redirect user to normal feed
+			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
+		},
+		handleCloseErrorModal: function () {
+			// close alert
+			RatesDealsHandler.toggleError();
+
+			// update address bar
+			window.history.pushState({ urlPath: '/deals-copy?category=daily' }, "", '/deals-copy?category=daily');
+
+			// Remove listener to disable scroll
+			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+		},
 		/**
 		* Populate deal cards with information fetched from RateS endpoint
 		*
@@ -373,7 +400,6 @@ $(function () {
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Daily'
 		RatesDealsHandler.getDeals(Config.currentCategory);
-
 	});
 
 	$('.price-drop-button')[0].addEventListener("click", function () {
@@ -389,25 +415,11 @@ $(function () {
 	});
 
 	$(".product-close-button")[0].addEventListener("click", function () {
-		// close modal
-		RatesDealsHandler.toggleModal();
-
-		// update address bar
-		RatesDealsHandler.getDeals(Config.currentCategory);
-
-		// Remove listener to disable scroll
-		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+		RatesDealsHandler.handleCloseProductModal();
 	});
 
 	$(".error-close-button")[0].addEventListener("click", function () {
-		// close alert
-		RatesDealsHandler.toggleError();
-
-		// update address bar
-		window.history.pushState({ urlPath: '/deals-copy?category=daily' }, "", '/deals-copy?category=daily');
-
-		// Remove listener to disable scroll
-		window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+		RatesDealsHandler.handleCloseErrorModal();
 	});
 
 	// When users press back, reinitiate
