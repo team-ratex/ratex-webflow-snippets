@@ -285,12 +285,12 @@ $(function () {
 						RatesDealsHandler.populateModal(response);
 
 						// update banner link so that the app opens at product page
-						$(open-app-button)[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
-						$(open-app-button)[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
 
 						// check if ios or android
-						$(install-app-button)[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
-						$(install-app-button)[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+						$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 					}
 
 				})
