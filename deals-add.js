@@ -7,6 +7,7 @@ $(function () {
 		offset: 0,
 		hasMore: 'true',
 		isFetchingDeals: false,
+		wasBottomBannerClosed: false,
 	};
 
 	let RatesDealsHandler = {
@@ -136,6 +137,11 @@ $(function () {
 
 			// hide top banner
 			$('.top-banner')[0].style.display = "none";
+
+			// if bottom-banner was not close previously, open it
+			if(!Config.wasBottomBannerClosed) {
+				$('.bottom-banner')[0].style.display = "block";
+			}
 
 			// update banner link to redirect user to normal feed
 			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
@@ -420,6 +426,10 @@ $(function () {
 
 	$(".error-close-button")[0].addEventListener("click", function () {
 		RatesDealsHandler.handleCloseErrorModal();
+	});
+
+	$('.bottom-banner-close-button')[0].addEventListener("click", function () {
+		Config.wasBottomBannerClosed = true;
 	});
 
 	// When users press back, reinitiate
