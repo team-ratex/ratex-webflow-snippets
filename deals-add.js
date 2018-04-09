@@ -126,6 +126,10 @@ $(function () {
 				$('.error-bg')[0].style.display = "flex";
 			}
 		},
+		/**
+		 * Closes the product modal, update address bar and enable scroll
+		 * make sure only the bottom banner appears if user hasn't already closed it
+		 */
 		handleCloseProductModal: function () {
 			// close modal
 			RatesDealsHandler.toggleModal();
@@ -148,6 +152,9 @@ $(function () {
 			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
 			$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
 		},
+		/**
+		 * Closes the error modal, update the address bar and enable scrolling
+		 */
 		handleCloseErrorModal: function () {
 			// close alert
 			RatesDealsHandler.toggleError();
@@ -158,6 +165,9 @@ $(function () {
 			// Remove listener to disable scroll
 			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
 		},
+		/**
+		 * Check the OS that the user is on and set Config.isAndroid to true if it is detected to not be iOS
+		 */
 		checkOS: function() {
 			const ua = window.navigator.userAgent;
 			const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
@@ -408,9 +418,16 @@ $(function () {
 			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
 			$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
 
-			// check if ios or android
-			$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
-			$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+			// check if ios or android and update link accordingly
+			RatesDealsHandler.checkOS();
+			if(Config.isAndroid) {
+				$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
+				$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
+			}
+			else {
+				$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+				$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+			}
 
 			$('.top-banner').style.display = "none";
 		}
