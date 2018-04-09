@@ -322,6 +322,9 @@ $(function () {
 
 						if ($('.top-banner')[0].style.visibility === 'hidden') {
 							$('.bottom-banner')[0].style.display = "block";
+						} 
+						else {
+							$('.bottom-banner')[0].style.display = "none";
 						}						
 
 						// update banner link so that the app opens at product page
