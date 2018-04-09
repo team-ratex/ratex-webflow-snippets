@@ -319,7 +319,10 @@ $(function () {
 
 						// make both banners appear
 						$('.top-banner')[0].style.display = "block";
-						$('.bottom-banner')[0].style.display = "block";
+
+						if ($('.top-banner')[0].style.visibility === 'hidden') {
+							$('.bottom-banner')[0].style.display = "block";
+						}						
 
 						// update banner link so that the app opens at product page
 						$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
