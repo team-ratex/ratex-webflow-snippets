@@ -283,6 +283,10 @@ $(function () {
 
 						// populate data
 						RatesDealsHandler.populateModal(response);
+
+						// update banner link so that the app opens at product page
+						$(open-app-button)[0].href = "exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ productId;
+						$(open-app-button)[1].href = "exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId="+ productId;
 					}
 
 				})
