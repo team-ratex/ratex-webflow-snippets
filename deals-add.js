@@ -8,6 +8,7 @@ $(function () {
 		hasMore: 'true',
 		isFetchingDeals: false,
 		wasBottomBannerClosed: false,
+		isAndroid: false,
 	};
 
 	let RatesDealsHandler = {
@@ -156,6 +157,11 @@ $(function () {
 
 			// Remove listener to disable scroll
 			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+		},
+		checkOS: function() {
+			const ua = window.navigator.userAgent;
+			const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
+			Config.isAndroid = !iOS;
 		},
 		/**
 		* Populate deal cards with information fetched from RateS endpoint
@@ -324,9 +330,16 @@ $(function () {
 						$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
 						$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
 
-						// check if ios or android
-						$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
-						$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+						// check if ios or android and update link accordingly
+						RatesDealsHandler.checkOS();
+						if(Config.isAndroid) {
+							$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
+							$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
+						}
+						else {
+							$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+							$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+						}
 					}
 
 				})
