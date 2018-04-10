@@ -100,19 +100,19 @@ $(function () {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
 			}
 		},
-		/*
 		addCardRow: function () {
 			let l = 0;
-			for (l = 0; l > 4; l++) {
-				Config.dealsContainer.appendChild(Config.dealsContainer.lastChild);
+			for (l = 1; l > 6; l++) {
+				Config.dealsContainer.appendChild($('.hidden-card')[0]);
+				$('.hidden-card')[l+1].style.display = "block";
 			}
 		},
 		removeCardRow: function () {
 			let k = 0;
-			for (k = $('.deal-card').length; k > ($('.deal-card').length - 4); k--) {
-				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
+			for (k = 1; k < 6; k++) {
+				Config.dealsContainer.removeChild($('.hidden-card')[k]);
 			}
-		},*/
+		},
 		/**
 		* Prevents background scrolling on desktop
 		*/
@@ -206,6 +206,7 @@ $(function () {
 			// there will already be one card on the page, so for subsequent data entries, create a card before populating
 			if (cardNumber !== 0) {
 				RatesDealsHandler.createNewCard();
+				RatesDealsHandler.removeCardRow();
 			}
 			// make the first card on the page visible
 			$('.deal-card')[0].style.display = "block";
@@ -312,7 +313,8 @@ $(function () {
 					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
 						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
 					}
-
+					RatesDealsHandler.addCardRow();
+					
 					// checks if there are more deals that can be loaded for infinite scroll
 					Config.hasMore = response.hasMore;
 
