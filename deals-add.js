@@ -149,8 +149,8 @@ $(function () {
 			}
 
 			// update banner link to redirect user to normal feed
-			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
 		},
 		/**
 		 * Closes the error modal, update the address bar and enable scrolling
@@ -337,8 +337,8 @@ $(function () {
 						$('.bottom-banner')[0].style.display = "none";				
 
 						// update banner link so that the app opens at product page
-						$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
-						$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[0].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[1].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
 
 						// check if ios or android and update link accordingly
 						RatesDealsHandler.checkOS();
@@ -415,8 +415,8 @@ $(function () {
 			}
 
 			// initiate banner links
-			$('.open-app-button')[0].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://8n-s2q.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
 
 			// check if ios or android and update link accordingly
 			RatesDealsHandler.checkOS();
