@@ -164,6 +164,15 @@ $(function () {
 
 			// Remove listener to disable scroll
 			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+
+			// if bottom-banner was not close previously, open it
+			if (!Config.wasBottomBannerClosed) {
+				$('.bottom-banner')[0].style.display = "block";
+			}
+
+			// update banner link to redirect user to normal feed
+			$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
 		},
 		/**
 		 * Check the OS that the user is on and set Config.isAndroid to true if it is detected to not be iOS
@@ -319,6 +328,8 @@ $(function () {
 					if (response.data.id !== productId) {
 						// error
 						RatesDealsHandler.toggleError();
+						$('.top-banner')[0].style.display = "none";
+						$('.bottom-banner')[0].style.display = "none";
 					} else {
 
 						// sets address bar with parameters
