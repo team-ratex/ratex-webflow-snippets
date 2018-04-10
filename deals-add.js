@@ -102,7 +102,7 @@ $(function () {
 		},
 		shiftCardRow: function () {
 			let l = 0;
-			for (l = 0; l > 5; l++) {
+			for (l = 0; l < 5; l++) {
 				$('.hidden-card')[l].detach().appendTo(Config.dealsContainer);
 			}
 		},
