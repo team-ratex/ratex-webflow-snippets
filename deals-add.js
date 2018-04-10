@@ -149,8 +149,8 @@ $(function () {
 			}
 
 			// update banner link to redirect user to normal feed
-			$('.open-app-button')[0].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
 		},
 		/**
 		 * Closes the error modal, update the address bar and enable scrolling
@@ -168,7 +168,7 @@ $(function () {
 		/**
 		 * Check the OS that the user is on and set Config.isAndroid to true if it is detected to not be iOS
 		 */
-		checkOS: function() {
+		checkOS: function () {
 			const ua = window.navigator.userAgent;
 			const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
 			Config.isAndroid = !iOS;
@@ -333,16 +333,17 @@ $(function () {
 						// populate data
 						RatesDealsHandler.populateModal(response);
 
+						// default keep top banner visible and bottom banner hidden, switch in A/B test (google optimize)
 						$('.top-banner')[0].style.display = "block";
-						$('.bottom-banner')[0].style.display = "none";				
+						$('.bottom-banner')[0].style.display = "none";
 
 						// update banner link so that the app opens at product page
-						$('.open-app-button')[0].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
-						$('.open-app-button')[1].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
 
 						// check if ios or android and update link accordingly
 						RatesDealsHandler.checkOS();
-						if(Config.isAndroid) {
+						if (Config.isAndroid) {
 							$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 							$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 						}
@@ -415,12 +416,12 @@ $(function () {
 			}
 
 			// initiate banner links
-			$('.open-app-button')[0].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://d7-viz.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
 
 			// check if ios or android and update link accordingly
 			RatesDealsHandler.checkOS();
-			if(Config.isAndroid) {
+			if (Config.isAndroid) {
 				$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 				$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 			}
@@ -477,9 +478,7 @@ $(function () {
 
 	// When users press back, reinitiate
 	window.addEventListener('popstate', function (event) {
-
 		RatesDealsHandler.initiate();
-
 	}, false);
 
 	RatesDealsHandler.initiate();
