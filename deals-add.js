@@ -103,7 +103,8 @@ $(function () {
 		shiftCardRow: function () {
 			let l = 0;
 			for (l = 0; l < 5; l++) {
-				$('.hidden-card')[l].detach().appendTo(Config.dealsContainer);
+				//$('.hidden-card')[l].detach().appendChild(Config.dealsContainer);
+				Config.dealsContainer.appendChild($('.hidden-card')[0]);
 			}
 		},
 		/**
