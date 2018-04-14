@@ -60,6 +60,7 @@ const addChromeExtensionInstallOverlay = () => {
   var isChrome = !!window.chrome && !!window.chrome.webstore;
   var installBtnOne = document.getElementById('ratex-install-button-1');
   var notAvailBtn = document.getElementById('ratex-not-available');
+  var notAvailBtn2 = document.getElementById('ratex-not-available-2'); //homepage smaller screen section
   if (isChrome) {
     if (!checkAndSetIfExtensionInstalled(installBtnOne)) {
       if (installBtnOne) installBtnOne.onclick = getChromeExtensionInline;
@@ -68,6 +69,8 @@ const addChromeExtensionInstallOverlay = () => {
   	installBtnOne.style.display = 'none';
     notAvailBtn.style.display = 'block';
     notAvailBtn.classList.remove('w-hidden-main');
+    notAvailBtn2.style.display = 'block';
+    notAvailBtn2.classList.remove('w-hidden-main');
   }
   </script>
   <!-- END Code for inline installation logic -->
