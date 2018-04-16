@@ -23,6 +23,7 @@ $(function () {
 
   // -- DOM elements
   const PROGRESS_ELEMENT_ID = 'progress-bar';
+  const PROGRESS_ELEMENT_ID_MOBILE = 'progress-bar-m';
 
   // -- Helper functions
   function convertToNumbersFromEthContractResult(result) {
@@ -39,11 +40,20 @@ $(function () {
     contractInstance.methods.allTokensSold().call(function (error, result) {
       if (!error) {
         const allTokensSold = convertToNumbersFromEthContractResult(result);
-        const progressPercentage = roundToMaxDecimalPlaces(((allTokensSold * 100) / CONTRACT_TOKEN_CAP), 3);
+        let progressPercentage = roundToMaxDecimalPlaces(((allTokensSold * 100) / CONTRACT_TOKEN_CAP), 3);
+        if (progressPercentage > 100) {
+          progressPercentage = 100;
+        }
 
         // Set progress bar percentage
         const progressElement = document.getElementById(PROGRESS_ELEMENT_ID);
-        progressElement.style.width = progressPercentage + '%';
+        if (progressElement) {
+          progressElement.style.width = progressPercentage + '%';
+        }
+        const progressElementMobile = document.getElementById(PROGRESS_ELEMENT_ID_MOBILE);
+        if (progressElementMobile) {
+          progressElementMobile.style.width = progressPercentage + '%';
+        }
       }
     });
   }
