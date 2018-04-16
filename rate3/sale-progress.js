@@ -39,7 +39,7 @@ $(function () {
     contractInstance.methods.allTokensSold().call(function (error, result) {
       if (!error) {
         const allTokensSold = convertToNumbersFromEthContractResult(result);
-        const progressPercentage = roundToMaxDecimalPlaces((allTokensSold / CONTRACT_TOKEN_CAP), 3);
+        const progressPercentage = roundToMaxDecimalPlaces(((allTokensSold * 100) / CONTRACT_TOKEN_CAP), 3);
 
         // Set progress bar percentage
         const progressElement = document.getElementById(PROGRESS_ELEMENT_ID);
