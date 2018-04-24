@@ -63,7 +63,8 @@ $(function () {
         // Set progress text
         const ALL_TOKEN_CAP = 400000000;
         const PRIVATE_SALE_TOKEN_CAP = 224000000;
-        const textProgressPercentage = truncateToMaxDecimalPlaces(((PRIVATE_SALE_TOKEN_CAP + allTokensSold) * 100) / ALL_TOKEN_CAP, 1);
+        const LEEKICO_TOKEN_CAP = 80000000;
+        const textProgressPercentage = truncateToMaxDecimalPlaces(((PRIVATE_SALE_TOKEN_CAP + LEEKICO_TOKEN_CAP + allTokensSold) * 100) / ALL_TOKEN_CAP, 1);
         const progressTextElement = document.getElementById(PROGRESS_TEXT_ID);
         if (progressTextElement) {
           progressTextElement.innerText = textProgressPercentage + '% RTE tokens sold';
