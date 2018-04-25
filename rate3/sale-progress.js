@@ -23,6 +23,7 @@ $(function () {
 
   // -- DOM elements
   const PROGRESS_TEXT_ID = 'progress-percent';
+  const PROGRESS_TEXT_ID_MOBILE = 'progress-percent-m';
   const PROGRESS_ELEMENT_ID = 'progress-bar';
   const PROGRESS_ELEMENT_ID_MOBILE = 'progress-bar-m';
 
@@ -68,6 +69,10 @@ $(function () {
         const progressTextElement = document.getElementById(PROGRESS_TEXT_ID);
         if (progressTextElement) {
           progressTextElement.innerText = textProgressPercentage + '% RTE tokens sold';
+        }
+        const progressTextElementMobile = document.getElementById(PROGRESS_TEXT_ID_MOBILE);
+        if (progressElementMobile) {
+          progressTextElementMobile.innerText = textProgressPercentage + '% RTE tokens sold';
         }
       }
     });
