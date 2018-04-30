@@ -9,6 +9,7 @@ $(function () {
 		isFetchingDeals: false,
 		wasBottomBannerClosed: false,
 		isAndroid: false,
+		isIOS: false,
 	};
 
 	let RatesDealsHandler = {
@@ -188,8 +189,8 @@ $(function () {
 		 */
 		checkOS: function () {
 			const ua = window.navigator.userAgent;
-			const iOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
-			Config.isAndroid = !iOS;
+			Config.isIOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
+			Config.isAndroid = !!ua.match(/android/i);
 		},
 		/**
 		* Populate deal cards with information fetched from RateS endpoint
@@ -320,6 +321,37 @@ $(function () {
 					Config.isFetchingDeals = false;
 				})
 		},
+		displayBanners: function () {
+			if (!Config.isIOS && !Config.isAndroid) {
+				// banner don't appear
+				$('.top-banner')[0].style.visibility = "none";
+				$('.bottom-banner')[0].style.visibility = "none";
+			}
+			else {
+				$('.top-banner')[0].style.visibility = "visible";
+				$('.bottom-banner')[0].style.visibility = "visible";
+
+				// default keep top banner visible and bottom banner hidden, switch in A/B test (google optimize)
+				$('.top-banner')[0].style.display = "block";
+				$('.bottom-banner')[0].style.display = "none";
+
+				// update banner link so that the app opens at product page
+				$('.open-app-button')[0].href = 'ratesbyrate://+productId=' + productId;
+				$('.open-app-button')[1].href = 'ratesbyrate://+productId=' + productId;
+
+				// check if ios or android and update link accordingly
+				RatesDealsHandler.checkOS();
+				if (Config.isAndroid) {
+					$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
+					$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
+				}
+				else if (Config.isIOS) {
+					$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+					$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
+				}
+			}
+			
+		},
 		/**
 		* Fetch deal from RateS endpoint and populate the product modal with them
 		*
@@ -355,24 +387,8 @@ $(function () {
 						// populate data
 						RatesDealsHandler.populateModal(response);
 
-						// default keep top banner visible and bottom banner hidden, switch in A/B test (google optimize)
-						$('.top-banner')[0].style.display = "block";
-						$('.bottom-banner')[0].style.display = "none";
-
-						// update banner link so that the app opens at product page
-						$('.open-app-button')[0].href = 'ratesbyrate://+productId=' + productId;
-						$('.open-app-button')[1].href = 'ratesbyrate://+productId=' + productId;
-
-						// check if ios or android and update link accordingly
-						RatesDealsHandler.checkOS();
-						if (Config.isAndroid) {
-							$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
-							$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
-						}
-						else {
-							$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
-							$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
-						}
+						// display banners as necessary
+						RatesDealsHandler.displayBanners();
 					}
 
 				})
