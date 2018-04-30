@@ -323,7 +323,7 @@ $(function () {
 		},
 		displayBanners: function () {
 			if (!Config.isIOS && !Config.isAndroid) {
-				console.log("NOT IOS NOR ANDROID");
+				$('.product-details-header')[0].innerHTML = 'NOT IOS NOR ANDROID';
 				// banner don't appear
 				$('.top-banner')[0].style.visibility = "none";
 				$('.bottom-banner')[0].style.visibility = "none";
@@ -343,12 +343,12 @@ $(function () {
 				// check if ios or android and update link accordingly
 				RatesDealsHandler.checkOS();
 				if (Config.isAndroid) {
-					$('.text-block-111')[0].innerHTML = 'THIS IS ANDROID';
+					$('.product-details-header')[0].innerHTML = 'THIS IS ANDROID';
 					$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 					$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 				}
 				else if (Config.isIOS) {
-					$('.text-block-111')[0].innerHTML = 'THIS IS IOS';
+					$('.product-details-header')[0].innerHTML = 'THIS IS IOS';
 					$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 					$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 				}
