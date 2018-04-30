@@ -100,10 +100,12 @@ $(function () {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
 			}
 		},
+		/**
+		 * Shifts all hidden-cards to the end of the container to standardise the card sizes
+		 */
 		shiftCardRow: function () {
 			let l = 0;
 			for (l = 0; l < 5; l++) {
-				//$('.hidden-card')[l].detach().appendChild(Config.dealsContainer);
 				Config.dealsContainer.appendChild($('.hidden-card')[0]);
 			}
 		},
