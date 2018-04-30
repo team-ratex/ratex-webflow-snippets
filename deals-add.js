@@ -117,7 +117,8 @@ $(function () {
 		},
 		/**
 		* Prevents background scrolling on desktop
-		* @param {Boolean}  mode		
+		*
+		* @param {Boolean}  mode	if set to true, disable scroll. Else, enable scroll.
 		*/
 		setNoScroll: function (mode) {
 			if (mode) {
@@ -201,7 +202,7 @@ $(function () {
 			$('.open-app-button')[1].href = 'ratesbyrate://+';
 		},
 		/**
-		 * Check the OS that the user is on and set Config.isAndroid to true if it is detected to not be iOS
+		 * Check the OS that the user is on and set Config.isAndroid or Config.isIOS to true as appropriate
 		 */
 		checkOS: function () {
 			const ua = window.navigator.userAgent;
@@ -337,6 +338,11 @@ $(function () {
 					Config.isFetchingDeals = false;
 				})
 		},
+		/**
+		* Displays all the appropriate banners and update banner links according to user's OS
+		*
+		* @param {String}		productId		the id of the product to link in the deep link
+		*/
 		displayBanners: function (productId) {
 			RatesDealsHandler.checkOS();
 			if (!Config.isIOS && !Config.isAndroid) {
