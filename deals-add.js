@@ -98,7 +98,7 @@ $(function () {
 			$('.deal-card')[0].style.display = "none";
 			let n = 0;
 			for (n = 0; n < 5; n++) {
-				container.insertBefore($('.hidden-card')[4], container.firstChild);
+				Config.dealsContainer.insertBefore($('.hidden-card')[4], Config.dealsContainer.firstChild);
 			}
 			let j = 0;
 			for (j = $('.deal-card').length; j > 1; j--) {
