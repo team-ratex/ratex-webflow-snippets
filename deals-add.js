@@ -96,6 +96,10 @@ $(function () {
 			Config.offset = 0;
 			Config.hasMore = true;
 			$('.deal-card')[0].style.display = "none";
+			let n = 0;
+			for (n = 0; n < 5; n++) {
+				container.insertBefore($('.hidden-card')[4], container.firstChild);
+			}
 			let j = 0;
 			for (j = $('.deal-card').length; j > 1; j--) {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
@@ -112,9 +116,10 @@ $(function () {
 		},
 		/**
 		* Prevents background scrolling on desktop
+		* @param {Boolean}  mode		
 		*/
-		setScroll: function (mode) {
-			if (mode === 'noscroll') {
+		setNoScroll: function (mode) {
+			if (mode) {
 				window.scrollTo(0, 0);
 				$('.deals-page-body')[0].style.overflowY = 'hidden';
 				$('.body-div')[0].style.overflow = 'hidden';
@@ -157,7 +162,7 @@ $(function () {
 
 			// Remove listener to disable scroll
 			//window.removeEventListener('scroll', RatesDealsHandler.noscroll);
-			RatesDealsHandler.setScroll('scroll');
+			RatesDealsHandler.setNoScroll(false);
 
 			// hide top banner
 			$('.top-banner')[0].style.display = "none";
@@ -183,7 +188,7 @@ $(function () {
 
 			// Remove listener to disable scroll
 			//window.removeEventListener('scroll', RatesDealsHandler.noscroll);
-			RatesDealsHandler.setScroll('scroll');
+			RatesDealsHandler.setNoScroll(false);
 
 			// if bottom-banner was not close previously, open it
 			if (!Config.wasBottomBannerClosed) {
@@ -381,7 +386,7 @@ $(function () {
 					if (response.data.id !== productId) {
 						// error
 						RatesDealsHandler.toggleError();
-						RatesDealsHandler.setScroll('noscroll');
+						RatesDealsHandler.setNoScroll(true);
 						$('.top-banner')[0].style.display = "none";
 						$('.bottom-banner')[0].style.display = "none";
 					} else {
@@ -391,7 +396,7 @@ $(function () {
 
 						// add listener to disable scroll
 						// window.addEventListener('scroll', RatesDealsHandler.noscroll);
-						RatesDealsHandler.setScroll('noscroll');
+						RatesDealsHandler.setNoScroll(true);
 
 						// display modal
 						RatesDealsHandler.toggleModal();
