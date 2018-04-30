@@ -324,7 +324,6 @@ $(function () {
 		displayBanners: function (productId) {
 			RatesDealsHandler.checkOS();
 			if (!Config.isIOS && !Config.isAndroid) {
-				$('.product-details-header')[0].innerHTML = 'NOT IOS NOR ANDROID';
 				// banner don't appear
 				$('.top-banner')[0].style.visibility = "hidden";
 				$('.bottom-banner')[0].style.visibility = "hidden";
