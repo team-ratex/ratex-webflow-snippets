@@ -100,6 +100,7 @@ $(function () {
 			for (n = 0; n < 5; n++) {
 				Config.dealsContainer.insertBefore($('.hidden-card')[4], Config.dealsContainer.firstChild);
 			}
+			Config.dealsContainer.insertBefore($('.deal-card')[0], Config.dealsContainer.firstChild);
 			let j = 0;
 			for (j = $('.deal-card').length; j > 1; j--) {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
