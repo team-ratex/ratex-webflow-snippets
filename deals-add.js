@@ -113,8 +113,14 @@ $(function () {
 		/**
 		* Prevents background scrolling on desktop
 		*/
-		noscroll: function () {
-			window.scrollTo(0, 0);
+		setScroll: function (mode) {
+			if (mode === 'noscroll') {
+				window.scrollTo(0, 0);
+				$('.deals-page-body')[0].style.overflowY = 'hidden';
+			}
+			else {
+			$('.deals-page-body')[0].style.overflowY = 'visible';
+			}
 		},
 		/**
 		* Toggles between showing and hiding modal
@@ -148,7 +154,8 @@ $(function () {
 			RatesDealsHandler.getDeals(Config.currentCategory);
 
 			// Remove listener to disable scroll
-			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+			//window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+			RatesDealsHandler.setScroll('scroll');
 
 			// hide top banner
 			$('.top-banner')[0].style.display = "none";
@@ -173,7 +180,8 @@ $(function () {
 			window.history.pushState({ urlPath: '/deals-copy?category=daily' }, "", '/deals-copy?category=daily');
 
 			// Remove listener to disable scroll
-			window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+			//window.removeEventListener('scroll', RatesDealsHandler.noscroll);
+			RatesDealsHandler.setScroll('scroll');
 
 			// if bottom-banner was not close previously, open it
 			if (!Config.wasBottomBannerClosed) {
@@ -371,6 +379,7 @@ $(function () {
 					if (response.data.id !== productId) {
 						// error
 						RatesDealsHandler.toggleError();
+						RatesDealsHandler.setScroll('noscroll');
 						$('.top-banner')[0].style.display = "none";
 						$('.bottom-banner')[0].style.display = "none";
 					} else {
@@ -379,7 +388,8 @@ $(function () {
 						window.history.pushState({ urlPath: '/deals-copy?productId=' + productId }, "", '/deals-copy?productId=' + productId);
 
 						// add listener to disable scroll
-						window.addEventListener('scroll', RatesDealsHandler.noscroll);
+						// window.addEventListener('scroll', RatesDealsHandler.noscroll);
+						RatesDealsHandler.setScroll('noscroll');
 
 						// display modal
 						RatesDealsHandler.toggleModal();
