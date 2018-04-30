@@ -158,8 +158,8 @@ $(function () {
 			}
 
 			// update banner link to redirect user to normal feed
-			$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'ratesbyrate://+';
+			$('.open-app-button')[1].href = 'ratesbyrate://+';
 		},
 		/**
 		 * Closes the error modal, update the address bar and enable scrolling
@@ -180,8 +180,8 @@ $(function () {
 			}
 
 			// update banner link to redirect user to normal feed
-			$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'ratesbyrate://+';
+			$('.open-app-button')[1].href = 'ratesbyrate://+';
 		},
 		/**
 		 * Check the OS that the user is on and set Config.isAndroid to true if it is detected to not be iOS
@@ -360,8 +360,8 @@ $(function () {
 						$('.bottom-banner')[0].style.display = "none";
 
 						// update banner link so that the app opens at product page
-						$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
-						$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+productId=' + productId;
+						$('.open-app-button')[0].href = 'ratesbyrate://+productId=' + productId;
+						$('.open-app-button')[1].href = 'ratesbyrate://+productId=' + productId;
 
 						// check if ios or android and update link accordingly
 						RatesDealsHandler.checkOS();
@@ -438,8 +438,8 @@ $(function () {
 			}
 
 			// initiate banner links
-			$('.open-app-button')[0].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
-			$('.open-app-button')[1].href = 'exp://rb-grv.jessidew95.ratex-mobile.exp.direct:80/+';
+			$('.open-app-button')[0].href = 'ratesbyrate://+';
+			$('.open-app-button')[1].href = 'ratesbyrate://+';
 
 			// check if ios or android and update link accordingly
 			RatesDealsHandler.checkOS();
