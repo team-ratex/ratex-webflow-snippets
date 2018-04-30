@@ -190,7 +190,7 @@ $(function () {
 		checkOS: function () {
 			const ua = window.navigator.userAgent;
 			Config.isIOS = !!ua.match(/iPad/i) || !!ua.match(/iPhone/i) || !!ua.match(/iPod/i);
-			Config.isAndroid = !!ua.match(/android/i);
+			Config.isAndroid = !!ua.match(/Android/i);
 		},
 		/**
 		* Populate deal cards with information fetched from RateS endpoint
@@ -323,6 +323,7 @@ $(function () {
 		},
 		displayBanners: function () {
 			if (!Config.isIOS && !Config.isAndroid) {
+				console.log("NOT IOS NOR ANDROID");
 				// banner don't appear
 				$('.top-banner')[0].style.visibility = "none";
 				$('.bottom-banner')[0].style.visibility = "none";
@@ -342,10 +343,12 @@ $(function () {
 				// check if ios or android and update link accordingly
 				RatesDealsHandler.checkOS();
 				if (Config.isAndroid) {
+					$('.text-block-111')[0].innerHTML = 'THIS IS ANDROID';
 					$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 					$('.install-app-button')[1].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
 				}
 				else if (Config.isIOS) {
+					$('.text-block-111')[0].innerHTML = 'THIS IS IOS';
 					$('.install-app-button')[0].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 					$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 				}
