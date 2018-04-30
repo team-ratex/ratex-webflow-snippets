@@ -117,11 +117,11 @@ $(function () {
 			if (mode === 'noscroll') {
 				window.scrollTo(0, 0);
 				$('.deals-page-body')[0].style.overflowY = 'hidden';
-				$('.deals-page-body')[0].style.overflow = 'hidden';
+				$('.body-div')[0].style.overflow = 'hidden';
 			}
 			else {
 			$('.deals-page-body')[0].style.overflowY = 'visible';
-			$('.deals-page-body')[0].style.overflow = 'visible';
+			$('.body-div')[0].style.overflow = 'visible';
 			}
 		},
 		/**
