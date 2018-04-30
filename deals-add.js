@@ -321,7 +321,8 @@ $(function () {
 					Config.isFetchingDeals = false;
 				})
 		},
-		displayBanners: function () {
+		displayBanners: function (productId) {
+			RatesDealsHandler.checkOS();
 			if (!Config.isIOS && !Config.isAndroid) {
 				$('.product-details-header')[0].innerHTML = 'NOT IOS NOR ANDROID';
 				// banner don't appear
@@ -341,7 +342,6 @@ $(function () {
 				$('.open-app-button')[1].href = 'ratesbyrate://+productId=' + productId;
 
 				// check if ios or android and update link accordingly
-				RatesDealsHandler.checkOS();
 				if (Config.isAndroid) {
 					$('.product-details-header')[0].innerHTML = 'THIS IS ANDROID';
 					$('.install-app-button')[0].href = 'https://play.google.com/store/apps/details?id=com.rate.rates';
@@ -391,7 +391,7 @@ $(function () {
 						RatesDealsHandler.populateModal(response);
 
 						// display banners as necessary
-						RatesDealsHandler.displayBanners();
+						RatesDealsHandler.displayBanners(productId);
 					}
 
 				})
