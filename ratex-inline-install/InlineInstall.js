@@ -1,16 +1,16 @@
 // // Firefox inline install
-// const firefoxInstall = (aEvent) => {
-//   for (var a = aEvent.target; a.href === undefined;) a = a.parentNode;
-//   var params = {
-//     "Foo": {
-//       URL: aEvent.target.href,
-//       Hash: aEvent.target.getAttribute("hash"),
-//       toString: function () { return this.URL; }
-//     }
-//   };
-//   InstallTrigger.install(params);
-//   return false;
-// };
+const firefoxInstall = (aEvent) => {
+  for (var a = aEvent.target; a.href === undefined;) a = a.parentNode;
+  var params = {
+    "Foo": {
+      URL: aEvent.target.href,
+      Hash: aEvent.target.getAttribute("hash"),
+      toString: function () { return this.URL; }
+    }
+  };
+  InstallTrigger.install(params);
+  return false;
+};
 
 /* 
  * This class' constructor takes in an array of IDs of the install buttons
