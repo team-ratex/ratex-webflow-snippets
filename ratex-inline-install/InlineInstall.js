@@ -129,17 +129,12 @@ class InlineInstallWrapper {
         }); 
       }
     } else {
-      // Non-supported browser
-      var fbIcon = document.createElement('img');
-      fbIcon.src = 'https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/58660855dea92ad03ac59877_facebook-white-transparent.png';
-      fbIcon.alt = 'fb_icon';
       // Set styles for these buttons
       this.arrayOfInstallButtons.forEach((button) => {
         if (button) {
           button.style.backgroundSize = 'initial';
           button.style.backgroundPosition = '10% 50%';
           button.style.backgroundImage = 'none';
-          if ($(window).width() >= 977) button.style.backgroundImage = 'url(' + fbIcon.src + ')';
           button.innerHTML = 'Join with Facebook';
           button.classList.add('button_tryextension_notsupported');
           button.href = "https://www.facebook.com/RateX-194127197634012/";
@@ -172,8 +167,6 @@ class InlineInstallWrapper {
             if (button) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/5988129f6dccc600016b8f5f_button-4.png")';
           } else if (this.isFirefox) {
             if (button) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/5982b63bbadc3c00011defb3_Untitled-2.png")';
-          } else {
-            if (button) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/58660855dea92ad03ac59877_facebook-white-transparent.png")';
           }
         }); 
       }
