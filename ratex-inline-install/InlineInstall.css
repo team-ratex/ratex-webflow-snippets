@@ -30,6 +30,26 @@
   min-height:200px;
   width:auto;
 }
+.button_tryextension_notsupported {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-pack: distribute;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  background-color: #3b5998;
+}
+.button_tryextension_notsupported:hover {
+  background-color: #4863A2;
+}
 @media (max-width: 767px) {
   .button_tryextension_notsupported {
     display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex;
