@@ -151,7 +151,7 @@ class InlineInstallWrapper {
     }); 
     // Observers
     const domObv = new MutationObserver(function (mutations) {
-      if (this.checkAndSetIfExtensionInstalled()) {
+      if (document.getElementById('ratex-extension-is-installed'))
         domObv.disconnect();
       }
     });
