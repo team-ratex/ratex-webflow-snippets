@@ -46,9 +46,14 @@
   -moz-align-items: center;
   align-items: center;
   background-color: #3b5998;
+  border-color: #fff;
+  color: #fff;
+  font-size: 9px;
 }
 .button_tryextension_notsupported:hover {
-  background-color: #4863A2;
+  border-color: #4863A2 !important;
+  background-color: #fff !important;
+  color: #4863A2 !important;
 }
 @media (max-width: 767px) {
   .button_tryextension_notsupported {
