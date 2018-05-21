@@ -72,7 +72,7 @@ class InlineInstallWrapper {
       chrome.webstore.install(
         this.chromeStoreUrl,
         () => {
-      if (window.location.search === '?ctci') {
+          if (window.location.search === '?ctci') {
             // Optional: If it's installed through homepage on modal deals, we open merchant page too
             if ($('.product-content-wraper:visible').length > 0) {
               const url = ($('.cta-wrapper .link-11')[0].href);          
