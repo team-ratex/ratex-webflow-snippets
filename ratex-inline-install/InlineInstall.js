@@ -156,7 +156,7 @@ class InlineInstallWrapper {
     this.arrayOfInstallButtons.forEach((button) => {
       if (button) button.removeAttribute('v-cloak');
     }); 
-    domObv.observe(document.getElementsByTagName("BODY")[0], domObvConfig);
+    this.domObv.observe(document.getElementsByTagName("BODY")[0], this.domObvConfig);
     
     // Window resize function to conditionally hide background image of button
     $(window).resize(function () {
