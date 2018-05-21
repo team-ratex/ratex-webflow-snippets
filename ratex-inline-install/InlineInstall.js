@@ -75,25 +75,25 @@ class InlineInstallWrapper {
   // Chrome extension inline install function
   getChromeExtensionInline() {
     this.addChromeExtensionInstallOverlay();
-    // try {
-    //   chrome.webstore.install(
-    //     this.chromeStoreUrl,
-    //     () => {
-    //   if (window.location.search === '?ctci') {
-    //         // Optional: If it's installed through homepage on modal deals, we open merchant page too
-    //         if ($('.product-content-wraper:visible').length > 0) {
-    //           const url = ($('.cta-wrapper .link-11')[0].href);          
-    //           window.location = url;
-    //         }
-    //       }
-    //       this.removeChromeExtensionInstallOverlay()
-    //     },
-    //     () => {this.removeChromeExtensionInstallOverlay()}
-    //   );
-    // } catch {
-    //   // Inline installation failed - We open the appstore's likn in a new tab instead
-    //   window.open(this.chromeStoreUrl);
-    // }
+    try {
+      chrome.webstore.install(
+        this.chromeStoreUrl,
+        () => {
+      if (window.location.search === '?ctci') {
+            // Optional: If it's installed through homepage on modal deals, we open merchant page too
+            if ($('.product-content-wraper:visible').length > 0) {
+              const url = ($('.cta-wrapper .link-11')[0].href);          
+              window.location = url;
+            }
+          }
+          this.removeChromeExtensionInstallOverlay()
+        },
+        () => {this.removeChromeExtensionInstallOverlay()}
+      );
+    } catch {
+      // Inline installation failed - We open the appstore's likn in a new tab instead
+      window.open(this.chromeStoreUrl);
+    }
   }
 
   // Function to check if extension is installed
