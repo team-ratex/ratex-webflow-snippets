@@ -35,13 +35,6 @@ class InlineInstallWrapper {
     this.isChrome = !!window.chrome && !!window.chrome.webstore;
     this.isFirefox = (navigator.userAgent.indexOf("Firefox") > 0);
     this.chromeStoreUrl = 'https://chrome.google.com/webstore/detail/lebeffkkoglndkjfggcokhkikpilochf';
-    // Observers
-    this.domObv = new MutationObserver(function (mutations) {
-      if (this.checkAndSetIfExtensionInstalled()) {
-        this.domObv.disconnect();
-      }
-    });
-    this.domObvConfig = { childList: true };
     // Init runs
     this.runDocumentMutations();
   }
@@ -156,7 +149,14 @@ class InlineInstallWrapper {
     this.arrayOfInstallButtons.forEach((button) => {
       if (button) button.removeAttribute('v-cloak');
     }); 
-    this.domObv.observe(document.getElementsByTagName("BODY")[0], this.domObvConfig);
+    // Observers
+    const domObv = new MutationObserver(function (mutations) {
+      if (this.checkAndSetIfExtensionInstalled()) {
+        domObv.disconnect();
+      }
+    });
+    const domObvConfig = { childList: true };
+    domObv.observe(document.getElementsByTagName("BODY")[0], domObvConfig);
     
     // Window resize function to conditionally hide background image of button
     $(window).resize(function () {
