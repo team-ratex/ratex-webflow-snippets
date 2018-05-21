@@ -85,6 +85,7 @@ class InlineInstallWrapper {
       );
     } catch {
       // Inline installation failed - We open the appstore's likn in a new tab instead
+      this.removeChromeExtensionInstallOverlay();
       window.open(this.chromeStoreUrl);
     }
   }
