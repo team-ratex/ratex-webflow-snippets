@@ -1,4 +1,4 @@
-// // Firefox inline install
+// Firefox inline install
 const firefoxInstall = (aEvent) => {
   for (var a = aEvent.target; a.href === undefined;) a = a.parentNode;
   var params = {
@@ -12,7 +12,7 @@ const firefoxInstall = (aEvent) => {
   return false;
 };
 
-/* 
+/*
  * This class' constructor takes in an array of IDs of the install buttons
  * Usage:
   * `new InlineInstallWrapper(['button-1', 'button-2', 'button-3']);`
@@ -52,8 +52,8 @@ class InlineInstallWrapper {
       // Append it in
       document.body.appendChild(chromeOverlayElement);
   }
-  
-  //Basically to remove that overlay above
+
+  // Basically to remove that overlay above
   removeChromeExtensionInstallOverlay() {
       // Delete element
       this.chromeOverlayElement.className= "animated fadeOutDown"
@@ -75,7 +75,7 @@ class InlineInstallWrapper {
           if (window.location.search === '?ctci') {
             // Optional: If it's installed through homepage on modal deals, we open merchant page too
             if ($('.product-content-wraper:visible').length > 0) {
-              const url = ($('.cta-wrapper .link-11')[0].href);          
+              const url = ($('.cta-wrapper .link-11')[0].href);
               window.location = url;
             }
           }
@@ -83,7 +83,7 @@ class InlineInstallWrapper {
         },
         () => {this.removeChromeExtensionInstallOverlay()}
       );
-    } catch {
+    } catch (err) {
       // Inline installation failed - We open the appstore's likn in a new tab instead
       this.removeChromeExtensionInstallOverlay();
       window.open(this.chromeStoreUrl);
@@ -126,7 +126,7 @@ class InlineInstallWrapper {
             button.setAttribute('data-hash', "sha256:883161bcdf6f1dd765134b59252bd2276091c380cc7609fb97e40f3452cc99d1");
             button.setAttribute('target', "");
           }
-        }); 
+        });
       }
     } else {
       // Set styles for these buttons
@@ -139,12 +139,12 @@ class InlineInstallWrapper {
           button.classList.add('button_tryextension_notsupported');
           button.href = "https://www.facebook.com/RateX-194127197634012/";
         }
-      }); 
+      });
     }
     // Remove cloak
     this.arrayOfInstallButtons.forEach((button) => {
       if (button) button.removeAttribute('v-cloak');
-    }); 
+    });
     // Observers
     const domObv = new MutationObserver(function (mutations) {
       if (document.getElementById('ratex-extension-is-installed')) {
@@ -153,14 +153,14 @@ class InlineInstallWrapper {
     });
     const domObvConfig = { childList: true };
     domObv.observe(document.getElementsByTagName("BODY")[0], domObvConfig);
-    
+
     // Window resize function to conditionally hide background image of button
     $(window).resize(function () {
       if ($( window ).width() < 977) {
         // Conditional Breakpoint - hide image
         this.arrayOfInstallButtons.forEach((button) => {
           if (button) button.style.backgroundImage = 'none';
-        }); 
+        });
       } else {
         this.arrayOfInstallButtons.forEach((button) => {
           if (this.isChrome) {
@@ -168,7 +168,7 @@ class InlineInstallWrapper {
           } else if (this.isFirefox) {
             if (button) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/5982b63bbadc3c00011defb3_Untitled-2.png")';
           }
-        }); 
+        });
       }
     });
   }
