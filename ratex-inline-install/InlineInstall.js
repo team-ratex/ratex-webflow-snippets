@@ -95,8 +95,10 @@ class InlineInstallWrapper {
     if (document.getElementById('ratex-extension-is-installed')) {
       var i;
       this.arrayOfInstallButtons.forEach((button) => {
-        button.innerHTML = 'Installed';
-        button.onclick = null;
+        if (button) {
+          button.innerHTML = 'Installed';
+          button.onclick = null;
+        }
       })
       return true;
     } else {
