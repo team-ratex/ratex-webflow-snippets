@@ -135,7 +135,7 @@ class InlineInstallWrapper {
         if (button) {
           // button.style.backgroundSize = 'initial';
           // button.style.backgroundPosition = '10% 50%';
-          // button.style.backgroundImage = 'none';
+          button.style.backgroundImage = 'none';
           button.innerHTML = 'JOIN WITH FACEBOOK';
           button.classList.add('button_tryextension_notsupported');
           button.href = "https://www.facebook.com/RateX-194127197634012/";
