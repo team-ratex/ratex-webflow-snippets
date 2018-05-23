@@ -121,7 +121,6 @@ class InlineInstallWrapper {
         this.arrayOfInstallButtons.forEach((button) => {
           if (button) {
             button.style.backgroundSize = 'contain';
-            if ($(window).width() >= 977) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/5982b63bbadc3c00011defb3_Untitled-2.png")';
             button.setAttribute('iconURL', 'https://addons.cdn.mozilla.net/user-media/addon_icons/821/821634-64.png?modified=1501590021&1501817260201');
             button.setAttribute('href', 'https://addons.mozilla.org/firefox/downloads/latest/ratex/addon-821634-latest.xpi');
             button.onclick = "return firefoxInstall(event);"
@@ -162,14 +161,6 @@ class InlineInstallWrapper {
         // Conditional Breakpoint - hide image
         this.arrayOfInstallButtons.forEach((button) => {
           if (button) button.style.backgroundImage = 'none';
-        });
-      } else {
-        this.arrayOfInstallButtons.forEach((button) => {
-          if (this.isChrome) {
-            if (button) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/5988129f6dccc600016b8f5f_button-4.png")';
-          } else if (this.isFirefox) {
-            if (button) button.style.backgroundImage = 'url("https://daks2k3a4ib2z.cloudfront.net/56db4d20631460036ac79a2b/5982b63bbadc3c00011defb3_Untitled-2.png")';
-          }
         });
       }
     });
