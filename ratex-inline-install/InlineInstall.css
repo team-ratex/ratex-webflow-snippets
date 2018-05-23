@@ -45,10 +45,10 @@
   -webkit-align-items: center;
   -moz-align-items: center;
   align-items: center;
-  background-color: #3b5998;
-  border-color: #fff;
-  color: #fff;
-  font-size: 9px;
+  background-color: #3b5998 !important;
+  border-color: #fff !important;
+  color: #fff !important;
+  font-size: 12px;
 }
 .button_tryextension_notsupported:hover {
   border-color: #4863A2 !important;

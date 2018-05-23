@@ -133,10 +133,10 @@ class InlineInstallWrapper {
       // Set styles for these buttons
       this.arrayOfInstallButtons.forEach((button) => {
         if (button) {
-          button.style.backgroundSize = 'initial';
-          button.style.backgroundPosition = '10% 50%';
-          button.style.backgroundImage = 'none';
-          button.innerHTML = 'Join with Facebook';
+          // button.style.backgroundSize = 'initial';
+          // button.style.backgroundPosition = '10% 50%';
+          // button.style.backgroundImage = 'none';
+          button.innerHTML = 'JOIN WITH FACEBOOK';
           button.classList.add('button_tryextension_notsupported');
           button.href = "https://www.facebook.com/RateX-194127197634012/";
         }
