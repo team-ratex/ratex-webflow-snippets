@@ -48,7 +48,7 @@
   background-color: #3b5998 !important;
   border-color: #fff !important;
   color: #fff !important;
-  font-size: 12px;
+  font-size: 12px !important;
 }
 .button_tryextension_notsupported:hover {
   border-color: #4863A2 !important;
