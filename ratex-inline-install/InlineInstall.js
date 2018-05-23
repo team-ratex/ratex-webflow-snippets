@@ -45,7 +45,7 @@ class InlineInstallWrapper {
       const chromeOverlayElement = document.createElement('div');
       chromeOverlayElement.id = 'chrome-install-overlay';
       chromeOverlayElement.innerHTML = "<div class='horizontal-container animated fadeInUp'><img style='margin-right:15px; height:30px; width:auto;' src='https://blog.ratex.co/assets/images/ratex-install-arrow.png' alt='ratex-arrow'><h3>Click <b>Add Extension</b> above to continue</h3></div>"
-      + "<img id='ratex-rocket-img' class='animated fadeInUp' src='https://blog.ratex.co/assets/images/ratex-download-rocket.png' alt='ratex-rocket'/>"
+        + "<img id='ratex-rocket-img' class='animated fadeInUp' src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/RateX-Rocket.png' alt='ratex-rocket'/>"
       + "<h4 class='animated fadeInUp'>Almost there!</h4>";
 
       this.chromeOverlayElement = chromeOverlayElement;
