@@ -165,7 +165,7 @@ $(function () {
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
 					// sets address bar with parameters
-					window.history.pushState({ urlPath: '/deals?category=' + Config.currentCategory }, "", '/deals?category=' + Config.currentCategory);
+					window.history.pushState({ urlPath: 'rates/deals?category=' + Config.currentCategory }, "", 'rates/deals?category=' + Config.currentCategory);
 
 					// make first card on page visible
 					Config.dealsContainer.firstChild.style.visibility = 'visible';
@@ -193,8 +193,8 @@ $(function () {
 		*/
 		parse_query_string: function (query) {
 			const vars = query.split("&");
-            const query_string = {};
-            let m = 0;
+		        const query_string = {};
+                        let m = 0;
 			for (m = 0; m < vars.length; m++) {
 				let pair = vars[m].split("=");
 				// If first entry with this name
