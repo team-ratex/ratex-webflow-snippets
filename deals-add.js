@@ -492,7 +492,7 @@ $(function () {
 				$('.install-app-button')[1].href = 'itms-apps://itunes.apple.com/app/apple-store/id1350096340';
 			}
 
-			$('.top-banner').style.display = "none";
+			$('.top-banner')[0].style.display = "none";
 		}
 	};
 
