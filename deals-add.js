@@ -447,7 +447,7 @@ $(function () {
 		* If category in address is not 'Daily', set the respective category tab as active
 		*/
 		setCurrentButton: function () {
-			$('.daily-button')[0].classList.remove("w--current");
+			$('.price-drop-button')[0].classList.remove("w--current");
 			if (Config.currentCategory === "Price Drops") {
 				$('.price-drop-button')[0].classList.add("w--current");
 			}
