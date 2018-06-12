@@ -26,7 +26,7 @@ const StartWatchingIndeedButton = (target) => {
   // create an observer instance
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
-      setTimeout(ChangeIndeedButtonFunc, 100);
+      setTimeout(ChangeIndeedButtonFunc, 0);
     });
   });
 
