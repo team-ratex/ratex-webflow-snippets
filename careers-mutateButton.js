@@ -3,13 +3,6 @@ const StartWatchingIndeedButton = (target) => {
   const ChangeIndeedButtonFunc = () => {
     // Add our own class in
     $('.indeed-apply-widget').addClass('apply-careers');
-    $('.indeed-apply-widget').attr(
-      'style',
-      'display: inline-block !important;'
-      + 'padding: 0px !important;'
-      + 'margin: 0px !important;',
-    );
-    
 
     // Remove background color and shadow
     $('.indeed-apply-button').attr('style', 'background: none !important; box-shadow: none !important');
@@ -29,6 +22,10 @@ const StartWatchingIndeedButton = (target) => {
       + 'align-items: center !important',
     );
   };
+
+  if ($('.indeed-apply-button .indeed-apply-button-inner-left').length > 0) {
+    ChangeIndeedButtonFunc();
+  } 
 
   // create an observer instance
   const observer = new MutationObserver((mutations) => {
