@@ -3,12 +3,14 @@ const StartWatchingIndeedButton = (target) => {
   const ChangeIndeedButtonFunc = () => {
     // Add our own class in
     $('.indeed-apply-widget').addClass('apply-careers');
-    $('.apply-careers').attr('style', 'background: none !important; box-shadow: none !important');
+    // $('.apply-careers').attr('style', 'background: none !important; box-shadow: none !important');
 
     // Remove background color and shadow
     $('.indeed-apply-button').attr(
       'style',
-      'padding: 5px 20px !important;'
+      'background: none !important;'
+      + 'box-shadow: none !important'
+      + 'padding: 5px 20px !important;'
       + 'display: inline-block;',
     );
 
