@@ -26,6 +26,7 @@ const StartWatchingIndeedButton = (target) => {
       + 'font: unset !important;'
       + 'text-shadow: none !important;'
       + 'display: flex !important;'
+      + 'float: none !important;'
       + 'align-items: center !important',
     );
   };
