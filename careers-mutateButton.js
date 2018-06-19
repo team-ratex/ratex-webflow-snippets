@@ -9,7 +9,7 @@ const StartWatchingIndeedButton = (target) => {
     $('.indeed-apply-button').attr(
       'style',
       'background: none !important;'
-      + 'box-shadow: none !important'
+      + 'box-shadow: none !important;'
       + 'padding: 5px 20px !important;'
       + 'display: inline-block;',
     );
