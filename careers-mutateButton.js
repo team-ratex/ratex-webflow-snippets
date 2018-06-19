@@ -8,8 +8,8 @@ const StartWatchingIndeedButton = (target) => {
     // Remove background color and shadow
     $('.indeed-apply-button').attr(
       'style',
-      'padding: 5px 20px !important'
-      + 'display: inline-block',
+      'padding: 5px 20px !important;'
+      + 'display: inline-block;',
     );
 
     // Remove indeed logo
