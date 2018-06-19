@@ -10,7 +10,6 @@ const StartWatchingIndeedButton = (target) => {
       'style',
       'padding: 5px 20px !important'
     );
-  };
 
     // Remove indeed logo
     $('.indeed-apply-button .indeed-apply-button-inner-left').attr('style', 'display: none !important');
