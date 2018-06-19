@@ -3,9 +3,14 @@ const StartWatchingIndeedButton = (target) => {
   const ChangeIndeedButtonFunc = () => {
     // Add our own class in
     $('.indeed-apply-widget').addClass('apply-careers');
+    $('.apply-careers').attr('style', 'background: none !important; box-shadow: none !important');
 
     // Remove background color and shadow
-    $('.indeed-apply-button').attr('style', 'background: none !important; box-shadow: none !important');
+    $('.indeed-apply-button').attr(
+      'style',
+      'padding: 5px 20px !important;'
+    );
+  };
 
     // Remove indeed logo
     $('.indeed-apply-button .indeed-apply-button-inner-left').attr('style', 'display: none !important');
@@ -15,7 +20,7 @@ const StartWatchingIndeedButton = (target) => {
       'style',
       'background: unset !important;'
       + 'color: #203542 !important;'
-      + 'padding: 5px 20px !important;'
+      + 'padding: 0px !important;'
       + 'font: unset !important;'
       + 'text-shadow: none !important;'
       + 'display: flex !important;'
