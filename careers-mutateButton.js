@@ -8,7 +8,7 @@ const StartWatchingIndeedButton = (target) => {
     // Remove background color and shadow
     $('.indeed-apply-button').attr(
       'style',
-      'padding: 5px 20px !important;'
+      'padding: 5px 20px !important'
     );
   };
 
