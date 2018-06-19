@@ -15,7 +15,7 @@ const StartWatchingIndeedButton = (target) => {
       'style',
       'background: unset !important;'
       + 'color: #203542 !important;'
-      + 'padding: 0px !important;'
+      + 'padding: 5px 20px !important;'
       + 'font: unset !important;'
       + 'text-shadow: none !important;'
       + 'display: flex !important;'
