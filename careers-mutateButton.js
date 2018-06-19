@@ -9,6 +9,7 @@ const StartWatchingIndeedButton = (target) => {
     $('.indeed-apply-button').attr(
       'style',
       'padding: 5px 20px !important'
+      + 'display: inline-block',
     );
 
     // Remove indeed logo
