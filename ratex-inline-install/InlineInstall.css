@@ -1,0 +1,73 @@
+#chrome-install-overlay {
+  z-index:15000;
+  width:100%;
+  height:100vh;
+  min-height:630px;
+  background:#fff;
+  position:fixed;
+  top:0;
+  left:0;
+  color:#1f3542 !important;
+  display:flex; display:-webkit-box; display:-webkit-flex; display:-moz-flex; display:-ms-flexbox;
+  -webkit-flex-direction:column; -moz-flex-direction:column; -ms-flex-direction:column; flex-direction:column;
+  justify-content:space-around; -webkit-justify-content:space-around; -moz-justify-content:space-around;
+  -webkit-align-items:center; -moz-align-items:center; align-items:center;
+}
+#chrome-install-overlay .horizontal-container {
+  display:flex;display:-webkit-box;display:-webkit-flex;display:-moz-flex;display:-ms-flexbox;
+  -webkit-flex-direction:row;-moz-flex-direction:row;-ms-flex-direction:row;flex-direction:row;
+  -webkit-align-items:center;-moz-align-items:center;align-items:center;
+  padding-top:275px;
+  padding-left:10px;
+  padding-right:10px;
+  height:50px;
+}
+#chrome-install-overlay .horizontal-container h3 {
+  margin:0px !important;
+}
+#chrome-install-overlay #ratex-rocket-img {
+  height:40vh;
+  min-height:200px;
+  width:auto;
+}
+.button_tryextension_notsupported {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -ms-flex-pack: distribute;
+  -webkit-justify-content: space-around;
+  -moz-justify-content: space-around;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  align-items: center;
+  background-color: #3b5998 !important;
+  border-color: #fff !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
+.button_tryextension_notsupported:hover {
+  border-color: #4863A2 !important;
+  background-color: #fff !important;
+  color: #4863A2 !important;
+}
+@media (max-width: 767px) {
+  .button_tryextension_notsupported {
+    display: -webkit-box; display: -webkit-flex; display: -moz-flex; display: -ms-flexbox; display: flex;
+    -ms-flex-pack: distribute;
+    -webkit-justify-content: space-around;
+	  -moz-justify-content: space-around;
+	  justify-content: space-around;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+	  -moz-align-items: center;
+	  align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
