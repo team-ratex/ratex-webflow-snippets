@@ -3,7 +3,7 @@ $(function () {
 
 	let Config = {
 		dealsContainer: document.getElementsByClassName("deals-container")[0],
-		currentCategory: 'Daily',
+		currentCategory: 'Latest',
 		offset: 0,
 		hasMore: 'true',
 		isFetchingDeals: false,
@@ -212,10 +212,10 @@ $(function () {
 			return query_string;
 		},
 		/**
-		* If category in address is not 'Daily', set the respective category tab as active
+		* If category in address is not 'Latest', set the respective category tab as active
 		*/
 		setCurrentButton: function () {
-			document.getElementsByClassName("daily-button")[0].classList.remove("w--current");
+			document.getElementsByClassName("latest-button")[0].classList.remove("w--current");
 			if (Config.currentCategory === "PriceDrop") {
 				document.getElementsByClassName("price-drop-button")[0].classList.add("w--current");
 			}
@@ -223,7 +223,7 @@ $(function () {
 				document.getElementsByClassName("popular-button")[0].classList.add("w--current");
 			}
 			else {
-				document.getElementsByClassName("daily-button")[0].classList.add("w--current");
+				document.getElementsByClassName("latest-button")[0].classList.add("w--current");
 			}
 		},
 		/**
@@ -252,10 +252,10 @@ $(function () {
 	};
 
 	//Buttons
-	document.getElementsByClassName("daily-button")[0].addEventListener("click", function () {
+	document.getElementsByClassName("latest-button")[0].addEventListener("click", function () {
 		// reset feed to remove all cards currently on page
 		RatesDealsHandler.resetFeed();
-		Config.currentCategory = 'Daily'
+		Config.currentCategory = 'Latest'
 		RatesDealsHandler.getDeals(Config.currentCategory);
 
 	});
