@@ -1,3 +1,13 @@
+/* This file is used for https://rate.com.sg/rates/deals
+ * Functionalities of this files include -
+   * API calls to get deals
+   * Clone similar cards to the default style, and populate the list
+   * Handles the current category (Latest, Popular, Price Drop)
+   * Handles infinite scrolling
+   * 'Clamps' the Product Name so that it's only 2 lines
+ * This is then loaded into the webpage through a script tag pointing to the cdn.rawgit of this file
+*/
+
 // On document ready
 $(function () {
 
