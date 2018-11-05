@@ -127,11 +127,11 @@ class DealCell {
     newElement.classList.add("w-col", "w-col-3", "w-col-small-6", "w-col-tiny-6");
     newElement.innerHTML = `
       <div class="cards-wraper" style="margin-bottom: 36px;">
-        <a
-          style="background-image: url(${ this.imageUrl})"
-          href="${this.itemUrl}"
+        <img
+          style="cursor: pointer; object-fit: cover;"
+          src="${this.imageUrl}"
+          onClick="window.open('${this.itemUrl}')"
           class="link-block-38 w-inline-block"
-          target="_blank"
         >
           <div class="products2-pricetag">
             <div class="text-16">$${this.price}</div>
