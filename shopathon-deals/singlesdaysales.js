@@ -1,6 +1,34 @@
 class Shopathon {
   constructor(numberOfDeals) {
     this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${numberOfDeals}`;
+    this.page = 1;
+    this.dealsParentContainer = '#deals-parent';
+    this.tabContentContainer = '.w-tab-content';
+  }
+  // Basically our driver function
+  setUpPage() {
+    this.renderPagination();
+    this.populateDeals();
+  }
+  renderPagination() {
+    // Create Back and Next Buttons
+    const BackButton = document.createElement("div");
+    BackButton.classList.add("w-tab-link");
+    BackButton.style.margin = '20px 36px';
+    BackButton.innerText = "Back"
+    const NextButton = document.createElement("div");
+    NextButton.style.margin = '20px 36px';
+    NextButton.classList.add("w-tab-link");
+
+    NextButton.innerText = "Next"
+    // Set up pagination Element
+    const PaginationElement = document.createElement("div");
+    PaginationElement.style.display = 'flex';
+    PaginationElement.style.justifyContent = 'center';
+    PaginationElement.append(BackButton);
+    PaginationElement.append(NextButton);
+    // Add it in
+    $(PaginationElement).insertAfter($(this.tabContentContainer));
   }
   populateDeals() {
     $.get(this.url)
@@ -9,13 +37,6 @@ class Shopathon {
         // Create deal cells
         const deals = response.data;
         deals.forEach(data => {
-          console.log(
-            data.images[0],
-            data.listing.currentPrice,
-            data.listing.merchant,
-            data.name,
-            data.listing.merchantURL,
-          );
           const deal = new DealCell(
             data.images[0],
             data.listing.currentPrice,
@@ -23,13 +44,12 @@ class Shopathon {
             data.name,
             data.listing.merchantURL,
           );
-          $('#deals-parent').append(deal.element)
+          $(this.dealsParentContainer).append(deal.getDomElement())
         });
       }
     });
   }
 }
-
 class DealCell {
   constructor(imageUrl, price, merchant, name, itemUrl) {
     this.imageUrl = imageUrl;
@@ -37,7 +57,9 @@ class DealCell {
     this.merchant = merchant;
     this.name = name;
     this.itemUrl = itemUrl;
-    this.element = this.constructElement();
+  }
+  getDomElement() {
+    return this.constructElement();
   }
   constructElement() {
     const newElement = document.createElement("div");
@@ -51,7 +73,7 @@ class DealCell {
           target="_blank"
         >
           <div class="products2-pricetag">
-            <div class="text-16">$${ this.price}</div>
+            <div class="text-16">$${this.price}</div>
           </div>
         </a>
         <div class="products2-description-wrap">
