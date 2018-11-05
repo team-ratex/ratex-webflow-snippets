@@ -99,13 +99,13 @@ class Shopathon {
     const BackButton = document.getElementById(this.backButtonId);
     BackButton.style.opacity = (enabled) ? 1 : 0.6;
     BackButton.style.cursor = (enabled)
-      ? 'cursor' : 'not-allowed';
+      ? 'pointer' : 'not-allowed';
   }
   toggleNextButtonAvailability(enabled) {
     const NextButton = document.getElementById(this.nextButtonId);
     NextButton.style.opacity = (enabled) ? 1 : 0.6;
     NextButton.style.cursor = (enabled)
-      ? 'cursor' : 'not-allowed';
+      ? 'pointer' : 'not-allowed';
   }
 }
 class DealCell {
