@@ -50,6 +50,8 @@ class Shopathon {
     $.get(this.url)
     .then((response) => {
       if (response && response.data) {
+        // Clear out old doms
+        this.clearOutAllExistingDeals();
         // Create deal cells
         const deals = response.data;
         deals.forEach(data => {
@@ -74,8 +76,6 @@ class Shopathon {
         this.page -= 1;
         // Update url
         this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
-        // Clear out old doms
-        this.clearOutAllExistingDeals();
         // re-populate deals
         this.populateDeals();
         if (this.page === 1) {
@@ -88,8 +88,6 @@ class Shopathon {
       this.page += 1;
       // Update url
       this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
-      // Clear out old doms
-      this.clearOutAllExistingDeals();
       // re-populate deals
       this.populateDeals();
       this.toggleBackButtonAvailability(true);
