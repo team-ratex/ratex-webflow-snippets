@@ -140,7 +140,7 @@ class DealCell {
           <h3 class="heading-50">${this.merchant}</h3>
           <p
             class="text-14 text-14-60"
-            style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+            style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;"
           >${this.name}</p>
         </div>
       </div>
