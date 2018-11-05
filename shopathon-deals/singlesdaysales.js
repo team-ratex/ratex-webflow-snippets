@@ -3,11 +3,12 @@ class Shopathon {
     this.numberOfDeals = numberOfDeals;
     this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${numberOfDeals}`;
     this.page = 1;
+    this.hasMore = null;
+    // Dom elements
     this.dealsParentContainer = '#deals-parent';
     this.tabContentContainer = '#tab-content-1';
     this.backButtonId = 'deals-custom-back';
     this.nextButtonId = 'deals-custom-next';
-    this.hasMore = null;
   }
   // Basically our driver function
   setUpPage() {
