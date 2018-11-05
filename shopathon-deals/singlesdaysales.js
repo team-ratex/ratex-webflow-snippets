@@ -4,7 +4,7 @@ class Shopathon {
     this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${numberOfDeals}`;
     this.page = 1;
     this.dealsParentContainer = '#deals-parent';
-    this.tabContentContainer = '.w-tab-content'; // TODO: This needs to be more specific
+    this.tabContentContainer = '#tab-content-1';
     this.backButtonId = 'deals-custom-back';
     this.nextButtonId = 'deals-custom-next';
     this.hasMore = null;
@@ -78,6 +78,9 @@ class Shopathon {
         this.clearOutAllExistingDeals();
         // re-populate deals
         this.populateDeals();
+        if (this.page === 1) {
+          this.toggleBackButtonAvailability(false);
+        }
       }
     })
     $(`#${this.nextButtonId}`).click(() => {
@@ -123,7 +126,7 @@ class DealCell {
     const newElement = document.createElement("div");
     newElement.classList.add("w-col", "w-col-3", "w-col-small-6", "w-col-tiny-6");
     newElement.innerHTML = `
-      <div class="cards-wraper">
+      <div class="cards-wraper" style="margin-bottom: 36px;">
         <a
           style="background-image: url(${ this.imageUrl})"
           href="${this.itemUrl}"
