@@ -127,7 +127,7 @@ class DealCell {
     newElement.innerHTML = `
       <div class="cards-wraper" style="margin-bottom: 36px;">
         <img
-          style="cursor: pointer; object-fit: cover; background: none;"
+          style="cursor: pointer; object-fit: scale-down; background: none;"
           src="${this.imageUrl}"
           onClick="window.open('${this.itemUrl}')"
           class="link-block-38 w-inline-block"
