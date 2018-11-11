@@ -59,6 +59,7 @@ class Shopathon {
           const deal = new DealCell(
             data.images[0],
             data.listing.currentPrice,
+            data.listing.previousPrice,
             data.listing.merchant,
             data.name,
             data.listing.merchantURL,
@@ -111,9 +112,11 @@ class Shopathon {
   }
 }
 class DealCell {
-  constructor(imageUrl, price, merchant, name, itemUrl) {
+  constructor(imageUrl, price, previousPrice, merchant, name, itemUrl) {
     this.imageUrl = imageUrl;
     this.price = price;
+    this.previousPrice = previousPrice;
+    this.savings = this.previousPrice ? this.previousPrice - this.price : null;
     this.merchant = merchant;
     this.name = name;
     this.itemUrl = itemUrl;
@@ -134,6 +137,7 @@ class DealCell {
         >
           <div class="products2-pricetag">
             <div class="text-16">$${this.price}</div>
+            <div class="text-16 before-price">$${this.previousPrice}</div>
           </div>
         </a>
         <div class="products2-description-wrap">
