@@ -10,7 +10,7 @@ class RatexDealsPage {
     this.featuredDeals = new FeaturedDeals(4);
     this.dealCollections = new DealCollections(20);
     this.featuredDeals.populateDeals();
-    // this.dealCollections.setupPage();
+    this.dealCollections.setupPage();
   }
 }
 
@@ -52,7 +52,7 @@ class FeaturedDeals {
 class DealCollections {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
-    this.categoryId = 1;
+    this.categoryId = 10;
     this.filter = 'Latest'; // Enum of 'Latest', 'Popular', 'PriceDrop'
     this.url = `https://staging.ratex.co/store/api/categories/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
     // Pagination
@@ -71,7 +71,6 @@ class DealCollections {
   }
   // Populate deals from API.
   populateDeals() {
-    return;
     $.get(this.url)
       .then((response) => {
         if (response && response.data) {
@@ -83,7 +82,9 @@ class DealCollections {
             const deal = new DealCell(
               data.images[0],
               data.listing.currentPrice,
+              data.listing.previousPrice,
               data.listing.merchant,
+              data.hot,
               data.name,
               data.listing.merchantURL,
             );
@@ -218,7 +219,7 @@ class DealCell {
           <div class="w-clearfix">
             <div class="text-block-189 _3">$${this.currentPrice}</div>
             <div class="text-block-190">
-              ${this.previousPrice ? `$${this.previousPrice.toFixed(2)}` : ''}
+              ${this.previousPrice ? `$${this.previousPrice}` : ''}
             </div>
             <div class="text-block-191">${this.hot ? 'HOT' : ''}</div>
           </div>
