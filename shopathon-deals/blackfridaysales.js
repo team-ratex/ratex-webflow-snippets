@@ -8,9 +8,9 @@ class RatexDealsPage {
   constructor() {
     // Init child classes
     this.featuredDeals = new FeaturedDeals(4);
-  }
-  setupPage() {
+    this.dealCollections = new DealCollections(20);
     this.featuredDeals.populateDeals();
+    // this.dealCollections.setupPage();
   }
 }
 
@@ -18,7 +18,7 @@ class RatexDealsPage {
 class FeaturedDeals {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
-    this.url = 'https://ratex.co/store/api/products?filter=Activities&limit=4';
+    this.url = `https://staging.ratex.co/store/api/products?filter=Activities&limit=${this.numberOfDeals}`;
     this.featuredDealsParentContainer = $('.deal-wrapper')[0]
   }
   clearOutAllExistingDeals() {
@@ -42,82 +42,63 @@ class FeaturedDeals {
               data.name,
               data.listing.merchantURL,
             );
-            $(this.featuredDealsParentContainer).append(deal.getDomElement())
+            $(this.featuredDealsParentContainer).append(deal.constructElement())
           });
         }
       });
   }
 }
 
-// Individual deal cell
-class DealCell {
-  constructor(imageUrl, currentPrice, previousPrice, merchant, hot, name, itemUrl) {
-    this.imageUrl = imageUrl;
-    this.currentPrice = price;
-    this.previousPrice = previousPrice;
-    this.percentageDiscount = this.previousPrice ?
-      ((this.previousPrice - this.currentPrice) / this.previousPrice) * 100
-      : null;
-    this.merchant = merchant;
-    this.hot = hot;
-    this.name = name;
-    this.itemUrl = itemUrl;
-  }
-  constructElement() {
-    // Calculate percentage off first
-    const percentageDiscount = ((this.previousPrice - this.currentPrice) / this.previousPrice) * 100;
-    const newElement = document.createElement("div");
-    newElement.classList.add("deal-card-wraper", "full", "w-inline-block", "w-col-tiny-6");
-    newElement.onclick = function () { window.open(this.itemUrl); };
-    newElement.innerHTML = `
-      <img
-        class="div-block-249 _2"
-        src="${this.imageUrl}"
-      >
-        <div class="div-block-253">
-          ${this.percentageDiscount.toFixed(0)}%
-          <br />
-          Off
-        </div>
-      </div>
-      <div class="deal-content-wrapper">
-          <div class="div-block-252">
-            <div class="text-block-189 _1">${this.name}</div>
-            <div class="text-block-189 _2">${this.merchant}</div>
-          </div>
-          <div class="div-block-251"></div>
-          <div class="w-clearfix">
-            <div class="text-block-189 _3">$${this.currentPrice}</div>
-            <div class="text-block-190">$${this.previousPrice.toFixed(2)}</div>
-            <div class="text-block-191">${this.hot ? 'HOT' : null}</div>
-          </div>
-      </div>
-    `;
-    return newElement;
-  }
-}
-
-/*
-class BlackFridayDeals {
+class DealCollections {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
-    this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${numberOfDeals}`;
-    `https://ratex.co/store/api/categories/${id}?filter=${filter}&limit=${limit}`
+    this.categoryId = 1;
+    this.filter = 'Latest'; // Enum of 'Latest', 'Popular', 'PriceDrop'
+    this.url = `https://staging.ratex.co/store/api/categories/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
+    // Pagination
     this.page = 1;
     this.hasMore = null;
     // Dom elements
-    this.dealsParentContainer = '#deals-parent';
-    this.tabContentContainer = '#tab-content-1';
+    this.dealsCollectionParentContainer = '.all-deals-wrapper';
     this.backButtonId = 'deals-custom-back';
     this.nextButtonId = 'deals-custom-next';
   }
   // Basically our driver function
-  setUpPage() {
+  setupPage() {
     this.renderPagination(true, false); // Back always disabled on first page
-    this.clearOutAllExistingDeals();
     this.populateDeals();
     this.setUpPaginationButtonListeners();
   }
+  // Populate deals from API.
+  populateDeals() {
+    return;
+    $.get(this.url)
+      .then((response) => {
+        if (response && response.data) {
+          // Clear out old doms
+          this.clearOutAllExistingDeals();
+          // Create deal cells
+          const deals = response.data;
+          deals.forEach(data => {
+            const deal = new DealCell(
+              data.images[0],
+              data.listing.currentPrice,
+              data.listing.merchant,
+              data.name,
+              data.listing.merchantURL,
+            );
+            $(this.dealsCollectionParentContainer).append(deal.constructElement())
+          });
+          this.hasMore = response.hasMore;
+          this.toggleNextButtonAvailability(response.hasMore);
+        }
+      });
+  }
+  // Helper function to clear our dom out
+  clearOutAllExistingDeals() {
+    $(this.dealsCollectionParentContainer)[0].innerHTML = "";
+  }
+  // Pagination Stuff
   renderPagination(backDisabled, nextDisabled) {
     // Create Back and Next Buttons
     // Back
@@ -146,30 +127,7 @@ class BlackFridayDeals {
     PaginationElement.append(BackButton);
     PaginationElement.append(NextButton);
     // Add it in
-    $(PaginationElement).insertAfter($(this.tabContentContainer));
-  }
-  populateDeals() {
-    $.get(this.url)
-      .then((response) => {
-        if (response && response.data) {
-          // Clear out old doms
-          this.clearOutAllExistingDeals();
-          // Create deal cells
-          const deals = response.data;
-          deals.forEach(data => {
-            const deal = new DealCell(
-              data.images[0],
-              data.listing.currentPrice,
-              data.listing.merchant,
-              data.name,
-              data.listing.merchantURL,
-            );
-            $(this.dealsParentContainer).append(deal.getDomElement())
-          });
-          this.hasMore = response.hasMore;
-          this.toggleNextButtonAvailability(response.hasMore);
-        }
-      });
+    $(PaginationElement).insertAfter($(this.dealsCollectionParentContainer));
   }
   setUpPaginationButtonListeners() {
     $(`#${this.backButtonId}`).click(() => {
@@ -195,9 +153,6 @@ class BlackFridayDeals {
       this.toggleBackButtonAvailability(true);
     })
   }
-  clearOutAllExistingDeals() {
-    $(this.dealsParentContainer)[0].innerHTML = "";
-  }
   toggleBackButtonAvailability(enabled) {
     const BackButton = document.getElementById(this.backButtonId);
     BackButton.style.opacity = (enabled) ? 1 : 0.6;
@@ -211,4 +166,64 @@ class BlackFridayDeals {
       ? 'pointer' : 'not-allowed';
   }
 }
-*/
+
+// Individual deal cell
+class DealCell {
+  constructor(imageUrl, currentPrice, previousPrice, merchant, hot, name, itemUrl) {
+    console.log('Constructing deal cell');
+    this.imageUrl = imageUrl;
+    this.currentPrice = currentPrice;
+    this.previousPrice = previousPrice;
+    this.percentageDiscount = this.previousPrice ?
+      ((this.previousPrice - this.currentPrice) / this.previousPrice) * 100
+      : null;
+    this.merchant = merchant;
+    this.hot = hot;
+    this.name = name;
+    this.itemUrl = itemUrl;
+  }
+  constructElement() {
+    // Calculate percentage off first
+    const newElement = document.createElement("div");
+    newElement.classList.add("deal-card-wraper", "full", "w-inline-block", "w-col-tiny-6");
+    newElement.onclick = function () { window.open(this.itemUrl); };
+    newElement.innerHTML = `
+      <div
+        class="div-block-249 _2"
+        style="background-image: url(${this.imageUrl}); background-size: cover"
+      >
+        ${(this.percentageDiscount)
+          ? `
+          <div class="div-block-253">
+            ${this.percentageDiscount.toFixed(0)}%
+            <br />
+            Off
+          </div>
+          `
+          : ''
+        }
+
+      </div>
+      <div class="deal-content-wrapper">
+          <div class="div-block-252">
+            <div
+              class="text-block-189 _1"
+              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; height: 2.2em;"
+              >
+              ${this.name}
+            </div>
+            <div class="text-block-189 _2">${this.merchant}</div>
+          </div>
+          <div class="div-block-251"></div>
+          <div class="w-clearfix">
+            <div class="text-block-189 _3">$${this.currentPrice}</div>
+            <div class="text-block-190">
+              ${this.previousPrice ? `$${this.previousPrice.toFixed(2)}` : ''}
+            </div>
+            <div class="text-block-191">${this.hot ? 'HOT' : ''}</div>
+          </div>
+      </div>
+    `;
+    return newElement;
+  }
+}
