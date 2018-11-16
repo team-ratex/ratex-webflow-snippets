@@ -149,7 +149,7 @@ class DealCollections {
     BackButton.style.cursor = (backDisabled)
       ? 'not-allowed' : 'cursor';
     BackButton.id = this.backButtonId;
-    BackButton.innerText = "Back"
+    BackButton.innerText = '◂ Back';
     // Next
     const NextButton = document.createElement("div");
     NextButton.style.margin = '20px 36px';
@@ -158,7 +158,7 @@ class DealCollections {
     NextButton.style.cursor = (nextDisabled)
       ? 'not-allowed' : 'cursor';
     NextButton.id = this.nextButtonId;
-    NextButton.innerText = "Next"
+    NextButton.innerText = "Next ▸"
 
     // Set up pagination Element
     const PaginationElement = document.createElement("div");
@@ -171,6 +171,8 @@ class DealCollections {
   }
   setUpPaginationButtonListeners() {
     $(`#${this.backButtonId}`).click(() => {
+      // Check if disabled
+      if (($(`#${this.backButtonId}`)[0].style.cursor) === "not-allowed") return;
       if (this.page > 1) {
         // Update page number
         this.page -= 1;
@@ -186,6 +188,8 @@ class DealCollections {
       }
     })
     $(`#${this.nextButtonId}`).click(() => {
+      // Check if disabled
+      if (($(`#${this.backButtonId}`)[0].style.cursor) === "not-allowed") return;
       // Update page number
       this.page += 1;
       // Update url
