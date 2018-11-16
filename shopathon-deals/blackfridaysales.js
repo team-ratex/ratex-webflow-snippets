@@ -66,7 +66,7 @@ class DealCollections {
     this.categoryId = this.elementIdToCategoryIdMap['collection-popular'];
     this.filter = 'Latest'; // Enum of 'Latest', 'Popular', 'PriceDrop'
     this.url = `https://staging.ratex.co/store/api/categories/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
-    // Pagination
+    // Pagination for deal collections
     this.page = 1;
     this.hasMore = null;
     // Dom elements
@@ -96,7 +96,16 @@ class DealCollections {
   handleCategoryChange(elementId) {
     // Get the equivalent category id from element's id
     const categoryId = this.elementIdToCategoryIdMap[elementId];
-    console.log(categoryId);
+    // We will
+    // - Reset the page and hasMore
+    // - Update current categoryId
+    // - Update URL
+    // - Populate deals
+    this.page = 1;
+    this.hasMore = null;
+    this.categoryId = categoryId;
+    this.url = `https://staging.ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
+    this.populateDeals();
   }
   // Populate deals from API.
   populateDeals() {
@@ -219,12 +228,16 @@ class DealCell {
     newElement.innerHTML = `
       <div
         class="div-block-249 _2"
-        style="background-image: url(${this.imageUrl}); background-size: cover"
+        style="background-image: none; background-size: cover"
       >
+        <img
+          src="${this.imageUrl}"
+          style="height: 100%; width: 100%; object-fit: cover;"
+        >
         ${(this.percentageDiscount)
           ? `
           <div class="div-block-253">
-            ${this.percentageDiscount.toFixed(0)}%
+            ${(this.percentageDiscount).toFixed(0)}%
             <br />
             Off
           </div>
