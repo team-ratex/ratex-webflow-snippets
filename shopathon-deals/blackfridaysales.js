@@ -52,7 +52,18 @@ class FeaturedDeals {
 class DealCollections {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
-    this.categoryId = 10;
+    // Mapping (Backend Categories)
+    this.elementIdToCategoryIdMap = {
+      'collection-popular': 64,
+      'collection-best-amazon-deals': 57,
+      'collection-Electronic-Appliances': 58,
+      'collection-Tech-Gadgets': 59,
+      'collection-Gaming': 60,
+      'collection-Men-Fashion': 61,
+      'collection-Women-Fashion': 62,
+      'collection-Beauty-Health': 63,
+    };
+    this.categoryId = this.elementIdToCategoryIdMap['collection-popular'];
     this.filter = 'Latest'; // Enum of 'Latest', 'Popular', 'PriceDrop'
     this.url = `https://staging.ratex.co/store/api/categories/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
     // Pagination
@@ -67,7 +78,25 @@ class DealCollections {
   setupPage() {
     this.renderPagination(true, false); // Back always disabled on first page
     this.populateDeals();
+    this.setUpCategoryButtonListeners();
     this.setUpPaginationButtonListeners();
+  }
+  // Category buttons and handlers
+  // This function set up listeners for the button clicks
+  // It'll pass the id of the element to handleCategoryChange function
+  setUpCategoryButtonListeners() {
+    $('.collection-nav').each((idx) => {
+      const elementId = ($('.collection-nav')[idx].id);
+      console.log(elementId);
+      $(`#${elementId}`).click(() => {
+        this.handleCategoryChange(elementId);
+      });
+    });
+  }
+  handleCategoryChange(elementId) {
+    // Get the equivalent category id from element's id
+    const categoryId = this.elementIdToCategoryIdMap[elementId];
+    console.log(categoryId);
   }
   // Populate deals from API.
   populateDeals() {
@@ -171,7 +200,6 @@ class DealCollections {
 // Individual deal cell
 class DealCell {
   constructor(imageUrl, currentPrice, previousPrice, merchant, hot, name, itemUrl) {
-    console.log('Constructing deal cell');
     this.imageUrl = imageUrl;
     this.currentPrice = currentPrice;
     this.previousPrice = previousPrice;
