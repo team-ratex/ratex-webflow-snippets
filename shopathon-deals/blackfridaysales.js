@@ -12,7 +12,7 @@ class RatexDealsPage {
     const couponMerchant = new CouponMerchants(12);
     this.featuredDeals.populateDeals();
     this.dealCollections.setupPage();
-    couponMerchant.populateCoupons();
+    couponMerchant.setupPage();
   }
 }
 
@@ -282,9 +282,33 @@ class DealCell {
 class CouponMerchants {
   constructor(numberOfCoupons) {
     this.numberOfCoupons = numberOfCoupons;
-    this.merchant = 'LAZADA'; // Default
+    this.merchant = 'AMAZON'; // Default
     this.url = `https://ratex.co/store/api/coupons?merchant=${this.merchant}`;
-    this.couponCodesParentContainer = $('.coupon-code-wrapper')[0]
+    this.couponCodesParentContainer = $('.coupon-code-wrapper')[0];
+  }
+  setupPage() {
+    this.setUpMerchantButtonListeners();
+    this.populateCoupons();
+  }
+  setUpMerchantButtonListeners() {
+    $('.link-block-48').each((idx) => {
+      const elementId = ($('.link-block-48')[idx].id);
+      if (!elementId) return;
+      $(`#${elementId}`).click(() => {
+        this.handleMerchantChange(elementId);
+      });
+    });
+  }
+  handleMerchantChange(elementId) {
+    // Get the equivalent category id from element's id
+    const merchant = elementId.split('-')[1] // HACK
+    // We will
+    // - Update current merchant
+    // - Update URL
+    // - Populate coupons
+    this.merchant = merchant;
+    this.url = `https://ratex.co/store/api/coupons?merchant=${this.merchant}`;
+    this.populateCoupons();
   }
   clearOutAllExistingCoupons() {
     this.couponCodesParentContainer.innerHTML = "";
@@ -319,7 +343,7 @@ class CouponCell {
   }
   constructElement() {
     const newElement = document.createElement("div");
-    newElement.classList.add("card-wrapper", "code");
+    newElement.classList.add("promo-code-link-wrapper", "w-inline-block");
     newElement.style.cursor = 'pointer';
     newElement.onclick = () => { 
       var $temp = $("<input>");
@@ -330,13 +354,13 @@ class CouponCell {
       alert(`Coupon Code "${this.code}" copied to clipboard!`);
     };
     newElement.innerHTML = `
-      <div class="deal-content-wrapper">
-          <img src="https://uploads-ssl.webflow.com/5a8294be25c8bc00017d2aa8/5be3e596b5ad4e6f7f0870d7_image%209.4.png" alt="" class="image-242">
+      <div class="promocode-content-wapper">
+          <div class="text-block-198">${this.merchant}</div>
           <div class="div-block-252">
             <div class="text-block-189 _1">${this.code}</div>
             <div
               class="text-block-189 _2 code"
-              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; height: 4em;"
+              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; height: 5em;"
             >
               ${this.description}
             </div>
