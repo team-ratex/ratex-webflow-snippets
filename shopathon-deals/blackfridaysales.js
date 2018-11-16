@@ -109,7 +109,7 @@ class DealCollections {
     this.populateDeals();
   }
   // Populate deals from API.
-  populateDeals(callback) {
+  populateDeals() {
     $.get(this.url)
       .then((response) => {
         if (response && response.data) {
@@ -130,7 +130,6 @@ class DealCollections {
             $(this.dealsCollectionParentContainer).append(deal.constructElement())
           });
           this.hasMore = response.hasMore;
-          if (callback) callback();
           this.toggleNextButtonAvailability(response.hasMore);
         }
       });
@@ -178,10 +177,9 @@ class DealCollections {
         // Update url
         this.url = `https://ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
         // re-populate deals
-        $(`#${this.backButtonId}`).innerText = 'Loading';
-        this.populateDeals(() => {
-          $(`#${this.backButtonId}`).innerText = 'Back';
-        });
+        this.toggleBackButtonAvailability(false);
+        this.populateDeals();
+        // Disable button if we are on page 1
         if (this.page === 1) {
           this.toggleBackButtonAvailability(false);
         }
@@ -193,10 +191,9 @@ class DealCollections {
       // Update url
       this.url = `https://ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
       // re-populate deals
-      $(`#${this.nextButtonId}`).innerText = 'Loading';
-      this.populateDeals(() => {
-        $(`#${this.nextButtonId}`).innerText = 'Next';
-      });
+      this.toggleNextButtonAvailability(false);
+      this.populateDeals();
+      // Can back, since we moved 1 forward
       this.toggleBackButtonAvailability(true);
     })
   }
