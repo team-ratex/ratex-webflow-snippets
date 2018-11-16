@@ -1,6 +1,6 @@
 /* Usage:
   const ratexDealsPage = new RatexDealsPage();
-  ratexDealsPage.setupPage(); // Runs and populates deals and data for this page.
+  // This inits Featured Deals, Deals Collection & Coupons
 */
 
 // Main/Parent/Driver function
@@ -9,8 +9,10 @@ class RatexDealsPage {
     // Init child classes
     this.featuredDeals = new FeaturedDeals(4);
     this.dealCollections = new DealCollections(20);
+    const couponMerchant = new CouponMerchants(20);
     this.featuredDeals.populateDeals();
     this.dealCollections.setupPage();
+    couponMerchant.populateCoupons();
   }
 }
 
@@ -266,6 +268,66 @@ class DealCell {
           </div>
       </div>
     `;
+    return newElement;
+  }
+}
+
+class CouponMerchants {
+  constructor(numberOfCoupons) {
+    this.numberOfCoupons = numberOfCoupons;
+    this.merchant = 'LAZADA'; // Default
+    this.url = `https://staging.ratex.co/api/coupons?merchant=${this.merchant}`;
+    this.couponCodesParentContainer = $('.coupon-code-wrapper')[0]
+  }
+  clearOutAllExistingCoupons() {
+    this.couponCodesParentContainer.innerHTML = "";
+  }
+  populateCoupons() {
+    $.get(this.url)
+      .then((response) => {
+        if (response && response.data) {
+          // Clear out old doms
+          this.clearOutAllExistingCoupons();
+          // Create deal cells
+          const coupons = response.data;
+          // HACK: There's no limit on coupons, so we just taper off the array here
+          coupons.slice(0, this.numberOfCoupons).forEach(data => {
+            const couponCell = new CouponCell(
+              data.merchant,
+              data.code,
+              data.description,
+            );
+            $(this.couponCodesParentContainer).append(couponCell.constructElement())
+          });
+        }
+      });
+  }
+}
+
+class CouponCell {
+  constructor(merchant, code, description) {
+    this.merchant = merchant;
+    this.code = code;
+    this.description = description;
+  }
+  constructElement() {
+    const newElement = document.createElement("div");
+    newElement.classList.add("card-wrapper", "code",);
+    // newElement.onclick = function () { window.open(this.itemUrl); };
+    newElement.innerHTML = `
+      <div class="deal-content-wrapper">
+          <img src="https://uploads-ssl.webflow.com/5a8294be25c8bc00017d2aa8/5be3e596b5ad4e6f7f0870d7_image%209.4.png" alt="" class="image-242">
+          <div class="div-block-252">
+            <div class="text-block-189 _1">${this.code}</div>
+            <div
+              class="text-block-189 _2 code"
+              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; height: 4em;"
+            >
+              ${this.description}
+            </div>
+          </div>
+      </div>
+    `
     return newElement;
   }
 }
