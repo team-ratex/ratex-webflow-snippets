@@ -147,7 +147,7 @@ class DealCollections {
     BackButton.style.margin = '20px 36px';
     BackButton.style.opacity = (backDisabled) ? 0.6 : 1;
     BackButton.style.cursor = (backDisabled)
-      ? 'not-allowed' : 'cursor';
+      ? 'not-allowed' : 'pointer';
     BackButton.id = this.backButtonId;
     BackButton.innerText = '◂ Back';
     // Next
@@ -156,7 +156,7 @@ class DealCollections {
     NextButton.classList.add("w-tab-link");
     NextButton.style.opacity = (nextDisabled) ? 0.6 : 1;
     NextButton.style.cursor = (nextDisabled)
-      ? 'not-allowed' : 'cursor';
+      ? 'not-allowed' : 'pointer';
     NextButton.id = this.nextButtonId;
     NextButton.innerText = "Next ▸"
 
@@ -319,8 +319,16 @@ class CouponCell {
   }
   constructElement() {
     const newElement = document.createElement("div");
-    newElement.classList.add("card-wrapper", "code",);
-    // newElement.onclick = function () { window.open(this.itemUrl); };
+    newElement.classList.add("card-wrapper", "code");
+    newElement.style.cursor = 'pointer';
+    newElement.onclick = () => { 
+      var $temp = $("<input>");
+      $("body").append($temp);
+      $temp.val(this.code).select();
+      document.execCommand("copy");
+      $temp.remove();
+      alert(`Coupon Code "${this.code}" copied to clipboard!`);
+    };
     newElement.innerHTML = `
       <div class="deal-content-wrapper">
           <img src="https://uploads-ssl.webflow.com/5a8294be25c8bc00017d2aa8/5be3e596b5ad4e6f7f0870d7_image%209.4.png" alt="" class="image-242">
