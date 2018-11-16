@@ -98,10 +98,12 @@ class DealCollections {
     // Get the equivalent category id from element's id
     const categoryId = this.elementIdToCategoryIdMap[elementId];
     // We will
+    // - Make it selected
     // - Reset the page and hasMore
     // - Update current categoryId
     // - Update URL
     // - Populate deals
+    $(`#${elementId}`).addClass('w--current');
     this.page = 1;
     this.hasMore = null;
     this.categoryId = categoryId;
@@ -145,20 +147,30 @@ class DealCollections {
     const BackButton = document.createElement("div");
     BackButton.classList.add("w-tab-link");
     BackButton.style.margin = '20px 36px';
+    BackButton.style.display = 'flex';
+    BackButton.style.alignItems = 'center';
     BackButton.style.opacity = (backDisabled) ? 0.6 : 1;
     BackButton.style.cursor = (backDisabled)
       ? 'not-allowed' : 'pointer';
     BackButton.id = this.backButtonId;
-    BackButton.innerText = '◂ Back';
+    BackButton.innerHTML = `
+      <i class="fa fa-caret-left" style="margin-right: 6px"></i>
+      <span>Back</span>
+    `
     // Next
     const NextButton = document.createElement("div");
     NextButton.style.margin = '20px 36px';
     NextButton.classList.add("w-tab-link");
+    NextButton.style.display = 'flex';
+    NextButton.style.alignItems = 'center';
     NextButton.style.opacity = (nextDisabled) ? 0.6 : 1;
     NextButton.style.cursor = (nextDisabled)
       ? 'not-allowed' : 'pointer';
     NextButton.id = this.nextButtonId;
-    NextButton.innerText = "Next ▸"
+    NextButton.innerHTML = `
+      <span>Next</span>
+      <i class="fa fa-caret-right" style="margin-left: 6px"></i>
+    `
 
     // Set up pagination Element
     const PaginationElement = document.createElement("div");
@@ -343,7 +355,7 @@ class CouponCell {
   }
   constructElement() {
     const newElement = document.createElement("div");
-    newElement.classList.add("promo-code-link-wrapper", "w-inline-block");
+    newElement.classList.add("promocode-link-wrapper", "w-inline-block");
     newElement.style.cursor = 'pointer';
     newElement.onclick = () => { 
       var $temp = $("<input>");
@@ -354,16 +366,14 @@ class CouponCell {
       alert(`Coupon Code "${this.code}" copied to clipboard!`);
     };
     newElement.innerHTML = `
-      <div class="promocode-content-wapper">
-          <div class="text-block-198">${this.merchant}</div>
-          <div class="div-block-252">
-            <div class="text-block-189 _1">${this.code}</div>
+      <div class="coupon-content-wrapper">
+          <div class="promocode-merchant-name">${this.merchant}</div>
+          <div class="div-block-263">
+            <div class="text-block-189 _1 promocode">${this.code}</div>
             <div
-              class="text-block-189 _2 code"
+              class="text-block-189 _2 code description"
               style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; height: 5em;"
-            >
-              ${this.description}
-            </div>
+            >${this.description}</div>
           </div>
       </div>
     `
