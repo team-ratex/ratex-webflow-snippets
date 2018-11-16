@@ -9,7 +9,7 @@ class RatexDealsPage {
     // Init child classes
     this.featuredDeals = new FeaturedDeals(4);
     this.dealCollections = new DealCollections(20);
-    const couponMerchant = new CouponMerchants(20);
+    const couponMerchant = new CouponMerchants(12);
     this.featuredDeals.populateDeals();
     this.dealCollections.setupPage();
     couponMerchant.populateCoupons();
@@ -20,7 +20,7 @@ class RatexDealsPage {
 class FeaturedDeals {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
-    this.url = `https://staging.ratex.co/store/api/products?filter=Activities&limit=${this.numberOfDeals}`;
+    this.url = `https://ratex.co/store/api/products?filter=Activities&limit=${this.numberOfDeals}`;
     this.featuredDealsParentContainer = $('.deal-wrapper')[0]
   }
   clearOutAllExistingDeals() {
@@ -67,7 +67,7 @@ class DealCollections {
     };
     this.categoryId = this.elementIdToCategoryIdMap['collection-popular'];
     this.filter = 'Latest'; // Enum of 'Latest', 'Popular', 'PriceDrop'
-    this.url = `https://staging.ratex.co/store/api/categories/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
+    this.url = `https://ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
     // Pagination for deal collections
     this.page = 1;
     this.hasMore = null;
@@ -89,7 +89,6 @@ class DealCollections {
   setUpCategoryButtonListeners() {
     $('.collection-nav').each((idx) => {
       const elementId = ($('.collection-nav')[idx].id);
-      console.log(elementId);
       $(`#${elementId}`).click(() => {
         this.handleCategoryChange(elementId);
       });
@@ -106,11 +105,11 @@ class DealCollections {
     this.page = 1;
     this.hasMore = null;
     this.categoryId = categoryId;
-    this.url = `https://staging.ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
+    this.url = `https://ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}`;
     this.populateDeals();
   }
   // Populate deals from API.
-  populateDeals() {
+  populateDeals(callback) {
     $.get(this.url)
       .then((response) => {
         if (response && response.data) {
@@ -131,6 +130,7 @@ class DealCollections {
             $(this.dealsCollectionParentContainer).append(deal.constructElement())
           });
           this.hasMore = response.hasMore;
+          if (callback) callback();
           this.toggleNextButtonAvailability(response.hasMore);
         }
       });
@@ -176,9 +176,12 @@ class DealCollections {
         // Update page number
         this.page -= 1;
         // Update url
-        this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
+        this.url = `https://ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
         // re-populate deals
-        this.populateDeals();
+        $(`#${this.backButtonId}`).innerText = 'Loading';
+        this.populateDeals(() => {
+          $(`#${this.backButtonId}`).innerText = 'Back';
+        });
         if (this.page === 1) {
           this.toggleBackButtonAvailability(false);
         }
@@ -188,9 +191,12 @@ class DealCollections {
       // Update page number
       this.page += 1;
       // Update url
-      this.url = `https://ratex.co/store/api/products?filter=LATEST&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
+      this.url = `https://ratex.co/store/api/categories/c/${this.categoryId}?filter=${this.filter}&limit=${this.numberOfDeals}&offset=${this.numberOfDeals * (this.page - 1)}`;
       // re-populate deals
-      this.populateDeals();
+      $(`#${this.nextButtonId}`).innerText = 'Loading';
+      this.populateDeals(() => {
+        $(`#${this.nextButtonId}`).innerText = 'Next';
+      });
       this.toggleBackButtonAvailability(true);
     })
   }
@@ -276,7 +282,7 @@ class CouponMerchants {
   constructor(numberOfCoupons) {
     this.numberOfCoupons = numberOfCoupons;
     this.merchant = 'LAZADA'; // Default
-    this.url = `https://staging.ratex.co/api/coupons?merchant=${this.merchant}`;
+    this.url = `https://ratex.co/store/api/coupons?merchant=${this.merchant}`;
     this.couponCodesParentContainer = $('.coupon-code-wrapper')[0]
   }
   clearOutAllExistingCoupons() {
