@@ -305,7 +305,7 @@ class DealCell {
             <div class="text-block-191">${this.hot ? 'HOT' : ''}</div>
           </div>
           ${(this.additionalSavings)
-            ? `<div class="div-block-253 ratex-savings">Additional S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
+            ? `<div class="div-block-253 ratex-savings">S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
             : ''}
       </div>
     `;
