@@ -415,6 +415,3 @@ class CouponCell {
     return newElement;
   }
 }
-
-
-const ratexDealsPage = new RatexDealsPage();
