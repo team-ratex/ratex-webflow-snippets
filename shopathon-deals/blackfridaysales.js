@@ -301,6 +301,7 @@ class CouponMerchants {
   setupPage() {
     this.setUpMerchantButtonListeners();
     this.populateCoupons();
+    this.clearOutAndUpdateBorderColor('Merchant-Amazon');
   }
   setUpMerchantButtonListeners() {
     $('.link-block-48').each((idx) => {
@@ -314,6 +315,7 @@ class CouponMerchants {
   handleMerchantChange(elementId) {
     // Get the equivalent category id from element's id
     const merchant = elementId.split('-')[1] // HACK
+    this.clearOutAndUpdateBorderColor(elementId);
     // We will
     // - Update current merchant
     // - Update URL
@@ -321,6 +323,17 @@ class CouponMerchants {
     this.merchant = merchant;
     this.url = `https://ratex.co/store/api/coupons?merchant=${this.merchant}`;
     this.populateCoupons();
+  }
+  clearOutAndUpdateBorderColor(elementId) {
+    // Clear out all border colors
+    $('.link-block-48').each((idx) => {
+      const eleId = ($('.link-block-48')[idx].id);
+      if (!eleId) return;
+      $(`#${eleId}`).css("borderColor", "");
+      $(`#${eleId}`).css("borderWidth", "");
+    });
+    $(`#${elementId}`).css("borderColor", "#309d67");
+    $(`#${elementId}`).css("borderWidth", "2px");
   }
   clearOutAllExistingCoupons() {
     this.couponCodesParentContainer.innerHTML = "";
