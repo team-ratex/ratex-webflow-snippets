@@ -182,6 +182,7 @@ class DealCollections {
     $(PaginationElement).insertAfter($(this.dealsCollectionParentContainer));
   }
   setUpPaginationButtonListeners() {
+    // Back Handler
     $(`#${this.backButtonId}`).click(() => {
       // Check if disabled
       if (($(`#${this.backButtonId}`)[0].style.cursor) === "not-allowed") return;
@@ -193,12 +194,15 @@ class DealCollections {
         // re-populate deals
         this.toggleBackButtonAvailability(false);
         this.populateDeals();
+        // Scroll to view
+        this.scrollPageToDealsSection();
         // Disable button if we are on page 1
         if (this.page === 1) {
           this.toggleBackButtonAvailability(false);
         }
       }
     })
+    // Next Handler
     $(`#${this.nextButtonId}`).click(() => {
       // Check if disabled
       if (($(`#${this.backButtonId}`)[0].style.cursor) === "not-allowed") return;
@@ -209,9 +213,15 @@ class DealCollections {
       // re-populate deals
       this.toggleNextButtonAvailability(false);
       this.populateDeals();
+      this.scrollPageToDealsSection();
       // Can back, since we moved 1 forward
       this.toggleBackButtonAvailability(true);
     })
+  }
+  scrollPageToDealsSection() {
+    $([document.documentElement, document.body]).animate({
+      scrollTop: $(".bfcm").offset().top
+    }, 1500);
   }
   toggleBackButtonAvailability(enabled) {
     const BackButton = document.getElementById(this.backButtonId);
@@ -393,3 +403,6 @@ class CouponCell {
     return newElement;
   }
 }
+
+
+const ratexDealsPage = new RatexDealsPage();
