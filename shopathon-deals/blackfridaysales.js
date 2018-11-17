@@ -250,12 +250,21 @@ class DealCell {
     this.hot = hot;
     this.name = name;
     this.itemUrl = itemUrl;
+    this.additionalSavings = ((this.merchant.toLowerCase()).indexOf('amazon') >= 0)
+      ? this.currentPrice * (0.0485) // Approximately 4.85% lower than Amazon's Exchange Rate
+      : null
   }
   constructElement() {
     // Calculate percentage off first
     const newElement = document.createElement("div");
     newElement.classList.add("deal-card-wraper", "full", "w-inline-block", "w-col-tiny-6");
     newElement.onclick = function () { window.open(this.itemUrl); };
+    // Calculate additional savings (For Amazon Products)
+    let additionalSavings = null;
+    if ((this.merchant.toLowerCase()).indexOf('amazon') >= 0) {
+      // Is amazon product
+      additionalSavings = this.currentPrice
+    }
     newElement.innerHTML = `
       <div
         class="div-block-249 _2"
@@ -277,7 +286,7 @@ class DealCell {
         }
 
       </div>
-      <div class="deal-content-wrapper">
+      <div class="deal-content-wrapper st long">
           <div class="div-block-252">
             <div
               class="text-block-189 _1"
@@ -295,6 +304,9 @@ class DealCell {
             </div>
             <div class="text-block-191">${this.hot ? 'HOT' : ''}</div>
           </div>
+          ${(this.additionalSavings)
+            ? `<div class="div-block-253 ratex-savings">Additional S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
+            : ''}
       </div>
     `;
     return newElement;
