@@ -459,7 +459,6 @@ class BottomNavigator {
       subElement.style.borderRight = '1px solid rgba(152, 159, 175, .5)';
       subElement.innerHTML = option.title;
       subElement.onclick = () => {
-        console.log(option.selector);
         $([document.documentElement, document.body]).animate({
           scrollTop: $(option.selector).offset().top
         }, 750);
