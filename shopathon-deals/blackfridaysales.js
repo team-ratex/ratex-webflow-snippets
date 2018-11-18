@@ -152,6 +152,7 @@ class DealCollections {
     });
     $(`#${elementId}`).css("borderColor", "#309d67");
     $(`#${elementId}`).css("borderWidth", "2px");
+    $(`#${elementId}`).css("borderStyle", "solid");
   }
   // Pagination Stuff
   renderPagination(backDisabled, nextDisabled) {
