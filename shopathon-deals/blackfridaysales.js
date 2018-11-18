@@ -149,6 +149,7 @@ class DealCollections {
       if (!eleId) return;
       $(`#${eleId}`).css("borderColor", "");
       $(`#${eleId}`).css("borderWidth", "");
+      $(`#${eleId}`).css("color", "#fff");
     });
     $(`#${elementId}`).css("borderColor", "#309d67");
     $(`#${elementId}`).css("borderWidth", "2px");
