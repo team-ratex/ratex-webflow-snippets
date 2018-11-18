@@ -442,6 +442,7 @@ class BottomNavigator {
   }
   constructElement() {
     const bottomNavElement = document.createElement("div");
+    bottomNavElement.id = 'bottom-nav-element';
     bottomNavElement.style.display = 'flex';
     bottomNavElement.style.alignItems = 'center';
     bottomNavElement.style.position = 'fixed';
