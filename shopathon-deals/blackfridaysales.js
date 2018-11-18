@@ -317,7 +317,7 @@ class CouponMerchants {
   constructor(numberOfCoupons) {
     this.numberOfCoupons = numberOfCoupons;
     this.merchant = 'AMAZON'; // Default
-    this.url = `https://ratex.co/store/api/coupons?merchant=${this.merchant}`;
+    this.url = `https://ratex.co/api/coupons?merchant=${this.merchant}`;
     this.couponCodesParentContainer = $('.coupon-code-wrapper')[0];
   }
   setupPage() {
@@ -343,7 +343,7 @@ class CouponMerchants {
     // - Update URL
     // - Populate coupons
     this.merchant = merchant;
-    this.url = `https://ratex.co/store/api/coupons?merchant=${this.merchant}`;
+    this.url = `https://ratex.co/api/coupons?merchant=${this.merchant}`;
     this.populateCoupons();
   }
   clearOutAndUpdateBorderColor(elementId) {
