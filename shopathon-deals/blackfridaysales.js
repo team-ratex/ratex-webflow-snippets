@@ -82,6 +82,7 @@ class DealCollections {
     this.populateDeals();
     this.setUpCategoryButtonListeners();
     this.setUpPaginationButtonListeners();
+    this.clearOutAndUpdateBorderColor('collection-popular')
   }
   // Category buttons and handlers
   // This function set up listeners for the button clicks
@@ -97,6 +98,7 @@ class DealCollections {
   handleCategoryChange(elementId) {
     // Get the equivalent category id from element's id
     const categoryId = this.elementIdToCategoryIdMap[elementId];
+    this.clearOutAndUpdateBorderColor(elementId)
     // We will
     // - Make it selected
     // - Reset the page and hasMore
@@ -139,6 +141,17 @@ class DealCollections {
   // Helper function to clear our dom out
   clearOutAllExistingDeals() {
     $(this.dealsCollectionParentContainer)[0].innerHTML = "";
+  }
+  clearOutAndUpdateBorderColor(elementId) {
+    // Clear out all border colors
+    $('.collection-nav').each((idx) => {
+      const eleId = ($('.collection-nav')[idx].id);
+      if (!eleId) return;
+      $(`#${eleId}`).css("borderColor", "");
+      $(`#${eleId}`).css("borderWidth", "");
+    });
+    $(`#${elementId}`).css("borderColor", "#309d67");
+    $(`#${elementId}`).css("borderWidth", "2px");
   }
   // Pagination Stuff
   renderPagination(backDisabled, nextDisabled) {
