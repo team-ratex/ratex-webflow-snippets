@@ -290,7 +290,7 @@ class DealCell {
           <div class="div-block-252">
             <div
               class="text-block-189 _1"
-              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; height: 2.6667em;"
+              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; height: 2em;"
               >
               ${this.name}
             </div>
