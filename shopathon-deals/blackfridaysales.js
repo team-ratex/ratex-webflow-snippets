@@ -460,6 +460,7 @@ class BottomNavigator {
       subElement.style.textAlign = 'center';
       subElement.style.padding = '14px 6px';
       subElement.style.borderRight = '1px solid rgba(152, 159, 175, .5)';
+      subElement.style.cursor = 'pointer';
       subElement.innerHTML = option.title;
       subElement.onclick = () => {
         $([document.documentElement, document.body]).animate({
