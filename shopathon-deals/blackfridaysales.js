@@ -220,7 +220,7 @@ class DealCollections {
   }
   scrollPageToDealsSection() {
     $([document.documentElement, document.body]).animate({
-      scrollTop: $(".bfcm").offset().top
+      scrollTop: $("#deal-collection-container").offset().top
     }, 1500);
   }
   toggleBackButtonAvailability(enabled) {
@@ -402,7 +402,13 @@ class CouponCell {
     };
     newElement.innerHTML = `
       <div class="coupon-content-wrapper">
-          <div class="promocode-merchant-name">${this.merchant}</div>
+          <div
+            class="promocode-merchant-name"
+            style="display: flex; align-items: center; justify-content: space-between; padding-right: 12px;"
+          >
+            <span>${this.merchant}</span>
+            <i class="fa fa-copy"></i>
+          </div>
           <div class="div-block-263">
             <div class="text-block-189 _1 promocode">${this.code}</div>
             <div
@@ -413,5 +419,53 @@ class CouponCell {
       </div>
     `
     return newElement;
+  }
+}
+
+class BottomNavigator {
+  constructor() {
+    this.navigationOptions = [
+      {
+        title: 'Trending Deals',
+        selector: '#trending-deals-container'
+      },
+      {
+        title: 'Deal Collections',
+        selector: '#deal-collection-container'
+      },
+      {
+        title: 'Coupons',
+        selector: '#supported-merchants-container'
+      },
+    ]
+    this.constructElement();
+  }
+  constructElement() {
+    const bottomNavElement = document.createElement("div");
+    bottomNavElement.style.display = 'flex';
+    bottomNavElement.style.alignItems = 'center';
+    bottomNavElement.style.position = 'fixed';
+    bottomNavElement.style.color = '#eee';
+    bottomNavElement.style.background = '#203542';
+    bottomNavElement.style.left = 0;
+    bottomNavElement.style.right = 0;
+    bottomNavElement.style.bottom = 0;
+    bottomNavElement.style.zIndex = 16000002; // HacK: To be larger than zendesk
+    this.navigationOptions.forEach((option) => {
+      const subElement = document.createElement("div");
+      subElement.style.flex = 1;
+      subElement.style.textAlign = 'center';
+      subElement.style.padding = '14px 6px';
+      subElement.style.borderRight = '1px solid rgba(152, 159, 175, .5)';
+      subElement.innerHTML = option.title;
+      subElement.onclick = () => {
+        console.log(option.selector);
+        $([document.documentElement, document.body]).animate({
+          scrollTop: $(option.selector).offset().top
+        }, 750);
+      }
+      bottomNavElement.append(subElement)
+    })
+    $('body').append(bottomNavElement);
   }
 }
