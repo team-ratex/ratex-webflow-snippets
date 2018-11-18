@@ -450,6 +450,8 @@ class BottomNavigator {
     bottomNavElement.style.left = 0;
     bottomNavElement.style.right = 0;
     bottomNavElement.style.bottom = 0;
+    bottomNavElement.style.fontFamily: 'Montserrat, sans-serif';
+    bottomNavElement.style.boxShadow: '0px 0px 11px 0px rgba(119,119,119,1)';
     bottomNavElement.style.zIndex = 16000002; // HacK: To be larger than zendesk
     this.navigationOptions.forEach((option) => {
       const subElement = document.createElement("div");
