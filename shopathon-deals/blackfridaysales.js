@@ -56,7 +56,7 @@ class DealCollections {
     this.numberOfDeals = numberOfDeals;
     // Mapping (Backend Categories)
     this.elementIdToCategoryIdMap = {
-      'collection-popular': 64,
+      'collection-popular': 56,
       'collection-best-amazon-deals': 57,
       'collection-Electronic-Appliances': 58,
       'collection-Tech-Gadgets': 59,
@@ -469,12 +469,14 @@ class BottomNavigator {
     bottomNavElement.style.bottom = 0;
     bottomNavElement.style.fontFamily = 'Montserrat, sans-serif';
     bottomNavElement.style.boxShadow = '0px 0px 11px 0px rgba(119,119,119,1)';
+    bottomNavElement.style.fontSize = '11px';
     bottomNavElement.style.zIndex = 16000002; // HacK: To be larger than zendesk
     this.navigationOptions.forEach((option) => {
       const subElement = document.createElement("div");
       subElement.style.flex = 1;
       subElement.style.textAlign = 'center';
-      subElement.style.padding = '14px 6px';
+      subElement.style.textAlign = 'center';
+      subElement.style.padding = '14px 8px';
       subElement.style.borderRight = '1px solid rgba(152, 159, 175, .5)';
       subElement.style.cursor = 'pointer';
       subElement.innerHTML = option.title;
