@@ -273,7 +273,7 @@ class DealCell {
     // Calculate percentage off first
     const newElement = document.createElement("div");
     newElement.classList.add("deal-card-wraper", "full", "w-inline-block", "w-col-tiny-6");
-    newElement.onclick = function () { window.open(this.itemUrl); };
+    newElement.onclick = function () { console.log(`Opening ${this.itemUrl}`); window.open(this.itemUrl); };
     newElement.style.cursor = 'pointer';
     // Calculate additional savings (For Amazon Products)
     let additionalSavings = null;
