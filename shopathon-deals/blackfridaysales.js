@@ -266,7 +266,7 @@ class DealCell {
     this.name = name;
     this.itemUrl = itemUrl;
     this.additionalSavings = ((this.merchant.toLowerCase()).indexOf('amazon') >= 0)
-      ? this.currentPrice * (0.0485) // Approximately 4.85% lower than Amazon's Exchange Rate
+      ? this.currentPrice * (0.0742) // Approximately 7.42% discount
       : null
   }
   constructElement() {
