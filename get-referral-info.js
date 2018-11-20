@@ -28,7 +28,7 @@ class ReferralCodeHandler {
   }
   renderWebsiteCopy() {
     if (this.name) {
-      this.titleId.innerHTML = `${this.name} wants you to stop searching for promo codes`;
+      this.titleId.innerHTML = `${this.name} wants you to stop searching for coupon codes`;
     }
   }
 }
