@@ -13,7 +13,7 @@ $(() => {
     }
   });
   // Open in rates modifier
-  $('.install-app-button').each((idx) => {
+  $('.open-app-button').each((idx) => {
     const element = $('.install-app-button')[idx];
     element.target = '_blank';
     //iPhone Version:
