@@ -318,10 +318,12 @@ class DealCell {
             <div class="text-block-190">
               ${this.previousPrice ? `$${this.previousPrice}` : ''}
             </div>
-            <div class="text-block-191">${this.hot ? 'HOT' : ''}</div>
           </div>
           ${(this.additionalSavings)
             ? `<div class="div-block-253 ratex-savings">S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
+            : ''}
+          ${(this.hot)
+            ? `<div class="text-block-200">HOT</div>`
             : ''}
       </div>
     `;
