@@ -20,7 +20,7 @@ class RatexDealsPage {
 class FeaturedDeals {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
-    this.url = `https://ratex.co/store/api/products?filter=Activities&limit=${this.numberOfDeals}`;
+    this.url = `https://ratex.co/store/api/products?filter=Trending&limit=${this.numberOfDeals}`;
     this.featuredDealsParentContainerSlide1 = $('.slide-18 .deal-wrapper')[0]
     this.featuredDealsParentContainerSlide2 = $('.slide-19 .deal-wrapper')[0]
     this.featuredDealsParentContainerSlide3 = $('.slide-20 .deal-wrapper')[0]
