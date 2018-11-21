@@ -7,7 +7,7 @@
 class RatexDealsPage {
   constructor() {
     // Init child classes
-    this.featuredDeals = new FeaturedDeals(4);
+    this.featuredDeals = new FeaturedDeals(12);
     this.dealCollections = new DealCollections(20);
     const couponMerchant = new CouponMerchants(12);
     this.featuredDeals.populateDeals();
@@ -21,10 +21,14 @@ class FeaturedDeals {
   constructor(numberOfDeals) {
     this.numberOfDeals = numberOfDeals;
     this.url = `https://ratex.co/store/api/products?filter=Activities&limit=${this.numberOfDeals}`;
-    this.featuredDealsParentContainer = $('.deal-wrapper')[0]
+    this.featuredDealsParentContainerSlide1 = $('.slide-18 .deal-wrapper')[0]
+    this.featuredDealsParentContainerSlide2 = $('.slide-19 .deal-wrapper')[0]
+    this.featuredDealsParentContainerSlide3 = $('.slide-20 .deal-wrapper')[0]
   }
   clearOutAllExistingDeals() {
-    this.featuredDealsParentContainer.innerHTML = "";
+    this.featuredDealsParentContainerSlide1.innerHTML = "";
+    this.featuredDealsParentContainerSlide2.innerHTML = "";
+    this.featuredDealsParentContainerSlide3.innerHTML = "";
   }
   populateDeals() {
     $.get(this.url)
@@ -34,7 +38,7 @@ class FeaturedDeals {
           this.clearOutAllExistingDeals();
           // Create deal cells
           const deals = response.data;
-          deals.forEach(data => {
+          deals.forEach((data, idx) => {
             const deal = new DealCell(
               data.images[0],
               data.listing.currentPrice,
@@ -44,10 +48,21 @@ class FeaturedDeals {
               data.name,
               data.listing.merchantURL,
             );
-            $(this.featuredDealsParentContainer).append(deal.constructElement())
+            this.appendElement(deal, idx);
           });
         }
       });
+  }
+  appendElement(deal, idx) {
+    let container;
+    if (idx < 4) {
+      container = this.featuredDealsParentContainerSlide1;
+    } else if (idx < 8) {
+      container = this.featuredDealsParentContainerSlide2;
+    } else if (idx < 12) {
+      container = this.featuredDealsParentContainerSlide3;
+    }
+    if (container) $(container).append(deal.constructElement())
   }
 }
 
@@ -291,19 +306,19 @@ class DealCell {
           style="height: 100%; width: 100%; object-fit: contain;"
         >
         ${(this.percentageDiscount)
-          ? `
+        ? `
           <div class="div-block-253">
             ${(this.percentageDiscount).toFixed(0)}%
             <br />
             Off
           </div>
           `
-          : ''
-        }
+        : ''
+      }
         ${(this.hot)
-          ? `<div class="text-block-200">HOT</div>`
-          : ''
-        }
+        ? `<div class="text-block-200">HOT</div>`
+        : ''
+      }
 
       </div>
       <div class="deal-content-wrapper st long">
@@ -324,8 +339,8 @@ class DealCell {
             </div>
           </div>
           ${(this.additionalSavings)
-            ? `<div class="div-block-253 ratex-savings">S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
-            : ''}
+        ? `<div class="div-block-253 ratex-savings">S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
+        : ''}
       </div>
     `;
     return newElement;
@@ -411,7 +426,7 @@ class CouponCell {
     const newElement = document.createElement("div");
     newElement.classList.add("promocode-link-wrapper", "w-inline-block");
     newElement.style.cursor = 'pointer';
-    newElement.onclick = () => { 
+    newElement.onclick = () => {
       var $temp = $("<input>");
       $("body").append($temp);
       $temp.val(this.code).select();
