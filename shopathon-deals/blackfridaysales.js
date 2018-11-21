@@ -235,7 +235,7 @@ class DealCollections {
     // Next Handler
     $(`#${this.nextButtonId}`).click(() => {
       // Check if disabled
-      if (($(`#${this.backButtonId}`)[0].style.cursor) === "not-allowed") return;
+      if (($(`#${this.nextButtonId}`)[0].style.cursor) === "not-allowed") return;
       // Update page number
       this.page += 1;
       // Update url
