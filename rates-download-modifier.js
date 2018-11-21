@@ -14,15 +14,8 @@ $(() => {
   });
   // Open in rates modifier
   $('.open-app-button').each((idx) => {
-    const element = $('.install-app-button')[idx];
+    const element = $('.open-app-button')[idx];
     element.target = '_blank';
-    //iPhone Version:
     element.href = 'ratesbyrate://';
-    // if ((navigator.userAgent.match(/iPhone/i)) || (navigator.userAgent.match(/iPod/i))) {
-    // }
-    // //Android Version:
-    // if (navigator.userAgent.match(/android/i)) {
-    //   element.href = 'https://play.google.com/store/apps/details?id=com.rate.rates'
-    // }
   });
 })
