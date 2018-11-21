@@ -121,6 +121,7 @@ class DealCollections {
     // - Update URL
     // - Populate deals
     $(`#${elementId}`).addClass('w--current');
+    this.toggleBackButtonAvailability(false);
     this.page = 1;
     this.hasMore = null;
     this.categoryId = categoryId;
