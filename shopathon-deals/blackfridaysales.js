@@ -300,6 +300,10 @@ class DealCell {
           `
           : ''
         }
+        ${(this.hot)
+          ? `<div class="text-block-200">HOT</div>`
+          : ''
+        }
 
       </div>
       <div class="deal-content-wrapper st long">
@@ -321,9 +325,6 @@ class DealCell {
           </div>
           ${(this.additionalSavings)
             ? `<div class="div-block-253 ratex-savings">S$${this.additionalSavings.toFixed(2)} savings with RateX</div>`
-            : ''}
-          ${(this.hot)
-            ? `<div class="text-block-200">HOT</div>`
             : ''}
       </div>
     `;
