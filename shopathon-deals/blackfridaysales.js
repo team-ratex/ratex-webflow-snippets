@@ -363,7 +363,8 @@ class CouponMerchants {
     $('.link-block-48').each((idx) => {
       const elementId = ($('.link-block-48')[idx].id);
       if (!elementId) return;
-      $(`#${elementId}`).click(() => {
+      // Escape characters
+      $(`#${elementId.replace(/(:|\.|\[|\]|,|=|@)/g, "\\$1")}`).click(() => {
         this.handleMerchantChange(elementId);
       });
     });
@@ -447,7 +448,7 @@ class CouponCell {
             <div class="text-block-189 _1 promocode">${this.code}</div>
             <div
               class="text-block-189 _2 code description"
-              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; height: 5em;"
+              style="overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; height: 5.25em;"
             >${this.description}</div>
           </div>
       </div>
