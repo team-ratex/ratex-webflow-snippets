@@ -7,7 +7,7 @@
 class RatexDealsPage {
   constructor() {
     // Init child classes
-    this.featuredDeals = new FeaturedDeals(12);
+    this.featuredDeals = new FeaturedDeals(15);
     this.dealCollections = new DealCollections(20);
     const couponMerchant = new CouponMerchants(12);
     this.featuredDeals.populateDeals();
@@ -55,11 +55,11 @@ class FeaturedDeals {
   }
   appendElement(deal, idx) {
     let container;
-    if (idx < 4) {
+    if (idx < 5) {
       container = this.featuredDealsParentContainerSlide1;
-    } else if (idx < 8) {
+    } else if (idx < 10) {
       container = this.featuredDealsParentContainerSlide2;
-    } else if (idx < 12) {
+    } else if (idx < 15) {
       container = this.featuredDealsParentContainerSlide3;
     }
     if (container) $(container).append(deal.constructElement())
