@@ -291,7 +291,7 @@ class DealCell {
     newElement.classList.add("deal-card-wraper", "full", "w-inline-block", "w-col-tiny-6");
     newElement.onclick = () => {
       ga('send', {
-        hitType: 'click',
+        hitType: 'event',
         eventCategory: 'deals',
         eventAction: 'Clicked on Deal from Deals Page',
         eventLabel: this.name
