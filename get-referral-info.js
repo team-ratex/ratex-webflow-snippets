@@ -1,6 +1,6 @@
 // At the start of the page, we will have removed the previous referral code 
 
-class ReferralCodeHandler1 {
+class ReferralCodeHandler {
   constructor() {
     this.url = 'https://ratex.co/api/users/referral?referral_code=';
     this.message = null;
