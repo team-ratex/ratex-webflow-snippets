@@ -79,6 +79,7 @@ class DealCollections {
       'collection-Men-Fashion': 61,
       'collection-Women-Fashion': 62,
       'collection-Beauty-Health': 63,
+      'collection-Travel': 65,
     };
     this.categoryId = this.elementIdToCategoryIdMap['collection-popular'];
     this.filter = 'Latest'; // Enum of 'Latest', 'Popular', 'PriceDrop'
