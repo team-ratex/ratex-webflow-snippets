@@ -142,8 +142,12 @@ class InlineInstallWrapper {
           button.innerHTML = 'JOIN WITH FACEBOOK';
           button.classList.add('button_tryextension_notsupported');
           button.href = "https://www.facebook.com/RateX-194127197634012/";
+          // button.style.display = 'none';
         }
       });
+      // Show email signup area
+      $('#Chrome-or-Firefox').hide();
+      $('#Safari-email').show();
     }
     // Remove cloak
     this.arrayOfInstallButtons.forEach((button) => {
