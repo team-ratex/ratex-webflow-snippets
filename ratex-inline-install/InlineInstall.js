@@ -138,16 +138,21 @@ class InlineInstallWrapper {
       // Set styles for these buttons
       this.arrayOfInstallButtons.forEach((button) => {
         if (button) {
-          button.style.backgroundImage = 'none';
-          button.innerHTML = 'JOIN WITH FACEBOOK';
-          button.classList.add('button_tryextension_notsupported');
-          button.href = "https://www.facebook.com/RateX-194127197634012/";
-          // button.style.display = 'none';
+          // button.style.backgroundImage = 'none';
+          // button.innerHTML = 'JOIN WITH FACEBOOK';
+          // button.classList.add('button_tryextension_notsupported');
+          // button.href = "https://www.facebook.com/RateX-194127197634012/";
+          button.style.display = 'none';
         }
       });
-      // Show email signup area
+      // Hide installs
       $('#Chrome-or-Firefox').hide();
+      $('#Chrome-or-Firefox-TOP').hide();
+      $('#Chrome-or-Firefox-BOTTOM').hide();
+      // Show email signup area
       $('#Safari-email').show();
+      $('#Safari-email-TOP').show();
+      $('#Safari-email-BOTTOM').show();
     }
     // Remove cloak
     this.arrayOfInstallButtons.forEach((button) => {
