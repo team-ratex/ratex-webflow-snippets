@@ -28,11 +28,12 @@ const firefoxInstall = (aEvent) => {
 */
 class InlineInstallWrapper {
   constructor(arrayOfIds) {
+    this.arrayOfInstallButtons = [];
     this.arrayOfInstallButtons = arrayOfIds.map((id) => {
       return document.getElementById(id);
     })
     // Variables
-    this.isChrome = !!window.chrome && !!window.chrome.webstore;
+    this.isChrome = !!window.chrome;
     this.isFirefox = (navigator.userAgent.indexOf("Firefox") > 0);
     this.chromeStoreUrl = 'https://chrome.google.com/webstore/detail/lebeffkkoglndkjfggcokhkikpilochf';
     // Init runs
@@ -41,33 +42,35 @@ class InlineInstallWrapper {
 
   // Function to add chrome install overlay
   addChromeExtensionInstallOverlay() {
-      // Create the chrome install overlay
-      const chromeOverlayElement = document.createElement('div');
-      chromeOverlayElement.id = 'chrome-install-overlay';
-      chromeOverlayElement.innerHTML = "<div class='horizontal-container animated fadeInUp'><img style='margin-right:15px; height:30px; width:auto;' src='https://blog.ratex.co/assets/images/ratex-install-arrow.png' alt='ratex-arrow'><h3>Click <b>Add Extension</b> above to continue</h3></div>"
-        + "<img id='ratex-rocket-img' class='animated fadeInUp' src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/RateX-Rocket.png' alt='ratex-rocket'/>"
+    // Create the chrome install overlay
+    const chromeOverlayElement = document.createElement('div');
+    chromeOverlayElement.id = 'chrome-install-overlay';
+    chromeOverlayElement.innerHTML = "<div class='horizontal-container animated fadeInUp'><img style='margin-right:15px; height:30px; width:auto;' src='https://blog.ratex.co/assets/images/ratex-install-arrow.png' alt='ratex-arrow'><h3>Click <b>Add Extension</b> above to continue</h3></div>"
+      + "<img id='ratex-rocket-img' class='animated fadeInUp' src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/RateX-Rocket.png' alt='ratex-rocket'/>"
       + "<h4 class='animated fadeInUp'>Almost there!</h4>";
 
-      this.chromeOverlayElement = chromeOverlayElement;
-      // Append it in
-      document.body.appendChild(chromeOverlayElement);
+    this.chromeOverlayElement = chromeOverlayElement;
+    // Append it in
+    document.body.appendChild(chromeOverlayElement);
   }
 
   // Basically to remove that overlay above
   removeChromeExtensionInstallOverlay() {
-      // Delete element
-      this.chromeOverlayElement.className= "animated fadeOutDown"
-      setTimeout(() => {
-        if (this.chromeOverlayElement) {
-          this.chromeOverlayElement.outerHTML = "";
-          delete this.chromeOverlayElement;
-        }
-      }, 1000);
+    // Delete element
+    this.chromeOverlayElement.className = "animated fadeOutDown"
+    setTimeout(() => {
+      if (this.chromeOverlayElement) {
+        this.chromeOverlayElement.outerHTML = "";
+        delete this.chromeOverlayElement;
+      }
+    }, 1000);
   }
 
   // Chrome extension inline install function
   getChromeExtensionInline() {
-    this.addChromeExtensionInstallOverlay();
+    if (this.isFirefox) {
+      this.addChromeExtensionInstallOverlay();
+    }
     try {
       chrome.webstore.install(
         this.chromeStoreUrl,
@@ -81,7 +84,7 @@ class InlineInstallWrapper {
           }
           this.removeChromeExtensionInstallOverlay()
         },
-        () => {this.removeChromeExtensionInstallOverlay()}
+        () => { this.removeChromeExtensionInstallOverlay() }
       );
     } catch (err) {
       // Inline installation failed - We open the appstore's likn in a new tab instead
@@ -134,8 +137,6 @@ class InlineInstallWrapper {
       // Set styles for these buttons
       this.arrayOfInstallButtons.forEach((button) => {
         if (button) {
-          // button.style.backgroundSize = 'initial';
-          // button.style.backgroundPosition = '10% 50%';
           button.style.backgroundImage = 'none';
           button.innerHTML = 'JOIN WITH FACEBOOK';
           button.classList.add('button_tryextension_notsupported');
@@ -158,7 +159,7 @@ class InlineInstallWrapper {
 
     // Window resize function to conditionally hide background image of button
     $(window).resize(function () {
-      if ($( window ).width() < 977) {
+      if ($(window).width() < 977) {
         // Conditional Breakpoint - hide image
         this.arrayOfInstallButtons.forEach((button) => {
           if (button) button.style.backgroundImage = 'none';
