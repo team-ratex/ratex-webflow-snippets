@@ -57,20 +57,21 @@ class InlineInstallWrapper {
   // Basically to remove that overlay above
   removeChromeExtensionInstallOverlay() {
     // Delete element
-    this.chromeOverlayElement.className = "animated fadeOutDown"
-    setTimeout(() => {
-      if (this.chromeOverlayElement) {
-        this.chromeOverlayElement.outerHTML = "";
-        delete this.chromeOverlayElement;
-      }
-    }, 1000);
+    if (this.chromeOverlayElement) {
+      this.chromeOverlayElement.className = "animated fadeOutDown"
+      setTimeout(() => {
+        if (this.chromeOverlayElement) {
+          this.chromeOverlayElement.outerHTML = "";
+          delete this.chromeOverlayElement;
+        }
+      }, 1000);
+    }
   }
 
   // Chrome extension inline install function
   getChromeExtensionInline() {
-    if (this.isFirefox) {
-      this.addChromeExtensionInstallOverlay();
-    }
+    // Temporarily disable it
+    // this.addChromeExtensionInstallOverlay();
     try {
       chrome.webstore.install(
         this.chromeStoreUrl,
