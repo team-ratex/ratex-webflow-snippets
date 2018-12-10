@@ -150,9 +150,9 @@ class InlineInstallWrapper {
       $('#Chrome-or-Firefox-TOP').hide();
       $('#Chrome-or-Firefox-BOTTOM').hide();
       // Show email signup area
-      $('#Safari-email').show();
-      $('#Safari-email-TOP').show();
-      $('#Safari-email-BOTTOM').show();
+      $('#Safari-email').attr( "style", "display: block !important;" );
+      $('#Safari-email-TOP').attr( "style", "display: block !important;" );
+      $('#Safari-email-BOTTOM').attr( "style", "display: block !important;" );
     }
     // Remove cloak
     this.arrayOfInstallButtons.forEach((button) => {
