@@ -115,44 +115,48 @@ class InlineInstallWrapper {
   // If the extension is not installed, we bind install listeners to it.
   // If it is installed, the `checkAndSetIfExtensionInstalled` function will mutate the button to reflect it
   runDocumentMutations() {
-    if (this.isChrome) {
-      if (!this.checkAndSetIfExtensionInstalled()) {
-        this.arrayOfInstallButtons.forEach((button) => {
-          if (button) button.onclick = this.getChromeExtensionInline.bind(this);
-        })
-      }
-    } else if (this.isFirefox) {
-      if (!this.checkAndSetIfExtensionInstalled()) {
+    // If user is not on mobile, run Browser Checks
+    if ($(window).width() > 767) {
+      if (this.isChrome) {
+        if (!this.checkAndSetIfExtensionInstalled()) {
+          this.arrayOfInstallButtons.forEach((button) => {
+            if (button) button.onclick = this.getChromeExtensionInline.bind(this);
+          })
+        }
+      } else if (this.isFirefox) {
+        if (!this.checkAndSetIfExtensionInstalled()) {
+          this.arrayOfInstallButtons.forEach((button) => {
+            if (button) {
+              button.style.backgroundSize = 'contain';
+              button.setAttribute('iconURL', 'https://addons.cdn.mozilla.net/user-media/addon_icons/821/821634-64.png?modified=1501590021&1501817260201');
+              button.setAttribute('href', 'https://addons.mozilla.org/firefox/downloads/latest/ratex/addon-821634-latest.xpi');
+              button.onclick = "return firefoxInstall(event);"
+              button.setAttribute('data-hash', "sha256:883161bcdf6f1dd765134b59252bd2276091c380cc7609fb97e40f3452cc99d1");
+              button.setAttribute('target', "");
+            }
+          });
+        }
+      } else {
+        // This is safari.
+        // Set styles for these buttons
         this.arrayOfInstallButtons.forEach((button) => {
           if (button) {
-            button.style.backgroundSize = 'contain';
-            button.setAttribute('iconURL', 'https://addons.cdn.mozilla.net/user-media/addon_icons/821/821634-64.png?modified=1501590021&1501817260201');
-            button.setAttribute('href', 'https://addons.mozilla.org/firefox/downloads/latest/ratex/addon-821634-latest.xpi');
-            button.onclick = "return firefoxInstall(event);"
-            button.setAttribute('data-hash', "sha256:883161bcdf6f1dd765134b59252bd2276091c380cc7609fb97e40f3452cc99d1");
-            button.setAttribute('target', "");
+            // button.style.backgroundImage = 'none';
+            // button.innerHTML = 'JOIN WITH FACEBOOK';
+            // button.classList.add('button_tryextension_notsupported');
+            // button.href = "https://www.facebook.com/RateX-194127197634012/";
+            button.style.display = 'none';
           }
         });
+        // Hide installs
+        $('#Chrome-or-Firefox').hide();
+        $('#Chrome-or-Firefox-TOP').hide();
+        $('#Chrome-or-Firefox-BOTTOM').hide();
+        // Show email signup area
+        $('#Safari-email').attr( "style", "display: block !important;" );
+        $('#Safari-email-TOP').attr( "style", "display: block !important;" );
+        $('#Safari-email-BOTTOM').attr( "style", "display: block !important;" );
       }
-    } else {
-      // Set styles for these buttons
-      this.arrayOfInstallButtons.forEach((button) => {
-        if (button) {
-          // button.style.backgroundImage = 'none';
-          // button.innerHTML = 'JOIN WITH FACEBOOK';
-          // button.classList.add('button_tryextension_notsupported');
-          // button.href = "https://www.facebook.com/RateX-194127197634012/";
-          button.style.display = 'none';
-        }
-      });
-      // Hide installs
-      $('#Chrome-or-Firefox').hide();
-      $('#Chrome-or-Firefox-TOP').hide();
-      $('#Chrome-or-Firefox-BOTTOM').hide();
-      // Show email signup area
-      $('#Safari-email').attr( "style", "display: block !important;" );
-      $('#Safari-email-TOP').attr( "style", "display: block !important;" );
-      $('#Safari-email-BOTTOM').attr( "style", "display: block !important;" );
     }
     // Remove cloak
     this.arrayOfInstallButtons.forEach((button) => {
