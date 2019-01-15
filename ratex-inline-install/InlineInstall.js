@@ -116,7 +116,7 @@ class InlineInstallWrapper {
   // If it is installed, the `checkAndSetIfExtensionInstalled` function will mutate the button to reflect it
   runDocumentMutations() {
     // If user is not on mobile, run Browser Checks
-    if ($(window).width() > 767) {
+    if ($(window).width() > 480) {
       if (this.isChrome) {
         if (!this.checkAndSetIfExtensionInstalled()) {
           this.arrayOfInstallButtons.forEach((button) => {
