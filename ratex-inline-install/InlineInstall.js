@@ -102,7 +102,7 @@ class InlineInstallWrapper {
         if (button) {
           button.innerHTML = 'Installed';
           button.onclick = null;
-          if (tracker) button.removeEventListener("click", tracker);
+          if (typeof tracker !== 'undefined') button.removeEventListener("click", tracker);
         }
       })
       return true;
