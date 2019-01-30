@@ -17,6 +17,8 @@ $(function () {
 		offset: 0,
 		hasMore: 'true',
 		isFetchingDeals: false,
+		search: false,
+		searchText: "",
 	};
 
 	let RatesDealsHandler = {
@@ -80,7 +82,7 @@ $(function () {
 			const date = lastCreated.substring(0, 10);
 			date = date.replace(/-/g, "");
 			date = date + ", " + lastCreated.substring(11, 16);
-			
+
 			return moment(date, "YYYYMMDD, hh:mm").fromNow();
 		},
 		*/
@@ -100,19 +102,45 @@ $(function () {
 		* Removes all existing card except the first one, hides the first one
 		*/
 		resetFeed: function () {
+
+			// change style.display is more efficient and reliable than style.visibility
+			// assuming we are okay with the component space disappearing
+			Config.dealsContainer.style.display = 'none';
+
 			Config.offset = 0;
 			Config.hasMore = true;
-			Config.dealsContainer.firstChild.style.visibility = 'hidden';
+
+			// Clear data of first card
+			// set product URL
+			document.getElementsByClassName("deal-link")[0].href = '';
+
+			// set product image
+			document.getElementsByClassName("deal-img")[0].src = 'https://uploads-ssl.webflow.com/img/image-placeholder.svg';
+
+			// set merchant of product and change it to Title case
+			document.getElementsByClassName("merchant")[0].innerHTML = 'at ' + 'Merchant';
+
+			// set deal title
+			const dealTitle = document.getElementsByClassName("deal-item-title")[0];
+			dealTitle.innerHTML = 'Name'
+
+			// set price
+			document.getElementsByClassName("current-price")[0].innerHTML = 'Price';
+
+			// set savings
+			document.getElementsByClassName("amount-saved")[0].innerHTML = 'Savings'
+
 			let j = 0;
 			for (j = document.getElementsByClassName("deal-card").length; j > 1; j--) {
 				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
 			}
+
 		},
 		/**
 		* Populate deal cards with information fetched from RateS endpoint
 		*
 		* @param {Object}		response		contains data array with product information to populate deal cards with.
-		* @param {Number}		cardNumber		the card to populate the information 			
+		* @param {Number}		cardNumber		the card to populate the information
 		* @param {Number}		dataEntry		the entry in the data array to populate the cards with.
 		*/
 		populateDeals: function (response, cardNumber, dataEntry) {
@@ -130,7 +158,7 @@ $(function () {
 			// set merchant of product and change it to Title case
 			document.getElementsByClassName("merchant")[cardNumber].innerHTML = "at " + RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
 
-			// set deal title 
+			// set deal title
 			const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
 			dealTitle.innerHTML = response.data[dataEntry].name;
 			// if deal title is too long, clamp it to show ellipsis
@@ -147,9 +175,10 @@ $(function () {
 
 			// set savings with correct currency and decimal format
 			if (response.data[dataEntry].listing.previousPrice !== "") {
-				// if there are savings, calculate and set
-				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'visible';
-				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'visible';
+				// if there are savings, calculate and set visbility to inherit
+				// Prevents savings to be shown when deal card supposed to be hidden
+				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'inherit';
+				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'inherit';
 				document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
 			}
 			else {
@@ -175,16 +204,14 @@ $(function () {
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
 					// sets address bar with parameters
-					window.history.pushState({ urlPath: '/?category=' + Config.currentCategory }, "", '/?category=' + Config.currentCategory);
-
-					// make first card on page visible
-					Config.dealsContainer.firstChild.style.visibility = 'visible';
+					window.history.pushState({ urlPath: '/find?category=' + Config.currentCategory }, "", '/find?category=' + Config.currentCategory);
 
 					// create and populate cards with information from the data array
 					let dataEntry = 0;
 					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
 						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
 					}
+
 					// checks if there are more deals that can be loaded for infinite scroll
 					Config.hasMore = response.hasMore;
 
@@ -193,6 +220,55 @@ $(function () {
 
 					// set isFetchingDeals to false so infinite scroll can fetch next batch if triggered
 					Config.isFetchingDeals = false;
+
+					// make deals visible only if there are (previous) results
+					if (Config.offset !== 0 || response.data.length !== 0 ) {
+						Config.dealsContainer.style.display = 'flex';
+					}
+				})
+		},
+
+		/**
+		* Search deals from RateS endpoint and populate Deals page with them
+		*
+		* @param {String}		filter		the search text to pass to RateS endpoint
+		*/
+		searchDeals: function (filter) {
+			filter = filter.toLowerCase()
+			// sets isFetchingDeals to true to prevent multiple triggers
+			Config.isFetchingDeals = true;
+
+			$.ajax({
+				method: 'GET',
+				url: 'https://ratex.co/store/api/products/search' + '?filter=' + filter
+			})
+
+				// takes the data array from response and populate each new card with the information of each entry in this array
+				.done(function (response) {
+					// sets address bar with parameters
+					window.history.pushState({ urlPath: '/find?q=' + Config.searchText, }, "", '/find?q=' + Config.searchText);
+
+					// create and populate cards with information from the data array
+					let dataEntry = 0;
+					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
+						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
+					}
+
+					// checks if there are more deals that can be loaded for infinite scroll
+					Config.hasMore = response.hasMore;
+
+					// updates offset to load the next batch of cards for infinite scroll
+					Config.offset += response.data.length;
+
+					// set isFetchingDeals to false so infinite scroll can fetch next batch if triggered
+					Config.isFetchingDeals = false;
+
+					// make deals visible only if there are (previous) results
+					if (Config.offset !== 0 || response.data.length !== 0 ) {
+						Config.dealsContainer.style.display = 'flex';
+						document.getElementById("resultsCount").textContent = `${response.count} results`;
+					}
+
 				})
 		},
 		/**
@@ -202,6 +278,7 @@ $(function () {
 		* @returns {String}		the parameters in the address
 		*/
 		parse_query_string: function (query) {
+			query = query.replace(/\+/g, '%20')
 			const vars = query.split("&");
 		        const query_string = {};
                         let m = 0;
@@ -242,11 +319,25 @@ $(function () {
 		initiate: function () {
 			const query = window.location.search.substring(1);
 			const qs = RatesDealsHandler.parse_query_string(query);
+
 			if (qs.category !== undefined) {
 				Config.currentCategory = qs.category;
+			} else if (qs.q !== undefined) {
+				Config.searchText = qs.q;
+				Config.search = true;
+				document.getElementById("searchbar").value = Config.searchText
+				document.getElementById("resultsText").textContent = `Search Results for "${Config.searchText}"`
+
 			}
-			RatesDealsHandler.setCurrentButton();
-			RatesDealsHandler.getDeals(Config.currentCategory);
+
+			if (Config.search) {
+				RatesDealsHandler.setCurrentButton();
+				RatesDealsHandler.searchDeals(Config.searchText);
+			} else {
+				RatesDealsHandler.setCurrentButton();
+				RatesDealsHandler.getDeals(Config.currentCategory);
+			}
+
 		}
 	};
 
@@ -256,7 +347,12 @@ $(function () {
 		if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight / 1.4)) {
 			if (!Config.isFetchingDeals && Config.hasMore) {
 				console.log("triggered");
-				RatesDealsHandler.getDeals(Config.currentCategory + '&offset=' + Config.offset.toString());
+				if (Config.search) {
+					RatesDealsHandler.searchDeals(Config.searchText + '&offset=' + Config.offset.toString());
+				} else {
+					RatesDealsHandler.getDeals(Config.currentCategory + '&offset=' + Config.offset.toString());
+				}
+
 			}
 		}
 	};
@@ -266,6 +362,7 @@ $(function () {
 		// reset feed to remove all cards currently on page
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Latest'
+		Config.search = false
 		RatesDealsHandler.getDeals(Config.currentCategory);
 
 	});
@@ -273,14 +370,26 @@ $(function () {
 	document.getElementsByClassName("price-drop-button")[0].addEventListener("click", function () {
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'PriceDrop'
+		Config.search = false
 		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
 
 	document.getElementsByClassName("popular-button")[0].addEventListener("click", function () {
 		RatesDealsHandler.resetFeed();
 		Config.currentCategory = 'Popular'
+		Config.search = false
 		RatesDealsHandler.getDeals(Config.currentCategory);
 	});
 
 	RatesDealsHandler.initiate();
+
+
+	// Search components
+
+	$('#search').submit((e) => {
+			e.preventDefault();
+			RatesDealsHandler.resetFeed();
+			RatesDealsHandler.searchDeals(document.getElementById("searchbar").value)
+	});
+
 });
