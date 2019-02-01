@@ -11,6 +11,8 @@
 // On document ready
 $(function () {
 
+	let Parser = document.createElement('a');
+
 	let Config = {
 		dealsContainer: document.getElementsByClassName("deals-container")[0],
 		currentCategory: 'Latest',
@@ -235,7 +237,11 @@ $(function () {
 		* @param {String}		filter		the search text to pass to RateS endpoint
 		*/
 		searchDeals: function (filter) {
-			filter = filter.toLowerCase()
+			if (typeof filter === "array") {
+					filter = filter.join(" ")
+			}
+			filter = filter.toLowerCase();
+
 			// sets isFetchingDeals to true to prevent multiple triggers
 			Config.isFetchingDeals = true;
 
@@ -246,6 +252,8 @@ $(function () {
 
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
+					// set the search query value in the search bar and results
+					RatesDealsHandler.setQuery(Config.searchText);
 
 					// create and populate cards with information from the data array
 					let dataEntry = 0;
@@ -265,7 +273,7 @@ $(function () {
 					// make deals visible only if there are (previous) results
 					if (Config.offset !== 0 || response.data.length !== 0 ) {
 						Config.dealsContainer.style.display = 'flex';
-						document.getElementById("resultsCount").textContent = `${response.count} results`;
+						RatesDealsHandler.renderQueryCount(response.count);
 					}
 
 				})
@@ -331,6 +339,38 @@ $(function () {
 				document.getElementsByClassName("latest-button")[0].classList.add("w--current");
 			}
 		},
+
+		setQuery: function (query) {
+			Config.search = true
+			Config.searchText = query
+			// update url query paramter for q only and remove duplicate q
+			href = window.location.href
+			var regex = /[?;&]?(q=[^&#]*)[&;#]/g;
+
+			var start = 0
+			while ((matches = regex.exec(href)) !== null) {
+				if (regex.lastIndex === 0) {
+					href = href.replace(regex, "q="+decodeURIComponent(query));
+				} else {
+					first = href.substring(start, regex.lastIndex).replace(/q=[^&#]*&?/g, "");
+					second = href.substring(regex.lastIndex)
+					href = first + second
+					start = regex.lastIndex;
+				}
+			}
+
+			Parser.href = href
+			path = Parser.pathname + Parser.search + Parser.hash
+
+			window.history.pushState({ urlPath: path }, "", path);
+
+			document.getElementById("searchbar").value = Config.searchText
+			document.getElementById("resultsText").textContent = `Search Results for "${Config.searchText}"`
+		},
+
+		renderQueryCount: function (count) {
+			document.getElementById("resultsCount").textContent = `${count} results`;
+		},
 		/**
 		* get parameters from address, then get deals from the category specified in parameters
 		*/
@@ -341,13 +381,9 @@ $(function () {
 			if (qs.category !== undefined) {
 				Config.currentCategory = qs.category;
 			} else if (qs.q !== undefined) {
-				Config.searchText = qs.q;
-				Config.search = true;
-				document.getElementById('searchbar').value = Config.searchText
-				document.getElementById('resultsText').textContent = `Search Results for "${Config.searchText}"`
+				RatesDealsHandler.setQuery(qs.q);
 			} else if (qs.host !== undefined) {
-				var parser = document.createElement('a');
-				parser.href = qs.host
+				Parser.href = qs.host
 				if (parser.protocol.substring(0, 4) !== 'http') {
 					// append http protocol using "wrongly" parsed pieces
 					qss.host = 'http://' + parser.protocol + parser.pathname;
