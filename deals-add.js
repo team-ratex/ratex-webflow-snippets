@@ -19,6 +19,7 @@ $(function () {
 		isFetchingDeals: false,
 		search: false,
 		searchText: "",
+		baseURL: "https://ratex.co"
 	};
 
 	let RatesDealsHandler = {
@@ -198,7 +199,7 @@ $(function () {
 
 			$.ajax({
 				method: 'GET',
-				url: 'https://ratex.co/store/api/products' + '?filter=' + filter
+				url: RatesDealsHandler.joinPath('/store/api/products') + '?filter=' + filter
 			})
 
 				// takes the data array from response and populate each new card with the information of each entry in this array
@@ -240,13 +241,11 @@ $(function () {
 
 			$.ajax({
 				method: 'GET',
-				url: 'https://ratex.co/store/api/products/search' + '?filter=' + filter
+				url: RatesDealsHandler.joinPath('/store/api/products/search') + '?filter=' + filter
 			})
 
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
-					// sets address bar with parameters
-					window.history.pushState({ urlPath: '/find?q=' + Config.searchText, }, "", '/find?q=' + Config.searchText);
 
 					// create and populate cards with information from the data array
 					let dataEntry = 0;
@@ -298,6 +297,25 @@ $(function () {
 			}
 			return query_string;
 		},
+
+		/**
+		* Concat base URL and path
+		*
+		* @param {String}		path	A USVString representing an absolute or relative URL.
+		 If url is a relative URL, Config.base will be used
+		 If url is an absolute URL, a given base will be ignored.
+		* @returns {String}		the result URL string
+		*/
+		joinPath: function (path) {
+			if (Config.baseURL[Config.baseURL.length-1] === '/') {
+				Config.baseURL = Config.baseURL.substring(0, -1);
+			}
+
+			if (path[0] === '/') {
+				path = path.substring(1);
+			}
+			return Config.baseURL+ '/' + path;
+		},
 		/**
 		* If category in address is not 'Latest', set the respective category tab as active
 		*/
@@ -325,9 +343,17 @@ $(function () {
 			} else if (qs.q !== undefined) {
 				Config.searchText = qs.q;
 				Config.search = true;
-				document.getElementById("searchbar").value = Config.searchText
-				document.getElementById("resultsText").textContent = `Search Results for "${Config.searchText}"`
-
+				document.getElementById('searchbar').value = Config.searchText
+				document.getElementById('resultsText').textContent = `Search Results for "${Config.searchText}"`
+			} else if (qs.host !== undefined) {
+				var parser = document.createElement('a');
+				parser.href = qs.host
+				if (parser.protocol.substring(0, 4) !== 'http') {
+					// append http protocol using "wrongly" parsed pieces
+					qss.host = 'http://' + parser.protocol + parser.pathname;
+				}
+				console.log(qs.host)
+				Config.host = qs.host;
 			}
 
 			if (Config.search) {
@@ -389,7 +415,8 @@ $(function () {
 	$('#search').submit((e) => {
 			e.preventDefault();
 			RatesDealsHandler.resetFeed();
-			RatesDealsHandler.searchDeals(document.getElementById("searchbar").value)
+			Config.searchText = document.getElementById("searchbar").value;
+			RatesDealsHandler.searchDeals(Config.searchText);
 	});
 
 });
