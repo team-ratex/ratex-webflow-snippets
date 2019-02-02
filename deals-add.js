@@ -223,6 +223,10 @@ $(function () {
 						}
 					}
 
+					document.getElementById("resultsText").textContent = `${Config.currentCategory}`
+					document.getElementById("resultsCount").style.display = 'none';
+					document.getElementById("resultsCount").textContent = '';
+
 					// checks if there are more deals that can be loaded for infinite scroll
 					Config.hasMore = response.hasMore;
 
@@ -379,6 +383,7 @@ $(function () {
 
 		renderQueryCount: function (count) {
 			document.getElementById("resultsCount").textContent = `${count} results`;
+			document.getElementById("resultsCount").style.display = 'block';
 		},
 		/**
 		*  if dimensions are mobile, hide non-mobile and display mobile version
@@ -408,7 +413,7 @@ $(function () {
 
 			if (qs.category !== undefined) {
 				Config.currentCategory = qs.category;
-			} else if (qs.q !== undefined) {
+			} else if (qs.q !== undefined || !qs.q.length) {
 				RatesDealsHandler.setQuery(qs.q);
 			} else if (qs.host !== undefined) {
 				Parser.href = qs.host
@@ -416,7 +421,7 @@ $(function () {
 					// append http protocol using "wrongly" parsed pieces
 					qss.host = 'http://' + parser.protocol + parser.pathname;
 				}
-				console.log(qs.host)
+
 				Config.host = qs.host;
 			}
 
