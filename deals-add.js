@@ -121,7 +121,7 @@ $(function () {
 			document.getElementsByClassName("deal-img")[0].src = 'https://uploads-ssl.webflow.com/img/image-placeholder.svg';
 
 			// set merchant of product and change it to Title case
-			document.getElementsByClassName("merchant")[0].innerHTML = 'at ' + 'Merchant';
+			document.getElementsByClassName("merchant")[0].innerHTML = 'Merchant';
 
 			// set deal title
 			const dealTitle = document.getElementsByClassName("deal-item-title")[0];
@@ -159,7 +159,7 @@ $(function () {
 			document.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
 
 			// set merchant of product and change it to Title case
-			document.getElementsByClassName("merchant")[cardNumber].innerHTML = "at " + RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
+			document.getElementsByClassName("merchant")[cardNumber].innerHTML = RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
 
 			// set deal title
 			const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
