@@ -345,8 +345,7 @@ $(function () {
 			Config.searchText = query
 			// update url query paramter for q only and remove duplicate q
 			href = window.location.href
-			var regex = /[?;&]?(q=[^&#]*)[&;#]/g;
-
+			var regex = /[?;&]?(q=[^&#]*)\b[&;#]?/g;
 			var start = 0
 			while ((matches = regex.exec(href)) !== null) {
 				if (regex.lastIndex === 0) {
