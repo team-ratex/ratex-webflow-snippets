@@ -13,8 +13,11 @@ $(function () {
 
 	let Parser = document.createElement('a');
 
+	// initialize to desktop mode with no search and 'Latest' category
 	let Config = {
+		allDealsContainers: [document.getElementsByClassName("deals-container")[0], document.getElementsByClassName("deals-container mobile")[0]],
 		dealsContainer: document.getElementsByClassName("deals-container")[0],
+		mobile: false,
 		currentCategory: 'Latest',
 		offset: 0,
 		hasMore: 'true',
@@ -29,8 +32,11 @@ $(function () {
 		* Creates a new product card
 		*/
 		createNewCard: function () {
-			let newCard = Config.dealsContainer.firstElementChild.cloneNode(true);
-			Config.dealsContainer.appendChild(newCard);
+			for (i = 0; i < Config.allDealsContainers.length; i++) {
+				let newCard = Config.allDealsContainers[i].firstElementChild.cloneNode(true);
+				Config.allDealsContainers[i].appendChild(newCard);
+			}
+
 		},
 		/**
 		* Displays the correct currency format.
@@ -146,23 +152,23 @@ $(function () {
 		* @param {Number}		cardNumber		the card to populate the information
 		* @param {Number}		dataEntry		the entry in the data array to populate the cards with.
 		*/
-		populateDeals: function (response, cardNumber, dataEntry) {
+		populateDeals: function (response, dealContainer, cardNumber, dataEntry) {
 			// there will already be one card on the page, so for subsequent data entries, create a card before populating
 			if (cardNumber !== 0) {
 				RatesDealsHandler.createNewCard();
 			}
 
 			// set product URL
-			document.getElementsByClassName("deal-link")[cardNumber].href = response.data[dataEntry].listing.merchantURL;
+			dealContainer.getElementsByClassName("deal-link")[cardNumber].href = response.data[dataEntry].listing.merchantURL;
 
 			// set product image
-			document.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
+			dealContainer.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
 
 			// set merchant of product and change it to Title case
-			document.getElementsByClassName("merchant")[cardNumber].innerHTML = RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
+			dealContainer.getElementsByClassName("merchant")[cardNumber].innerHTML = RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
 
 			// set deal title
-			const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
+			const dealTitle = dealContainer.getElementsByClassName("deal-item-title")[cardNumber];
 			dealTitle.innerHTML = response.data[dataEntry].name;
 			// if deal title is too long, clamp it to show ellipsis
 			RatesDealsHandler.clamp(dealTitle);
@@ -174,20 +180,20 @@ $(function () {
 			*/
 
 			// set current price with correct currency
-			document.getElementsByClassName("current-price")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
+			dealContainer.getElementsByClassName("current-price")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
 
 			// set savings with correct currency and decimal format
 			if (response.data[dataEntry].listing.previousPrice !== "") {
 				// if there are savings, calculate and set visbility to inherit
 				// Prevents savings to be shown when deal card supposed to be hidden
-				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'inherit';
-				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'inherit';
-				document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
+				dealContainer.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'inherit';
+				dealContainer.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'inherit';
+				dealContainer.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
 			}
 			else {
 				// if no savings, hide savings related elements
-				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'hidden';
-				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'hidden';
+				dealContainer.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'hidden';
+				dealContainer.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'hidden';
 			}
 		},
 		/**
@@ -212,7 +218,9 @@ $(function () {
 					// create and populate cards with information from the data array
 					let dataEntry = 0;
 					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
-						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
+						for (i = 0; i < Config.allDealsContainers.length; i++) {
+							RatesDealsHandler.populateDeals(response, Config.allDealsContainers[i], cardNumber, dataEntry);
+						}
 					}
 
 					// checks if there are more deals that can be loaded for infinite scroll
@@ -258,7 +266,9 @@ $(function () {
 					// create and populate cards with information from the data array
 					let dataEntry = 0;
 					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
-						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
+						for (i = 0; i < Config.allDealsContainers.length; i++) {
+							RatesDealsHandler.populateDeals(response, Config.allDealsContainers[i], cardNumber, dataEntry);
+						}
 					}
 
 					// checks if there are more deals that can be loaded for infinite scroll
@@ -371,9 +381,28 @@ $(function () {
 			document.getElementById("resultsCount").textContent = `${count} results`;
 		},
 		/**
+		*  if dimensions are mobile, hide non-mobile and display mobile version
+		*  of deals container. We also swap the pointer
+		*/
+		resize: function () {
+			if (window.innerWidth < 700 && !Config.mobile) {
+				Config.dealsContainer.style.display = 'none';
+				Config.dealsContainer = document.getElementsByClassName("deals-container mobile")[0];
+				Config.dealsContainer.style.display = 'flex';
+				Config.mobile = true;
+			} else if (window.innerWidth >= 700 && Config.mobile){
+				Config.dealsContainer.style.display = 'none';
+				Config.dealsContainer = document.getElementsByClassName("deals-container")[0];
+				Config.dealsContainer.style.display = 'flex';
+				Config.mobile = false;
+			}
+		},
+
+		/**
 		* get parameters from address, then get deals from the category specified in parameters
 		*/
 		initiate: function () {
+			RatesDealsHandler.resize();
 			const query = window.location.search.substring(1);
 			const qs = RatesDealsHandler.parse_query_string(query);
 
@@ -407,7 +436,6 @@ $(function () {
 		// triggers when user scrolls past a certain window height
 		if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight / 1.4)) {
 			if (!Config.isFetchingDeals && Config.hasMore) {
-				console.log("triggered");
 				if (Config.search) {
 					RatesDealsHandler.searchDeals(Config.searchText + '&offset=' + Config.offset.toString());
 				} else {
@@ -417,6 +445,54 @@ $(function () {
 			}
 		}
 	};
+
+		// mobilze resizing but with a separate deals container to support structural differences
+
+		// from https://developer.mozilla.org/en-US/docs/Web/Events/resize
+		var optimizedResize = (function() {
+
+		  var callbacks = [],
+		      running = false;
+
+		  // fired on resize event
+		  function resize() {
+		    if (!running) {
+		      running = true;
+		      if (window.requestAnimationFrame) {
+		        window.requestAnimationFrame(runCallbacks);
+		      } else {
+		        setTimeout(runCallbacks, 66);
+		      }
+		    }
+		  }
+
+		  // run the actual callbacks
+		  function runCallbacks() {
+		    callbacks.forEach(function(callback) {
+		      callback();
+		    });
+
+		    running = false;
+		  }
+
+		  // adds callback to loop
+		  function addCallback(callback) {
+		    if (callback) {
+		      callbacks.push(callback);
+		    }
+		  }
+
+		  return {
+		    // public method to add additional callback
+		    add: function(callback) {
+		      if (!callbacks.length) {
+		        window.addEventListener('resize', resize);
+		      }
+		      addCallback(callback);
+		    }
+		  }
+
+	}());
 
 	//Buttons
 	document.getElementsByClassName("latest-button")[0].addEventListener("click", function () {
@@ -443,6 +519,9 @@ $(function () {
 	});
 
 	RatesDealsHandler.initiate();
+
+	// start listing to resize
+	optimizedResize.add(RatesDealsHandler.resize);
 
 
 	// Search components
