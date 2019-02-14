@@ -15,6 +15,7 @@ $(function () {
 
 	// initialize to desktop mode with no search and 'Latest' category
 	let Config = {
+		// deal containers must follow the same deal component classes to be filled by populateDeals
 		allDealsContainers: [document.getElementsByClassName("deals-container")[0], document.getElementsByClassName("deals-container mobile")[0]],
 		dealsContainer: document.getElementsByClassName("deals-container")[0],
 		mobile: false,
@@ -29,11 +30,11 @@ $(function () {
 
 	let RatesDealsHandler = {
 		/**
-		* Creates a new product card
+		* Creates a new product card for all deal containers
 		*/
 		createNewCard: function () {
-			for (i = 0; i < Config.allDealsContainers.length; i++) {
-				let newCard = Config.allDealsContainers[i].firstElementChild.cloneNode(true);
+			for (var i = 0; i < Config.allDealsContainers.length; i++) {
+				var newCard = Config.allDealsContainers[i].firstElementChild.cloneNode(true);
 				Config.allDealsContainers[i].appendChild(newCard);
 			}
 
@@ -139,9 +140,10 @@ $(function () {
 			// set savings
 			document.getElementsByClassName("amount-saved")[0].innerHTML = 'Savings'
 
-			let j = 0;
-			for (j = document.getElementsByClassName("deal-card").length; j > 1; j--) {
-				Config.dealsContainer.removeChild(Config.dealsContainer.lastChild);
+			for (var i = 0; i < Config.allDealsContainers.length; i++) {
+				for (var j = Config.allDealsContainers[i].getElementsByClassName("deal-card").length; j > 1; j--) {
+					Config.allDealsContainers[i].removeChild(Config.allDealsContainers[i].lastChild);
+				}
 			}
 
 		},
@@ -152,48 +154,73 @@ $(function () {
 		* @param {Number}		cardNumber		the card to populate the information
 		* @param {Number}		dataEntry		the entry in the data array to populate the cards with.
 		*/
-		populateDeals: function (response, dealContainer, cardNumber, dataEntry) {
-			// there will already be one card on the page, so for subsequent data entries, create a card before populating
+		populateDeals: function (response, cardNumber, dataEntry) {
+			// There will already be one card on the page, so for subsequent data entries, create a card before populating
+			// This is the part where it creates 1 card per deals-cotainer
 			if (cardNumber !== 0) {
 				RatesDealsHandler.createNewCard();
 			}
 
+			// Currently there are two deal containers. Two cards are added per populateDeals()
+			// We want to update the second container's card at index cardNumber as well
+			// If this goes beyond two containers to n containers, we might need to use map or make sure we clone
+			// from 1 container only so that we can call populateDeals	n time
+			var secondCardNumber = document.getElementsByClassName("deal-link").length/2 + cardNumber
+
 			// set product URL
-			dealContainer.getElementsByClassName("deal-link")[cardNumber].href = response.data[dataEntry].listing.merchantURL;
+			document.getElementsByClassName("deal-link")[cardNumber].href = response.data[dataEntry].listing.merchantURL;
+			document.getElementsByClassName("deal-link")[secondCardNumber].href = response.data[dataEntry].listing.merchantURL;
 
 			// set product image
-			dealContainer.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
+			document.getElementsByClassName("deal-img")[cardNumber].src = response.data[dataEntry].images[0];
+			document.getElementsByClassName("deal-img")[secondCardNumber].src = response.data[dataEntry].images[0];
 
 			// set merchant of product and change it to Title case
-			dealContainer.getElementsByClassName("merchant")[cardNumber].innerHTML = RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
+			document.getElementsByClassName("merchant")[cardNumber].innerHTML = RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
+			document.getElementsByClassName("merchant")[secondCardNumber].innerHTML = RatesDealsHandler.toTitleCase(response.data[dataEntry].listing.merchant);
 
 			// set deal title
-			const dealTitle = dealContainer.getElementsByClassName("deal-item-title")[cardNumber];
+			const dealTitle = document.getElementsByClassName("deal-item-title")[cardNumber];
 			dealTitle.innerHTML = response.data[dataEntry].name;
 			// if deal title is too long, clamp it to show ellipsis
 			RatesDealsHandler.clamp(dealTitle);
 
+			// set deal title
+			const dealTitle2 = document.getElementsByClassName("deal-item-title")[secondCardNumber];
+			dealTitle2.innerHTML = response.data[dataEntry].name;
+			// if deal title is too long, clamp it to show ellipsis
+			RatesDealsHandler.clamp(dealTitle2);
+
 			/*
 			* commented out for now, may be needed for activity feed in the future
 			//set how long ago deal was posted
-			document.getElementsByClassName("deal-posted-date")[cardNumber].innerHTML = getTimeAgo(response.data[dataEntry].lastCreated);
+			getElementsByClassName("deal-posted-date")[cardNumber].innerHTML = getTimeAgo(response.data[dataEntry].lastCreated);
 			*/
 
 			// set current price with correct currency
-			dealContainer.getElementsByClassName("current-price")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
+			document.getElementsByClassName("current-price")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
+			document.getElementsByClassName("current-price")[secondCardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.round(response.data[dataEntry].listing.currentPrice, 2);
 
 			// set savings with correct currency and decimal format
 			if (response.data[dataEntry].listing.previousPrice !== "") {
 				// if there are savings, calculate and set visbility to inherit
 				// Prevents savings to be shown when deal card supposed to be hidden
-				dealContainer.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'inherit';
-				dealContainer.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'inherit';
-				dealContainer.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
+				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'inherit';
+				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'inherit';
+				document.getElementsByClassName("amount-saved")[cardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
+
+				document.getElementsByClassName("save-container")[secondCardNumber].lastChild.style.visibility = 'inherit';
+				document.getElementsByClassName("prices-container")[secondCardNumber].lastChild.style.visibility = 'inherit';
+				document.getElementsByClassName("amount-saved")[secondCardNumber].innerHTML = RatesDealsHandler.getCurrency(response.data[dataEntry]) + RatesDealsHandler.calculateSavings(response.data[dataEntry]);
 			}
 			else {
 				// if no savings, hide savings related elements
-				dealContainer.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'hidden';
-				dealContainer.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'hidden';
+				document.getElementsByClassName("save-container")[cardNumber].lastChild.style.visibility = 'hidden';
+				document.getElementsByClassName("prices-container")[cardNumber].lastChild.style.visibility = 'hidden';
+
+				// if no savings, hide savings related elements
+				document.getElementsByClassName("save-container")[secondCardNumber].lastChild.style.visibility = 'hidden';
+				document.getElementsByClassName("prices-container")[secondCardNumber].lastChild.style.visibility = 'hidden';
 			}
 		},
 		/**
@@ -205,27 +232,46 @@ $(function () {
 			// sets isFetchingDeals to true to prevent multiple triggers
 			Config.isFetchingDeals = true;
 
+			var offsetOpts = ""
+			if (Config.offset > 0) {
+					offsetOpts = '&offset=' + encodeURIComponent(Config.offset)
+			}
+
+			var hostOpts = ""
+			if (Config.baseURL !== "https://ratex.co") {
+					hostOpts = "&host=" + encodeURIComponent("Config.baseURL");
+			}
+
 			$.ajax({
 				method: 'GET',
-				url: RatesDealsHandler.joinPath('/store/api/products') + '?filter=' + filter
+				url: RatesDealsHandler.joinPath('/store/api/products') + '?filter=' + filter + offsetOpts
 			})
 
 				// takes the data array from response and populate each new card with the information of each entry in this array
 				.done(function (response) {
 					// sets address bar with parameters
-					window.history.pushState({ urlPath: '/find?category=' + Config.currentCategory }, "", '/find?category=' + Config.currentCategory);
+					var path = "/find?category=" + Config.currentCategory + hostOpts
+					if (window.history.state === null) {
+						window.history.pushState({
+							urlPath: path
+						},
+							 "", path);
+					} else if (window.history.state.urlPath !== path) {
+						window.history.pushState({
+							urlPath: path
+						},
+							 "", path);
+					}
 
-					// create and populate cards with information from the data array
-					let dataEntry = 0;
-					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
-						for (i = 0; i < Config.allDealsContainers.length; i++) {
-							RatesDealsHandler.populateDeals(response, Config.allDealsContainers[i], cardNumber, dataEntry);
-						}
+					var dataEntry = 0;
+					for (var cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
+						RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
 					}
 
 					document.getElementById("resultsText").textContent = `${Config.currentCategory}`
 					document.getElementById("resultsCount").style.display = 'none';
 					document.getElementById("resultsCount").textContent = '';
+					document.getElementById("searchbar").value = "";
 
 					// checks if there are more deals that can be loaded for infinite scroll
 					Config.hasMore = response.hasMore;
@@ -249,17 +295,28 @@ $(function () {
 		* @param {String}		filter		the search text to pass to RateS endpoint
 		*/
 		searchDeals: function (filter) {
-			if (typeof filter === "array") {
+			if (Array.isArray(filter)) {
 					filter = filter.join(" ")
 			}
+
 			filter = filter.toLowerCase();
 
 			// sets isFetchingDeals to true to prevent multiple triggers
 			Config.isFetchingDeals = true;
 
+			var offsetOpts = ""
+			if (Config.offset > 0) {
+					offsetOpts = '&offset=' + encodeURIComponent(Config.offset);
+			}
+
+			var hostOpts = ""
+			if (Config.baseURL !== "https://ratex.co") {
+					hostOpts = "&host=" + encodeURIComponent(Config.baseURL);
+			}
+
 			$.ajax({
 				method: 'GET',
-				url: RatesDealsHandler.joinPath('/store/api/products/search') + '?filter=' + filter
+				url: RatesDealsHandler.joinPath('/store/api/products/search') + '?filter=' + filter + offsetOpts
 			})
 
 				// takes the data array from response and populate each new card with the information of each entry in this array
@@ -268,11 +325,10 @@ $(function () {
 					RatesDealsHandler.setQuery(Config.searchText);
 
 					// create and populate cards with information from the data array
-					let dataEntry = 0;
-					for (cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
-						for (i = 0; i < Config.allDealsContainers.length; i++) {
-							RatesDealsHandler.populateDeals(response, Config.allDealsContainers[i], cardNumber, dataEntry);
-						}
+
+					var dataEntry = 0;
+					for (var cardNumber = Config.offset; dataEntry < response.data.length && Config.hasMore; cardNumber++ , dataEntry++) {
+							RatesDealsHandler.populateDeals(response, cardNumber, dataEntry);
 					}
 
 					// checks if there are more deals that can be loaded for infinite scroll
@@ -284,10 +340,13 @@ $(function () {
 					// set isFetchingDeals to false so infinite scroll can fetch next batch if triggered
 					Config.isFetchingDeals = false;
 
+					// update search count
+					RatesDealsHandler.renderQueryCount(response.count);
+
 					// make deals visible only if there are (previous) results
 					if (Config.offset !== 0 || response.data.length !== 0 ) {
 						Config.dealsContainer.style.display = 'flex';
-						RatesDealsHandler.renderQueryCount(response.count);
+
 					}
 
 				})
@@ -300,17 +359,18 @@ $(function () {
 		*/
 		parse_query_string: function (query) {
 			query = query.replace(/\+/g, '%20')
+			query = query.replace(/\?/g, '')
 			const vars = query.split("&");
 		        const query_string = {};
-                        let m = 0;
-			for (m = 0; m < vars.length; m++) {
-				let pair = vars[m].split("=");
+
+			for (var m = 0; m < vars.length; m++) {
+				var pair = vars[m].split("=");
 				// If first entry with this name
 				if (typeof query_string[pair[0]] === "undefined") {
 					query_string[pair[0]] = decodeURIComponent(pair[1]);
 					// If second entry with this name
 				} else if (typeof query_string[pair[0]] === "string") {
-					let arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
+					var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
 					query_string[pair[0]] = arr;
 					// If third or later entry with this name
 				} else {
@@ -354,28 +414,67 @@ $(function () {
 			}
 		},
 
+
+		/**
+		* setQuery
+		* 1. replaces all instances of q search parameter (even blank ones)
+		* with provided query string
+		* 2. Updates search bar text value
+		* 3. Updates results meta header text
+		* https://ratex.store/find?category=Latest&q=&q=&q=&q=&q=&q=&q=&q=iphone
+		* https://ratex.store/find?category=Latest&q=&q=&q=&q=&q=&q=&q=&q=&q=
+		*/
 		setQuery: function (query) {
+
+			var hostOpts = ""
+			if (Config.baseURL !== "https://ratex.co") {
+					hostOpts = "&host=" + encodeURIComponent(Config.baseURL);
+			}
+
 			Config.search = true
 			Config.searchText = query
+
 			// update url query paramter for q only and remove duplicate q
-			href = window.location.href
-			var regex = /[?;&]?(q=[^&#]*)\b[&;#]?/g;
-			var start = 0
-			while ((matches = regex.exec(href)) !== null) {
-				if (regex.lastIndex === 0) {
-					href = href.replace(regex, "q="+decodeURIComponent(query));
+			// Note: there is a simplier way without regex: parse query and then unparse it
+			var search = window.location.search
+
+			// remove category parameters
+			search = search.replace(/category=.*&/g, "")
+			var regex = /[?;&]?(q=[^&#]*)[&;#]?/g;
+			var first = "", second = "", start = 0
+			while ((matches = regex.exec(search)) !== null) {
+				if (regex.lastIndex === 0 || regex.lastIndex === search.length) {
+					var regex2 = /(q=[^&#]*)\b/g;
+					search = search.replace(regex2, "q="+decodeURIComponent(Config.searchText));
 				} else {
-					first = href.substring(start, regex.lastIndex).replace(/q=[^&#]*&?/g, "");
-					second = href.substring(regex.lastIndex)
-					href = first + second
+					first = search.substring(start, regex.lastIndex).replace(/q=[^&#]*&?/g, "");
+					second = search.substring(regex.lastIndex)
+					search = first + second
 					start = regex.lastIndex;
 				}
 			}
 
-			Parser.href = href
-			path = Parser.pathname + Parser.search + Parser.hash
+			if (!regex2) {
+					if (search.length > 0) {
+						search = search + "&q=" + decodeURIComponent(Config.searchText);
+					} else {
+						search = "?q=" + decodeURIComponent(Config.searchText);
+					}
+			}
 
-			window.history.pushState({ urlPath: path }, "", path);
+			var path = "/find" + "?q=" + query + hostOpts
+			if (window.history.state === null) {
+				window.history.pushState({
+					urlPath: path
+				},
+					 "", path);
+			} else if (window.history.state.urlPath !== path) {
+				window.history.pushState({
+					urlPath: path
+				},
+					 "", path);
+			}
+
 
 			document.getElementById("searchbar").value = Config.searchText
 			document.getElementById("resultsText").textContent = `Search Results for "${Config.searchText}"`
@@ -392,12 +491,12 @@ $(function () {
 		resize: function () {
 			if (window.innerWidth < 700 && !Config.mobile) {
 				Config.dealsContainer.style.display = 'none';
-				Config.dealsContainer = document.getElementsByClassName("deals-container mobile")[0];
+				Config.dealsContainer = Config.allDealsContainers[1];
 				Config.dealsContainer.style.display = 'flex';
 				Config.mobile = true;
 			} else if (window.innerWidth >= 700 && Config.mobile){
 				Config.dealsContainer.style.display = 'none';
-				Config.dealsContainer = document.getElementsByClassName("deals-container")[0];
+				Config.dealsContainer = Config.allDealsContainers[0];
 				Config.dealsContainer.style.display = 'flex';
 				Config.mobile = false;
 			}
@@ -407,32 +506,29 @@ $(function () {
 		* get parameters from address, then get deals from the category specified in parameters
 		*/
 		initiate: function () {
+			RatesDealsHandler.resetFeed();
 			RatesDealsHandler.resize();
 			const query = window.location.search.substring(1);
 			const qs = RatesDealsHandler.parse_query_string(query);
 
-			if (qs.category !== undefined) {
-				Config.currentCategory = qs.category;
-			} else if (qs.q !== undefined || !qs.q.length) {
-				RatesDealsHandler.setQuery(qs.q);
-			} else if (qs.host !== undefined) {
-				Parser.href = qs.host
-				if (parser.protocol.substring(0, 4) !== 'http') {
-					// append http protocol using "wrongly" parsed pieces
-					qss.host = 'http://' + parser.protocol + parser.pathname;
-				}
-
-				Config.host = qs.host;
+			// Look for host variable first before calling endpoints
+			if (qs.host && qs.host.length > 0) {
+				Config.baseURL = qs.host;
 			}
 
-			if (Config.search) {
-				RatesDealsHandler.setCurrentButton();
+			// Either search or getDeals, search gets priority
+			// Defaults to latest
+			if (qs.q && qs.q.length > 0) {
+				Config.searchText = qs.q;
 				RatesDealsHandler.searchDeals(Config.searchText);
+			} else if (qs.category && qs.category.length > 0) {
+				Config.currentCategory = qs.category;
+				RatesDealsHandler.setCurrentButton();
+				RatesDealsHandler.getDeals(Config.currentCategory);
 			} else {
 				RatesDealsHandler.setCurrentButton();
 				RatesDealsHandler.getDeals(Config.currentCategory);
 			}
-
 		}
 	};
 
@@ -442,60 +538,64 @@ $(function () {
 		if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight / 1.4)) {
 			if (!Config.isFetchingDeals && Config.hasMore) {
 				if (Config.search) {
-					RatesDealsHandler.searchDeals(Config.searchText + '&offset=' + Config.offset.toString());
+					RatesDealsHandler.searchDeals(Config.searchText);
 				} else {
-					RatesDealsHandler.getDeals(Config.currentCategory + '&offset=' + Config.offset.toString());
+					RatesDealsHandler.getDeals(Config.currentCategory);
 				}
-
 			}
 		}
 	};
 
-		// mobilze resizing but with a separate deals container to support structural differences
+	//treat state change as a refresh in content
+	window.onpopstate = function(event) {
+		RatesDealsHandler.initiate();
+	};
 
-		// from https://developer.mozilla.org/en-US/docs/Web/Events/resize
-		var optimizedResize = (function() {
+	// mobilze resizing but with a separate deals container to support structural differences
 
-		  var callbacks = [],
-		      running = false;
+	// from https://developer.mozilla.org/en-US/docs/Web/Events/resize
+	var optimizedResize = (function() {
 
-		  // fired on resize event
-		  function resize() {
-		    if (!running) {
-		      running = true;
-		      if (window.requestAnimationFrame) {
-		        window.requestAnimationFrame(runCallbacks);
-		      } else {
-		        setTimeout(runCallbacks, 66);
-		      }
-		    }
-		  }
+	  var callbacks = [],
+	      running = false;
 
-		  // run the actual callbacks
-		  function runCallbacks() {
-		    callbacks.forEach(function(callback) {
-		      callback();
-		    });
+	  // fired on resize event
+	  function resize() {
+	    if (!running) {
+	      running = true;
+	      if (window.requestAnimationFrame) {
+	        window.requestAnimationFrame(runCallbacks);
+	      } else {
+	        setTimeout(runCallbacks, 66);
+	      }
+	    }
+	  }
 
-		    running = false;
-		  }
+	  // run the actual callbacks
+	  function runCallbacks() {
+	    callbacks.forEach(function(callback) {
+	      callback();
+	    });
 
-		  // adds callback to loop
-		  function addCallback(callback) {
-		    if (callback) {
-		      callbacks.push(callback);
-		    }
-		  }
+	    running = false;
+	  }
 
-		  return {
-		    // public method to add additional callback
-		    add: function(callback) {
-		      if (!callbacks.length) {
-		        window.addEventListener('resize', resize);
-		      }
-		      addCallback(callback);
-		    }
-		  }
+	  // adds callback to loop
+	  function addCallback(callback) {
+	    if (callback) {
+	      callbacks.push(callback);
+	    }
+	  }
+
+	  return {
+	    // public method to add additional callback
+	    add: function(callback) {
+	      if (!callbacks.length) {
+	        window.addEventListener('resize', resize);
+	      }
+	      addCallback(callback);
+	    }
+	  }
 
 	}());
 
@@ -533,9 +633,11 @@ $(function () {
 
 	$('#search').submit((e) => {
 			e.preventDefault();
-			RatesDealsHandler.resetFeed();
-			Config.searchText = document.getElementById("searchbar").value;
-			RatesDealsHandler.searchDeals(Config.searchText);
+			if (document.getElementById("searchbar") && document.getElementById("searchbar").value.length > 0) {
+				Config.searchText = document.getElementById("searchbar").value;
+				RatesDealsHandler.resetFeed();
+				RatesDealsHandler.searchDeals(Config.searchText);
+			}
 	});
 
 });
