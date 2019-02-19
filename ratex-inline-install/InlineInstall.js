@@ -33,9 +33,11 @@ class InlineInstallWrapper {
       return document.getElementById(id);
     })
     // Variables
-    this.isChrome = !!window.chrome;
+    this.isOpera = (navigator.userAgent.match(/Opera|OPR\//) ? true : false); // https://stackoverflow.com/questions/1998293/how-to-determine-the-opera-browser-using-javascript
+    this.isChrome = !!window.chrome && !this.isOpera; // Opera also returns true for !!window.chrome
     this.isFirefox = (navigator.userAgent.indexOf("Firefox") > 0);
     this.chromeStoreUrl = 'https://chrome.google.com/webstore/detail/lebeffkkoglndkjfggcokhkikpilochf';
+    this.operaStoreUrl = 'https://addons.opera.com/extensions/details/ratex';
     // Init runs
     this.runDocumentMutations();
   }
@@ -94,6 +96,10 @@ class InlineInstallWrapper {
     }
   }
 
+  getOperaAddonInline() {
+    window.open(this.operaStoreUrl, '_blank');
+  }
+
   // Function to check if extension is installed
   checkAndSetIfExtensionInstalled() {
     if (document.getElementById('ratex-extension-is-installed')) {
@@ -117,7 +123,13 @@ class InlineInstallWrapper {
   runDocumentMutations() {
     // If user is not on mobile, run Browser Checks
     if ($(window).width() > 480) {
-      if (this.isChrome) {
+      if (this.isOpera) {
+        if (!this.checkAndSetIfExtensionInstalled()) {
+          this.arrayOfInstallButtons.forEach((button) => {
+            if (button) button.onclick = this.getOperaAddonInline.bind(this);
+          })
+        }
+      } else if (this.isChrome) {
         if (!this.checkAndSetIfExtensionInstalled()) {
           this.arrayOfInstallButtons.forEach((button) => {
             if (button) button.onclick = this.getChromeExtensionInline.bind(this);
@@ -137,7 +149,7 @@ class InlineInstallWrapper {
           });
         }
       } else {
-        // This is safari.
+        // This is safari/ unsupported browsers
         // Set styles for these buttons
         this.arrayOfInstallButtons.forEach((button) => {
           if (button) {
