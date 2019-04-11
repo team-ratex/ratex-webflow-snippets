@@ -64,43 +64,26 @@ function retrieveData() {
     xhr.addEventListener("load", function () {
       if (xhr.status === 200) {
         data = JSON.parse(xhr.response);
-        popupData.date = calTimeDiff(data.data[0].last_success);
+        latestData.date = calTimeDiff(data.data[0].last_success);
         if (data.data[0].type === "PRODUCT") {
           latestData.title = "Someone recently purchased";
           latestData.name = data.data[0].product.name;
           latestData.image = data.data[0].product.images[0];
-          latestData.id = data.data[0].product.id;
+          latestData.id = "P"+ data.data[0].product.id.toString();
           latestData.link = "https://ratex.co/home/" + data.data[0].product.slug + "/p/" + data.data[0].id;
         } else {
           latestData.title = "Someone recently used";
           latestData.name = data.data[0].coupon.merchant;
           latestData.image = "https://s3-ap-southeast-1.amazonaws.com/ratex-merchants/icons/ecommerce/" + data.data[0].coupon.merchant + ".png"
-          latestData.id = data.data[0].coupon.id;
+          latestData.id = "C" + data.data[0].coupon.id.toString();
           latestData.link = "https://ratex.co/home/shops/#voucher=" + data.data[0].id;
         }
-        
-        // var latestData = retrieveNextLatestData(data);
         updateDisplay(latestData);
       } else { 
         // console.log('error');
       }
     }, false );
     xhr.send();
-}
-
-function retrieveNextLatestData(data){
-  var nextAvailiableData = data.data.find(function (element) {
-    var id;
-    if (element.type === "PRODUCT") {
-        id = element.product.id;
-    }else{
-        id = element.coupon.id;
-    }
-    if (repeatIdCheck.indexOf(id) === -1) {
-      return element;
-    }
-  });
-  return nextAvailiableData;
 }
 
 function calTimeDiff(time) {
@@ -183,5 +166,3 @@ function closePopup() {
   clearTimeout(followUpTimeup);
   clearTimeout(durationTimeUp);
 }
-
-popupSetup();
