@@ -160,8 +160,10 @@ function incomingIntervalUpdate(followUpTime) {
 
 // Open a new tab base on the link
 function openInNewTab() {
-  var win = window.open(popupData.link, '_blank');
-  win.focus();
+  if(!!popupData.link) {
+    var win = window.open(popupData.link, '_blank');
+    win.focus();
+  }
 }
 
 // Close the app fomo popup
