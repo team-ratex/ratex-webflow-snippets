@@ -5,14 +5,15 @@ var followUpTimeup;
 var durationTimeUp;
 var appearDuration;
 
+// Set up the app fomo popup
 function popupSetup(initalTime = 10000, followUpTime = 10000, duration = 5000) {
-  // retrieve data
   if (sessionStorage.getItem('popupIdList') !== null) {
     repeatIdCheck = JSON.parse(sessionStorage.getItem('popupIdList'));
   }
   var popupContainer = document.getElementsByClassName('popupContainer')[0];
   var retreivalTimelimit = 10000;
   var durationLimit = 5000;
+  // Prevent calling popupSetup function twice
   if (!popupContainer) {
     if (followUpTime < retreivalTimelimit) {
       followUpTime = retreivalTimelimit
@@ -26,14 +27,15 @@ function popupSetup(initalTime = 10000, followUpTime = 10000, duration = 5000) {
     }
     appearDuration = duration;
     createDisplay();
+    // when time reaches the initalTime , intervally calls the incoming data, retrieve data and display. 
     initalTimeup = setTimeout(function () {
+      incomingIntervalUpdate(followUpTime);
       retrieveData();
-      incomingUpdate(followUpTime);
     }, initalTime);
   }
 }
 
-// 
+// Create the display of app fomo
 function createDisplay() {
   var popupElement = document.createElement('div');
   popupElement.className = 'popupContainer';
@@ -58,34 +60,34 @@ function createDisplay() {
   }
 }
 
+// Retrieve the data from ratex.co/store/api/feed
 function retrieveData() {
-    var xhr = new XMLHttpRequest(), data, latestData = {};
+    var xhr = new XMLHttpRequest(), data;
     xhr.open('GET', 'https://ratex.co/store/api/feed', true);
     xhr.addEventListener("load", function () {
       if (xhr.status === 200) {
         data = JSON.parse(xhr.response);
-        latestData.date = calTimeDiff(data.data[0].last_success);
+        popupData.date = calTimeDiff(data.data[0].last_success);
         if (data.data[0].type === "PRODUCT") {
-          latestData.title = "Someone recently purchased";
-          latestData.name = data.data[0].product.name;
-          latestData.image = data.data[0].product.images[0];
-          latestData.id = "P"+ data.data[0].product.id.toString();
-          latestData.link = "https://ratex.co/home/" + data.data[0].product.slug + "/p/" + data.data[0].id;
+          popupData.title = "Someone recently purchased";
+          popupData.name = data.data[0].product.name;
+          popupData.image = data.data[0].product.images[0];
+          popupData.id = "P"+ data.data[0].product.id.toString();
+          popupData.link = "https://ratex.co/home/" + data.data[0].product.slug + "/p/" + data.data[0].product.id;
         } else {
-          latestData.title = "Someone recently used";
-          latestData.name = data.data[0].coupon.merchant;
-          latestData.image = "https://s3-ap-southeast-1.amazonaws.com/ratex-merchants/icons/ecommerce/" + data.data[0].coupon.merchant + ".png"
-          latestData.id = "C" + data.data[0].coupon.id.toString();
-          latestData.link = "https://ratex.co/home/shops/#voucher=" + data.data[0].id;
+          popupData.title = "Someone recently used";
+          popupData.name = data.data[0].coupon.merchant;
+          popupData.image = "https://s3-ap-southeast-1.amazonaws.com/ratex-merchants/icons/ecommerce/" + data.data[0].coupon.merchant + ".png"
+          popupData.id = "C" + data.data[0].coupon.id.toString();
+          popupData.link = "https://ratex.co/home/shops/#voucher=" + data.data[0].coupon.id;
         }
-        updateDisplay(latestData);
-      } else { 
-        // console.log('error');
+        updateDisplay();
       }
     }, false );
     xhr.send();
 }
 
+// Calcute the difference between today's time and data's time 
 function calTimeDiff(time) {
   var todayDate = new Date();
   var compareDate = new Date(time);
@@ -106,7 +108,8 @@ function calTimeDiff(time) {
   return diffDays;
 }
 
-function updateDisplay(popupData) {
+// Update the display
+function updateDisplay() {
   if (repeatIdCheck.indexOf(popupData.id) === -1) {
     var imageContent = document.getElementById('imageContent');
     if (imageContent) {
@@ -136,6 +139,7 @@ function updateDisplay(popupData) {
   }
 }
 
+// Duration that the app fomo appears before it disappear
 function appearDurationBeforeExit() {
   durationTimeUp = setTimeout(function () {
     var popupContainer = document.getElementsByClassName("popupContainer")[0];
@@ -145,24 +149,28 @@ function appearDurationBeforeExit() {
   }, appearDuration);
 }
 
-function incomingUpdate(followUpTime) {
-  followUpTimeup = setTimeout(function () {
+// Handles at an interval of followUp time to get the data 
+function incomingIntervalUpdate(followUpTime) {
+  followUpTimeup = setInterval(function () {
     retrieveData();
-    incomingUpdate(followUpTime);
   }, followUpTime);
 }
 
+// Open a new tab base on the link
 function openInNewTab() {
   var win = window.open(popupData.link, '_blank');
   win.focus();
 }
 
+// Close the app fomo popup
 function closePopup() {
   var popupContainer = document.getElementsByClassName('popupContainer')[0];
   if (popupContainer) {
+    // To make it "disappear"
     popupContainer.id = "popupContainerExit";
   }
+  // Stop the time
   clearTimeout(initalTimeup);
-  clearTimeout(followUpTimeup);
+  clearInterval(followUpTimeup);
   clearTimeout(durationTimeUp);
 }
