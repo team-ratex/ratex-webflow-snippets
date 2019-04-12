@@ -7,7 +7,9 @@ var appearDuration;
 
 // Set up the app fomo popup
 function popupSetup(initalTime = 10000, followUpTime = 10000, duration = 5000) {
-  if (sessionStorage.getItem('popupIdList') !== null) {
+  var hasPopupIdList = sessionStorage.getItem('popupIdList') !== null &&
+  Array.isArray(JSON.parse(sessionStorage.getItem('popupIdList')));
+  if (hasPopupIdList) {
     repeatIdCheck = JSON.parse(sessionStorage.getItem('popupIdList'));
   }
   var popupContainer = document.getElementsByClassName('popupContainer')[0];
