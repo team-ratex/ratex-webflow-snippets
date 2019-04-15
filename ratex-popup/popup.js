@@ -57,15 +57,14 @@ function createDisplay() {
   popupElement.className = popup.popupContainerClass;
   popupElement.id = 'popupContainerOut';
   popupElement.innerHTML =
-    "<img id=" + popup.imageId +"></img>" +
+    "<img id=" + popup.imageId +" />" +
     "<div class=textContainer>" +
     "<div class=closeContainer>" +
     "<div id=" + popup.titleId + "></div>" + 
     "<img src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/ClosePopup.svg' alt='close' id=" + popup.closeId+" />" +
     "</div>" +
     "<div id=" + popup.nameId +"></div>" +
-    "<div id=" + popup.timeId +"></div>" +
-    "</div>";
+    "<div id=" + popup.timeId +"></div>";
   document.body.appendChild(popupElement);
   popupElement.onclick = function (e) {
     if (e.target.id === popup.closeId) {
