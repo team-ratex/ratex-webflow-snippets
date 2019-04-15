@@ -1,9 +1,31 @@
+/*
+ * This function may take in initialTime , followUpTime and duration
+ * Usage:
+  * popupInit()
+  * Wait for 10 seconds, display appear for 7 seconds (inclusive of 1 second entrance and 1 second exit).
+  * Display disappeared afterwards until the next batch of data is loaded. 
+  * Calculation for waitTime to appear again = followUpTime - duration = 10 - 7 = 3 seconds
+  * 
+  * popupInit(5000, 13000, 7000)
+  * Wait for 5 seconds, display appear for 9 seconds (inclusive of 1 second entrance and 1 second exit).
+  * Display disappeared afterwards until the next batch of data is loaded.
+  * Calculation for waitTime to appear again = followUpTime - duration = 13 - 9 = 4 seconds
+  * 
+  * User is able to click the display with the following: ,
+    * close (x) to close the display.
+    * others open a new tab directs them to ratex.co products or coupons depending on the display shown.
+  * Notes:
+    * Ensure that this function and style are loaded before instantiating, i.e.
+    * <link rel="stylesheet" href="URL_TO_STYLE_HERE">
+    * <script type='text/javascript' async=false defer=false src='URL_TO_SCRIPT_HERE'></script>
+    * <script>popupInit();</script>
+*/
 // closure used lexical scoping such that other functions are not be able to called
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
-function popupInit(initalTime = 10000, followUpTime = 10000, duration = 5000) {
+function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
   let popupData = {};
   let repeatIdCheck = [];
-  let initalTimeup;
+  let initialTimeup;
   let followUpTimeup;
   let durationTimeUp;
   let appearDuration;
@@ -31,8 +53,8 @@ function popupInit(initalTime = 10000, followUpTime = 10000, duration = 5000) {
     const durationLimit = 5000;
     // Prevent calling popupSetup function twice
     if (!popupContainer) {
-      if (typeof initalTime !== 'number' || initalTime < 0) {
-        initalTime = retreivalTimelimit;
+      if (typeof initialTime !== 'number' || initialTime < 0) {
+        initialTime = retreivalTimelimit;
       }
       if (typeof followUpTime !== 'number' || followUpTime < retreivalTimelimit) {
         followUpTime = retreivalTimelimit
@@ -47,10 +69,10 @@ function popupInit(initalTime = 10000, followUpTime = 10000, duration = 5000) {
       appearDuration = duration;
       createDisplay();
       // when time reaches the initalTime , intervally calls the incoming data, retrieve data and display. 
-      initalTimeup = setTimeout(function () {
+      initialTimeup = setTimeout(function () {
         incomingIntervalUpdate(followUpTime);
         retrieveData();
-      }, initalTime);
+      }, initialTime);
     }
   }
   // Create the display of app fomo
@@ -188,7 +210,7 @@ function popupInit(initalTime = 10000, followUpTime = 10000, duration = 5000) {
       popup.id = "popupContainerExit";
     }
     // Stop the time
-    clearTimeout(initalTimeup);
+    clearTimeout(initialTimeup);
     clearInterval(followUpTimeup);
     clearTimeout(durationTimeUp);
   }
