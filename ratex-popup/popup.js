@@ -5,22 +5,34 @@ var followUpTimeup;
 var durationTimeUp;
 var appearDuration;
 
+// enum 
+var localStorageKey = 'popupIdList';
+var popupContainerClass = 'popupContainer';
+var imageId = 'imageContent';
+var titleId = 'title';
+var nameId = 'name';
+var timeId = 'time';
+var closeId = 'close';
+
 // Set up the app fomo popup
 function popupSetup(initalTime = 10000, followUpTime = 10000, duration = 5000) {
-  var hasPopupIdList = sessionStorage.getItem('popupIdList') !== null &&
-  Array.isArray(JSON.parse(sessionStorage.getItem('popupIdList')));
+  var hasPopupIdList = localStorage.getItem(localStorageKey) !== null &&
+    Array.isArray(JSON.parse(localStorage.getItem(localStorageKey)));
   if (hasPopupIdList) {
-    repeatIdCheck = JSON.parse(sessionStorage.getItem('popupIdList'));
+    repeatIdCheck = JSON.parse(localStorage.getItem(localStorageKey));
   }
-  var popupContainer = document.getElementsByClassName('popupContainer')[0];
+  var popupContainer = document.getElementsByClassName(popupContainerClass)[0];
   var retreivalTimelimit = 10000;
   var durationLimit = 5000;
   // Prevent calling popupSetup function twice
   if (!popupContainer) {
-    if (followUpTime < retreivalTimelimit) {
+    if (typeof initalTime !== 'number' || initalTime <0 ){
+        initalTime = retreivalTimelimit;
+    }
+    if (typeof followUpTime !== 'number' || followUpTime < retreivalTimelimit) {
       followUpTime = retreivalTimelimit
     }
-    if (duration >= followUpTime) {
+    if (typeof duration !== 'number' || duration < 0 || duration >= followUpTime) {
       //1s faded in , 1s faded out
       duration = followUpTime - 2000;
     }
@@ -40,21 +52,21 @@ function popupSetup(initalTime = 10000, followUpTime = 10000, duration = 5000) {
 // Create the display of app fomo
 function createDisplay() {
   var popupElement = document.createElement('div');
-  popupElement.className = 'popupContainer';
+  popupElement.className = popupContainerClass;
   popupElement.id = 'popupContainerOut';
   popupElement.innerHTML =
-    "<img id=imageContent></img>" +
+    "<img id="+ imageId +"></img>" +
     "<div class=textContainer>" +
     "<div class=closeContainer>" +
-    "<div id=title></div>" +
-    "<img src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/ClosePopup.svg' alt='close' id='close' />" +
+    "<div id="+ titleId +"></div>" +
+  "<img src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/ClosePopup.svg' alt='close' id=" + closeId+" />" +
     "</div>" +
-    "<div id=name></div>" +
-    "<div id=time></div>" +
+    "<div id="+nameId +"></div>" +
+    "<div id="+timeId +"></div>" +
     "</div>"
   document.body.appendChild(popupElement);
   popupElement.onclick = function (e) {
-    if (e.target.id === 'close') {
+    if (e.target.id === closeId) {
       closePopup();
     } else {
       openInNewTab();
@@ -113,30 +125,30 @@ function calTimeDiff(time) {
 // Update the display
 function updateDisplay() {
   if (repeatIdCheck.indexOf(popupData.id) === -1) {
-    var imageContent = document.getElementById('imageContent');
+    var imageContent = document.getElementById(imageId);
     if (imageContent) {
       imageContent.setAttribute('alt', popupData.name);
       imageContent.setAttribute('src', popupData.image);
     }
-    var title = document.getElementById('title');
+    var title = document.getElementById(titleId);
     if (title) {
       title.innerText = popupData.title;
     }
-    var name = document.getElementById('name');
+    var name = document.getElementById(nameId);
     if (name) {
       name.innerText = popupData.name;
     }
-    var time = document.getElementById('time');
+    var time = document.getElementById(timeId);
     if (time) {
       time.innerText = popupData.date;
     }
-    var popupContainer = document.getElementsByClassName("popupContainer")[0];
+    var popupContainer = document.getElementsByClassName(popupContainerClass)[0];
     if (popupContainer) {
       popupContainer.id = "popupContainerEntrance";
     }
     // update the check
     repeatIdCheck.push(popupData.id);
-    sessionStorage.setItem('popupIdList', JSON.stringify(repeatIdCheck));
+    localStorage.setItem(localStorageKey, JSON.stringify(repeatIdCheck));
     appearDurationBeforeExit();
   }
 }
@@ -144,7 +156,7 @@ function updateDisplay() {
 // Duration that the app fomo appears before it disappear
 function appearDurationBeforeExit() {
   durationTimeUp = setTimeout(function () {
-    var popupContainer = document.getElementsByClassName("popupContainer")[0];
+    var popupContainer = document.getElementsByClassName(popupContainerClass)[0];
     if (popupContainer) {
       popupContainer.id = "popupContainerExit";
     }
@@ -168,7 +180,7 @@ function openInNewTab() {
 
 // Close the app fomo popup
 function closePopup() {
-  var popupContainer = document.getElementsByClassName('popupContainer')[0];
+  var popupContainer = document.getElementsByClassName(popupContainerClass)[0];
   if (popupContainer) {
     // To make it "disappear"
     popupContainer.id = "popupContainerExit";
