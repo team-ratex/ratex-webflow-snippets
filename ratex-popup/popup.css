@@ -9,6 +9,8 @@
     display: -ms-flexbox;
     display: flex;
     margin-left: 70px;
+    line-height: 1.5;
+    font-family: Montserrat, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
   }
 
   .popupContainer#popupContainerEntrance {
@@ -202,7 +204,7 @@
   font-weight: 800;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
