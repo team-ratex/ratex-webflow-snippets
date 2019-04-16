@@ -1,5 +1,5 @@
 /*
- * This function may take in initialTime , followUpTime and duration
+ * This function may take in parameter of initialTime , followUpTime and duration
  * Usage:
   * popupInit()
   * Wait for 10 seconds, display appear for 7 seconds (inclusive of 1 second entrance and 1 second exit).
