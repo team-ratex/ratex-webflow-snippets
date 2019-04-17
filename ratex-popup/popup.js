@@ -85,7 +85,7 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
       "<div class=textContainer>" +
       "<div class=closeContainer>" +
       "<div id=" + popup.titleId + "></div>" +
-      "<img src='https://raw.githubusercontent.com/rate-engineering/ratex-webflow-snippets/44ee8793cc84d126b9ecf0f36bdc9f4dd1c2bfbf/ClosePopup.svg' alt='close' id=" + popup.closeId + " />" +
+      "<div id=" + popup.closeId + ">X</div>" +
       "</div>" +
       "<div id=" + popup.nameId + "></div>" +
       "<div id=" + popup.timeId + "></div>";
@@ -207,7 +207,7 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
     const popupContainer = document.getElementsByClassName(popup.popupContainerClass)[0];
     if (popupContainer) {
       // To make it "disappear"
-      popup.id = "popupContainerExit";
+      popupContainer.id = "popupContainerExit";
     }
     // Stop the time
     clearTimeout(initialTimeup);
