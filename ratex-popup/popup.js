@@ -106,7 +106,7 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
   // Retrieve the data from ratex.co/store/api/feed
   function retrieveData() {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', 'https://ratex.co/store/api/feed', true);
+    xhr.open('GET', 'https://ratex.co/store/api/feed?limit=2', true);
     xhr.addEventListener("load", function () {
       if (xhr.status === 200) {
         const data = JSON.parse(xhr.response);
