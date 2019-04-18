@@ -81,18 +81,18 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
     popupElement.className = popup.popupContainerClass;
     popupElement.id = 'popupContainerOut';
     popupElement.innerHTML =
-      "<img id=" + popup.imageId + " />" +
-      "<div class=textContainer>" +
-      "<div class=closeContainer>" +
-      "<div id=" + popup.titleId + "></div>" +
-      "<svg id='" + popup.closeId + "' xmlns=http://www.w3.org/2000/svg "+
-        "viewPort= '0 0 15 16' fill= none>"+
-        "<line x1=1 y1=15 x2= 16 y2=1 stroke=white stroke-width=2></line>"+
-        "<line x1=1 y1=1 x2= 15 y2=16 stroke=white stroke-width=2></line>"+
-      "</svg>"+
-      "</div>" +
-      "<div id=" + popup.nameId + "></div>" +
-      "<div id=" + popup.timeId + "></div>";
+      `<img id=${popup.imageId} />` +
+      `<div class='textContainer'>` +
+      `<div class='closeContainer'>` +
+      `<div id=${popup.titleId}></div>` +
+      `<svg id=${popup.closeId} xmlns='http://www.w3.org/2000/svg'` +
+      `viewPort= '0 0 12 12' width='11' height='11' fill= 'none'>` +
+      `<line x1=1 y1=11 x2= 11 y2=1 stroke=white stroke-width=2></line>` +
+      `<line x1=1 y1=1 x2= 11 y2=11 stroke=white stroke-width=2></line>` +
+      `</svg>` +
+      `</div>` +
+      `<div id=${popup.nameId}></div>` +
+      `<div id=${popup.timeId}></div>`;
     document.body.appendChild(popupElement);
 
     popupElement.onclick = function (e) {
@@ -115,14 +115,14 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
           popupData.title = "Someone recently purchased";
           popupData.name = data.data[0].product.name;
           popupData.image = data.data[0].product.images[0];
-          popupData.id = "P" + data.data[0].product.id.toString();
-          popupData.link = "https://ratex.co/home/" + data.data[0].product.slug + "/p/" + data.data[0].product.id;
+          popupData.id = `P${data.data[0].product.id}`;
+          popupData.link = `https://ratex.co/home/${data.data[0].product.slug}/p/${data.data[0].product.id}`;
         } else {
           popupData.title = "Someone recently used";
           popupData.name = data.data[0].coupon.merchant;
-          popupData.image = "https://s3-ap-southeast-1.amazonaws.com/ratex-merchants/icons/ecommerce/" + data.data[0].coupon.merchant + ".png"
-          popupData.id = "C" + data.data[0].coupon.id.toString();
-          popupData.link = "https://ratex.co/home/shops/#voucher=" + data.data[0].coupon.id;
+          popupData.image = `https://s3-ap-southeast-1.amazonaws.com/ratex-merchants/icons/ecommerce/${data.data[0].coupon.merchant}.png`;
+          popupData.id = `C${data.data[0].coupon.id}`;
+          popupData.link = `https://ratex.co/home/shops/#voucher=${data.data[0].coupon.id}`;
         }
         updateDisplay();
       }
@@ -140,13 +140,13 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
     const day = hours * 24;
     let diffDays;
     if (timeDiff > minutes) {
-      diffDays = Math.ceil(timeDiff / minutes).toString() + " minutes ago";
+      diffDays = `${Math.ceil(timeDiff / minutes)} minutes ago`;
     }
     if (timeDiff > hours) {
-      diffDays = Math.ceil(timeDiff / hours).toString() + " hours ago";
+      diffDays = `${Math.ceil(timeDiff / hours)} hours ago`;
     }
     if (timeDiff > day) {
-      diffDays = Math.ceil(timeDiff / day).toString() + " days ago";
+      diffDays = `${Math.ceil(timeDiff / day)} days ago`;
     }
     return diffDays;
   }
