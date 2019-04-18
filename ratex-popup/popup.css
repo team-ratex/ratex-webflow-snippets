@@ -195,8 +195,7 @@
 }
 
 .textContainer .closeContainer #close {
-  font: 16px;
-  color: white;
+  height: 16px;
 }
 
 .textContainer #name {
