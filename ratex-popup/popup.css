@@ -194,10 +194,6 @@
   font-weight: 500;
 }
 
-.textContainer .closeContainer #close {
-  height: 16px;
-}
-
 .textContainer #name {
   color: white;
   font-size: 12px;
