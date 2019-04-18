@@ -85,12 +85,16 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
       "<div class=textContainer>" +
       "<div class=closeContainer>" +
       "<div id=" + popup.titleId + "></div>" +
-      "<svg id=" + popup.closeId + "></svg>" +
+      "<svg id='" + popup.closeId + "' xmlns=http://www.w3.org/2000/svg "+
+        "viewPort= '0 0 15 16' fill= none>"+
+        "<line x1=1 y1=15 x2= 16 y2=1 stroke=white stroke-width=2></line>"+
+        "<line x1=1 y1=1 x2= 15 y2=16 stroke=white stroke-width=2></line>"+
+      "</svg>"+
       "</div>" +
       "<div id=" + popup.nameId + "></div>" +
       "<div id=" + popup.timeId + "></div>";
     document.body.appendChild(popupElement);
-    createX();
+
     popupElement.onclick = function (e) {
       if (e.target.id === popup.closeId) {
         closePopup();
@@ -98,30 +102,6 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
         openInNewTab();
       }
     }
-  }
-  function createX(){
-    const svg = document.getElementById(popup.closeId);
-    svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    svg.setAttribute("width", "15");
-    svg.setAttribute("height", "16");
-    svg.setAttribute("viewPort", "0 0 15 16");
-    svg.setAttribute("fill", "none");
-    const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line1.setAttribute("x1", "1");
-    line1.setAttribute("y1", "11");
-    line1.setAttribute("x2", "11");
-    line1.setAttribute("y2", "1");
-    line1.setAttribute("stroke", "white");
-    line1.setAttribute("stroke-width", "2");
-    svg.appendChild(line1);
-    const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    line2.setAttribute("x1", "1");
-    line2.setAttribute("y1", "1");
-    line2.setAttribute("x2", "11");
-    line2.setAttribute("y2", "11");
-    line2.setAttribute("stroke", "white");
-    line2.setAttribute("stroke-width", "2");
-    svg.appendChild(line2);
   }
   // Retrieve the data from ratex.co/store/api/feed
   function retrieveData() {
