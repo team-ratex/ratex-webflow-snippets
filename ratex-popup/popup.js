@@ -81,18 +81,18 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
     popupElement.className = popup.popupContainerClass;
     popupElement.id = 'popupContainerOut';
     popupElement.innerHTML =
-      `<img id=${popup.imageId} />` +
-      `<div class='textContainer'>` +
-      `<div class='closeContainer'>` +
-      `<div id=${popup.titleId}></div>` +
-      `<svg id=${popup.closeId} xmlns='http://www.w3.org/2000/svg'` +
-      `viewPort= '0 0 12 12' width='11' height='11' fill= 'none'>` +
-      `<line x1=1 y1=11 x2= 11 y2=1 stroke=white stroke-width=2></line>` +
-      `<line x1=1 y1=1 x2= 11 y2=11 stroke=white stroke-width=2></line>` +
-      `</svg>` +
-      `</div>` +
-      `<div id=${popup.nameId}></div>` +
-      `<div id=${popup.timeId}></div>`;
+      `<img id=${popup.imageId} />
+       <div class='textContainer'>
+          <div class='closeContainer'>
+          <div id=${popup.titleId}></div>
+          <svg id=${popup.closeId} xmlns='http://www.w3.org/2000/svg'
+          viewPort= '0 0 12 12' width='11' height='11' fill= 'none'>
+            <line x1=1 y1=11 x2= 11 y2=1 stroke=white stroke-width=2></line>
+            <line x1=1 y1=1 x2= 11 y2=11 stroke=white stroke-width=2></line>
+          </svg>
+        </div>
+       <div id=${popup.nameId}></div>
+       <div id=${popup.timeId}></div>`;
     document.body.appendChild(popupElement);
 
     popupElement.onclick = function (e) {
