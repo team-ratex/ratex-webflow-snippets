@@ -122,7 +122,7 @@ function popupInit(initialTime = 10000, followUpTime = 10000, duration = 5000) {
           popupData.name = data.data[0].coupon.merchant;
           popupData.image = `https://s3-ap-southeast-1.amazonaws.com/ratex-merchants/icons/ecommerce/${data.data[0].coupon.merchant}.png`;
           popupData.id = `C${data.data[0].coupon.id}`;
-          popupData.link = `https://ratex.co/home/shops/#voucher=${data.data[0].coupon.id}`;
+          popupData.link = `https://ratex.co/home/shops#voucher=${data.data[0].coupon.id}`;
         }
         updateDisplay();
       }
