@@ -103,6 +103,7 @@ class ShippingTracker {
   updateShippingInfo = (courier, trackingRef, url) => {
     $('#courier').html(courier);
     $('#Courier-url').html(url);
+    $('#Courier-url').attr("href", url);
     $('#Tracking-ID').html(trackingRef);
   }
 
