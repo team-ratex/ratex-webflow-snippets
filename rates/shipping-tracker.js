@@ -46,8 +46,8 @@ class ShippingTracker {
     }
     this.searchParams = new URLSearchParams(window.location.search);
     this.itemId = this.searchParams.get('i');
-    // this.url = `https://ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
-    this.url = `https://staging.ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // staging
+    this.url = `https://ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
+    // this.url = `https://staging.ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // staging
     // do api call
     this.fetchData();
   }
