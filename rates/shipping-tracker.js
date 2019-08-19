@@ -32,21 +32,21 @@ class ShippingTracker {
       }
     }
     this.statusStringMapper = {
-      1: "Pemrosesan", // "Processing",  || OrderItemStatusPendingGoodsOrder
-      2: "Pemrosesan", // "Processing",  || OrderItemStatusPendingFirstMile
-      3: "Pemrosesan", // "Processing",  || OrderItemStatusFirstMile
-      4: "Pemrosesan", // "Processing",  || OrderItemStatusOverseasWarehouseReceived
+      1: "Sedang Diproses", // "Processing",  || OrderItemStatusPendingGoodsOrder
+      2: "Sedang Diproses", // "Processing",  || OrderItemStatusPendingFirstMile
+      3: "Sedang Diproses", // "Processing",  || OrderItemStatusFirstMile
+      4: "Sedang Diproses", // "Processing",  || OrderItemStatusOverseasWarehouseReceived
       5: "Dikirim", // "Shipped" || OrderItemStatusFreightForwarding
-      6: "Pesanan tiba di gudan", // "Reached warehouse",  || OrderItemStatusLocalWarehouseReceived
-      7: "Pesanan dikiri", // "Delivering",  || OrderItemStatusDelivering
+      6: "Pesanan tiba di gudang", // "Reached warehouse",  || OrderItemStatusLocalWarehouseReceived
+      7: "Pesanan dikirim", // "Delivering",  || OrderItemStatusDelivering
       8: "Pesanan selesai", // "Delivered",  || OrderItemStatusDelivered
       9: "Dibatalkan", // "Cancelled", , || OrderItemStatusCancelled
       10: "Pesanan selesai", // "Delivered",  || OrderItemStatusPartiallyReturned
       11: "Pesanan selesai"// "Delivered" || OrderItemStatusReturned
     }
-    this.searchParams = new URLSearchParams(window.location.search);
-    this.itemId = this.searchParams.get('i');
-    this.debugMode = this.searchParams.get('debug');
+    // this.searchParams = new URLSearchParams(window.location.search);
+    this.itemId = this.getUrlParameter('i');
+    this.debugMode = this.getUrlParameter('debug');
     this.url = `https://ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
     // this.url = `https://staging.ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // staging
     // do api call
@@ -166,6 +166,13 @@ class ShippingTracker {
         }
       }
     });
+  }
+  // Helpers. GetUrlParameters is not supported in some non-modern browsers
+  getUrlParameter = (name) => {
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+    var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+    var results = regex.exec(location.search);
+    return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
   }
 }
 
