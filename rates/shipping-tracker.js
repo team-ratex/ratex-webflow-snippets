@@ -39,13 +39,14 @@ class ShippingTracker {
       5: "Dikirim", // "Shipped" || OrderItemStatusFreightForwarding
       6: "Pesanan tiba di gudan", // "Reached warehouse",  || OrderItemStatusLocalWarehouseReceived
       7: "Pesanan dikiri", // "Delivering",  || OrderItemStatusDelivering
-      8: "Pesanan selesa", // "Delivered",  || OrderItemStatusDelivered
+      8: "Pesanan selesai", // "Delivered",  || OrderItemStatusDelivered
       9: "Dibatalkan", // "Cancelled", , || OrderItemStatusCancelled
-      10: "Pesanan selesa", // "Delivered",  || OrderItemStatusPartiallyReturned
-      11: "Pesanan selesa"// "Delivered" || OrderItemStatusReturned
+      10: "Pesanan selesai", // "Delivered",  || OrderItemStatusPartiallyReturned
+      11: "Pesanan selesai"// "Delivered" || OrderItemStatusReturned
     }
     this.searchParams = new URLSearchParams(window.location.search);
     this.itemId = this.searchParams.get('i');
+    this.debugMode = this.searchParams.get('debug');
     this.url = `https://ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
     // this.url = `https://staging.ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // staging
     // do api call
@@ -156,11 +157,13 @@ class ShippingTracker {
         // We swallow the errors, and display not found error
         $('.tracking-main-body').css('display', 'none') // hide tracking stuff
         $('#error-message').css('display', 'flex'); // show error div
-        // if (error.responseJSON) {
-        //   alert(error.responseJSON.message);
-        // } else {
-        //   alert(error.responseText)
-        // }
+        if (this.debugMode) {
+          if (error.responseJSON) {
+            alert(error.responseJSON.message);
+          } else {
+            alert(error.responseText)
+          }
+        }
       }
     });
   }
