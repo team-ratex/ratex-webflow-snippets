@@ -2,7 +2,8 @@
 Open-source snippets to power Rate's websites
 - [Rate Homepage](https://rate.com.sg)
 - [RateX installation page](https://rate.com.sg/ratex)
-- [RateS deal page](https://rate.com.sg/rates/deals)
+- [RateS Homepage & delivery pages](http://ratesapp.co.id)
+- [RateS delivery pages](https://ratesapp.co.id/tracking)
 
 ---
 
