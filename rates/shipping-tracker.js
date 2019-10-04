@@ -100,6 +100,7 @@ class ShippingTracker {
     $('#item-status').html(statusString)
     $('#item-ID').html(this.itemId)
     $('#item-duration').html('Terima dalam 10-13 hari')
+    $('#Payment-Method').html('Pembayaran Online'); // Update for alternative payments from API in the future
   }
   updateShippingInfo = (courier, trackingRef, url) => {
     $('#courier').html(courier);
