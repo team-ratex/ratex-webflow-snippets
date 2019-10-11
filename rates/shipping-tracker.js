@@ -44,13 +44,11 @@ class ShippingTracker {
       10: "Pesanan selesai", // "Delivered",  || OrderItemStatusPartiallyReturned
       11: "Pesanan selesai"// "Delivered" || OrderItemStatusReturned
     }
-    // this.searchParams = new URLSearchParams(window.location.search);
     this.itemId = this.getUrlParameter('i');
     this.debugMode = this.getUrlParameter('debug');
     this.url = `https://ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
     // this.url = `https://staging.ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // staging
-    // do api call
-    this.fetchData();
+    this.fetchData(); // API Call
   }
   // Phase 1: Processing
   toggleItemProcessingActive = () => {
@@ -95,11 +93,11 @@ class ShippingTracker {
   }
 
   // Status Box Modifier
-  updateStatusBox = (status, collectionMethod, collectionAmount) => {
+  updateStatusBox = (status, collectionMethod, collectionAmount, minDuration, maxDuration) => {
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
     $('#item-ID').html(this.itemId)
-    $('#item-duration').html('Terima dalam 10-13 hari')
+    $('#item-duration').html(`Terima dalam ${minDuration}-${maxDuration} hari`)
     if (collectionMethod === 'COD') {
       // Update payment-method
       $('#Payment-Method').html('Cash on Delivery');
@@ -133,9 +131,11 @@ class ShippingTracker {
           url,
           collectionAmount,
           collectionMethod,
+          minDuration,
+          maxDuration,
         } = response.data
         // Update status box
-        this.updateStatusBox(status, collectionMethod, collectionAmount);
+        this.updateStatusBox(status, collectionMethod, collectionAmount, minDuration, maxDuration);
         // Update tracking info if available
         if (trackingRef && (trackingRef.length > 0) && url && (url.length > 0)) {
           this.updateShippingInfo(courier, trackingRef, url);
