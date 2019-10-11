@@ -203,13 +203,7 @@ class ShippingTracker {
         tempNum[i] = `.${tempNum[i]}`;
       }
     }
-    /*
-     * use \u00A0 (&nbsp) instead of space to ensure that it does not break strangely
-     * For example Rp 1.000.000 becomes
-     * Rp
-     * 1.000.000
-     */
-    return `Rp\u00A0${tempNum.reverse().join('')}`;
+    return `Rp&nbsp${tempNum.reverse().join('')}`;
   };
 }
 
