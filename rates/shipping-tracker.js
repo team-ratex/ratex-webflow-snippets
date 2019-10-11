@@ -104,7 +104,7 @@ class ShippingTracker {
       // update collection amount
       $('#Amount-to-pay-header').css('display', 'flex');
       $('#Amount-To-Pay').css('display', 'flex');
-      $('#Amount-To-Pay').html(convertToRupiah(collectionAmount));
+      $('#Amount-To-Pay').html(this.convertToRupiah(collectionAmount));
     } else {
       $('#Payment-Method').html('Pembayaran Online');
     }
