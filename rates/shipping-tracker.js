@@ -95,12 +95,20 @@ class ShippingTracker {
   }
 
   // Status Box Modifier
-  updateStatusBox = (status) => {
+  updateStatusBox = (status, collectionMethod, collectionAmount) => {
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
     $('#item-ID').html(this.itemId)
     $('#item-duration').html('Terima dalam 10-13 hari')
-    $('#Payment-Method').html('Pembayaran Online'); // Update for alternative payments from API in the future
+    if (collectionMethod === 'COD') {
+      // Update payment-method
+      $('#Payment-Method').html('Cash on Delivery');
+      // update collection amount
+      $('#Amount-to-pay-header').css('display', 'flex');
+      $('#Amount-To-Pay').html(collectionAmount);
+    } else {
+      $('#Payment-Method').html('Pembayaran Online');
+    }
   }
   updateShippingInfo = (courier, trackingRef, url) => {
     $('#courier').html(courier);
@@ -122,10 +130,12 @@ class ShippingTracker {
           status,
           courier,
           trackingRef,
-          url
+          url,
+          collectionAmount,
+          collectionMethod,
         } = response.data
         // Update status box
-        this.updateStatusBox(status);
+        this.updateStatusBox(status, collectionMethod, collectionAmount);
         // Update tracking info if available
         if (trackingRef && (trackingRef.length > 0) && url && (url.length > 0)) {
           this.updateShippingInfo(courier, trackingRef, url);
