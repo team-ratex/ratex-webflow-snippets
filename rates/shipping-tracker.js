@@ -103,7 +103,8 @@ class ShippingTracker {
       $('#Payment-Method').html('Cash on Delivery');
       // update collection amount
       $('#Amount-to-pay-header').css('display', 'flex');
-      $('#Amount-To-Pay').html(collectionAmount);
+      $('#Amount-To-Pay').css('display', 'flex');
+      $('#Amount-To-Pay').html(convertToRupiah(collectionAmount));
     } else {
       $('#Payment-Method').html('Pembayaran Online');
     }
@@ -191,6 +192,25 @@ class ShippingTracker {
     }
     return params[key];
   }
+  // Helpers. convert to rupiah
+  convertToRupiah = (x) => {
+    const tempNum = String(x)
+      .split('')
+      .reverse();
+
+    for (let i = 0; i < tempNum.length; i++) {
+      if ((i + 1) % 3 === 0 && i !== tempNum.length - 1) {
+        tempNum[i] = `.${tempNum[i]}`;
+      }
+    }
+    /*
+     * use \u00A0 (&nbsp) instead of space to ensure that it does not break strangely
+     * For example Rp 1.000.000 becomes
+     * Rp
+     * 1.000.000
+     */
+    return `Rp\u00A0${tempNum.reverse().join('')}`;
+  };
 }
 
 // Class runner
