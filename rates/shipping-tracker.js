@@ -97,7 +97,7 @@ class ShippingTracker {
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
     const orderAndItemId = `${orderId}`;
-    $('#item-ID').html(this.itemId);
+    $('#item-ID').html(orderId);
     $('#Copy-Button').css('display', 'flex');
     $('#Copy-Button').click(() => {
       // Active state
