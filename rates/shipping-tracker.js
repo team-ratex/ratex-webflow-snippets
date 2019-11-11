@@ -102,7 +102,7 @@ class ShippingTracker {
     $('#Copy-Button').click(() => {
       // copy to clipboard
       this.writeText(orderAndItemId);
-    }););
+    });
     $('#item-duration').html(`Terima dalam ${minDuration}-${maxDuration} hari`)
     if (collectionMethod === 'COD') {
       // Update payment-method
