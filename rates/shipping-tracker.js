@@ -93,15 +93,20 @@ class ShippingTracker {
   }
 
   // Status Box Modifier
-  updateStatusBox = (status, collectionMethod, collectionAmount, minDuration, maxDuration) => {
+  updateStatusBox = (status, collectionMethod, collectionAmount, minDuration, maxDuration, orderId) => {
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
-    const orderAndItemId = this.itemId; // Update this in the future
+    const orderAndItemId = `${orderId}`;
     $('#item-ID').html(this.itemId);
     $('#Copy-Button').css('display', 'flex');
     $('#Copy-Button').click(() => {
-      // copy to clipboard
+      // Active state
+      $('#Copy-Button').text('TERSALIN');
       this.writeText(orderAndItemId);
+      setTimeout(() => {
+        // Reset
+        $('#Copy-Button').text('SALIN');
+      }, 2000);
     });
     $('#item-duration').html(`Terima dalam ${minDuration}-${maxDuration} hari`)
     if (collectionMethod === 'COD') {
@@ -121,6 +126,16 @@ class ShippingTracker {
     $('#Courier-url').html(url);
     $('#Courier-url').attr("href", url);
     $('#Tracking-ID').html(trackingRef);
+    // todo change the id below
+    $('#Copy-Button-2').click(() => {
+      // Active state
+      $('#Copy-Button-2').text('TERSALIN');
+      this.writeText(trackingRef);
+      setTimeout(() => {
+        // Reset
+        $('#Copy-Button-2').text('SALIN');
+      }, 2000);
+    });
   }
 
   fetchData = () => {
@@ -141,9 +156,10 @@ class ShippingTracker {
           collectionMethod,
           minDuration,
           maxDuration,
+          orderId,
         } = response.data
         // Update status box
-        this.updateStatusBox(status, collectionMethod, collectionAmount, minDuration, maxDuration);
+        this.updateStatusBox(status, collectionMethod, collectionAmount, minDuration, maxDuration, orderId);
         // Update tracking info if available
         if (trackingRef && (trackingRef.length > 0) && url && (url.length > 0)) {
           this.updateShippingInfo(courier, trackingRef, url);
