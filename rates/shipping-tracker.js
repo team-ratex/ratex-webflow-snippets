@@ -96,8 +96,8 @@ class ShippingTracker {
   updateStatusBox = (status, collectionMethod, collectionAmount, minDuration, maxDuration, orderId) => {
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
-    const orderAndItemId = `${orderId}`;
-    $('#item-ID').html(orderId);
+    const orderAndItemId = `#${orderId}`;
+    $('#item-ID').html(`#${orderId}`);
     $('#Copy-Button').css('display', 'flex');
     $('#Copy-Button').click(() => {
       // Active state
