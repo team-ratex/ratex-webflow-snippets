@@ -96,7 +96,13 @@ class ShippingTracker {
   updateStatusBox = (status, collectionMethod, collectionAmount, minDuration, maxDuration) => {
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
-    $('#item-ID').html(this.itemId)
+    const orderAndItemId = this.itemId; // Update this in the future
+    $('#item-ID').html(this.itemId);
+    $('#Copy-Button').css('display', 'flex');
+    $('#Copy-Button').click(() => {
+      // copy to clipboard
+      this.writeText(orderAndItemId);
+    }););
     $('#item-duration').html(`Terima dalam ${minDuration}-${maxDuration} hari`)
     if (collectionMethod === 'COD') {
       // Update payment-method
@@ -110,6 +116,7 @@ class ShippingTracker {
     }
   }
   updateShippingInfo = (courier, trackingRef, url) => {
+    $('#Courier-Details').css('display', 'block');
     $('#courier').html(courier);
     $('#Courier-url').html(url);
     $('#Courier-url').attr("href", url);
@@ -204,6 +211,33 @@ class ShippingTracker {
       }
     }
     return `Rp&nbsp${tempNum.reverse().join('')}`;
+  };
+  // Helpers. Copy to clipboard
+  writeText = (str) => {
+    return new Promise(function (resolve, reject) {
+
+      /********************************/
+      var range = document.createRange();
+      range.selectNodeContents(document.body);
+      document.getSelection().addRange(range);
+      /********************************/
+
+      var success = false;
+      function listener(e) {
+        e.clipboardData.setData("text/plain", str);
+        e.preventDefault();
+        success = true;
+      }
+      document.addEventListener("copy", listener);
+      document.execCommand("copy");
+      document.removeEventListener("copy", listener);
+
+      /********************************/
+      document.getSelection().removeAllRanges();
+      /********************************/
+
+      success ? resolve() : reject();
+    });
   };
 }
 
