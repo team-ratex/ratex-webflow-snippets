@@ -46,8 +46,8 @@ class ShippingTracker {
     }
     this.itemId = this.getUrlParameter('i');
     this.debugMode = this.getUrlParameter('debug');
-    this.url = `https://ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
-    // this.url = `https://staging.ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // staging
+    var isStaging = location.host === 'rates-reseller.webflow.io'
+    this.url = `https://${isStaging ? 'staging.' : ''}ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
     this.fetchData(); // API Call
   }
   // Phase 1: Processing
