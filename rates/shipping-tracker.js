@@ -173,18 +173,18 @@ class ShippingTracker {
           case 11:
           case 10:
             this.toggleItemIsReturned();
-          case 8:
+          case 8: // Delivered
             this.toggleItemDeliveredActive();
-          case 7:
+          case 7: // Last mile
             this.toggleItemDeliveringActive();
-          case 6:
-          case 5:
-          case 4:
+          case 6: // Local warehouse
             this.toggleItemReachedWarehouseActive();
-          case 3:
+          case 5: // Freight Forwarding
+          case 4: // Overseas Warehouse
+          case 3: // 1st mile in-procress
             this.toggleItemShippedActive();
-          case 2:
-          case 1:
+          case 2: // Pending 1st mile
+          case 1: // Pending order
             this.toggleItemProcessingActive();
         }
       },
