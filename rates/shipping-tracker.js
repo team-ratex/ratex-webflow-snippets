@@ -110,7 +110,7 @@ class ShippingTracker {
     });
 
     // Update tracking dates
-    // AWB Esimate Wrapper and Lastmile Estimate Wrapper is hidden by default
+    // AWB Estimate Wrapper and Lastmile Estimate Wrapper is hidden by default
     // If there is delivery min/max duration, show and populate the Lastmile Estimate Wrapper field
     if (deliveryMinDuration && deliveryMaxDuration) {
       $('#Lastmile-Estimate-Wrapper').css('display', 'block');
@@ -121,7 +121,7 @@ class ShippingTracker {
       $('#Lastmile-Estimate').html(`${lastMileMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${lastMileMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
     }
     else {
-      // If there is awb min/max duration, show and populate the AWB Esimate Wrapper field
+      // If there is awb min/max duration, show and populate the AWB Estimate Wrapper field
       if (awbMinDuration && awbMaxDuration) {
         $('#AWB-Estimate-Wrapper').css('display', 'block');
         const awbMinDate = new Date(orderedAt);
@@ -130,7 +130,7 @@ class ShippingTracker {
         awbMaxDate.setDate(awbMaxDate.getDate() + awbMaxDuration);
         $('#AWB-Estimate').html(`${awbMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${awbMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
       }
-      // Else show nothing
+      // Else show/do nothing
     }
     
     if (collectionMethod === 'COD') {
