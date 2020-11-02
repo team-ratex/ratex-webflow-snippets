@@ -47,7 +47,7 @@ class ShippingTracker {
     this.itemId = this.getUrlParameter('i');
     this.debugMode = this.getUrlParameter('debug');
     var isStaging = location.host === 'rates-reseller.webflow.io'
-    this.url = `https://${isStaging ? 'staging.' : ''}ratesapp.co.id/rs/api/tracking?i=${this.itemId}`; // prod
+    this.url = `https://${isStaging ? 'staging.' : ''}ratesapp.co.id/rs/api/v2/tracking?i=${this.itemId}`; // prod
     this.fetchData(); // API Call
   }
   // Phase 1: Processing
@@ -93,7 +93,7 @@ class ShippingTracker {
   }
 
   // Status Box Modifier
-  updateStatusBox = (status, collectionMethod, collectionAmount, minDuration, maxDuration, orderId) => {
+  updateStatusBox = (status, collectionMethod, collectionAmount, awbMinDuration, awbMaxDuration, deliveryMinDuration, deliveryMaxDuration, orderId, orderedAt) => {    
     const statusString = this.statusStringMapper[status];
     $('#item-status').html(statusString)
     const orderAndItemId = `#${orderId}`;
@@ -108,7 +108,31 @@ class ShippingTracker {
         $('#Copy-Button').text('SALIN');
       }, 2000);
     });
-    $('#item-duration').html(`Terima dalam ${minDuration}-${maxDuration} hari`)
+
+    // Update tracking dates
+    // AWB Estimate Wrapper and Lastmile Estimate Wrapper is hidden by default
+    // If there is delivery min/max duration, show and populate the Lastmile Estimate Wrapper field
+    if (deliveryMinDuration && deliveryMaxDuration) {
+      $('#Lastmile-Estimate-Wrapper').css('display', 'block');
+      const lastMileMinDate = new Date(orderedAt);
+      lastMileMinDate.setDate(lastMileMinDate.getDate() + deliveryMinDuration);
+      const lastMileMaxDate = new Date(orderedAt);
+      lastMileMaxDate.setDate(lastMileMaxDate.getDate() + deliveryMaxDuration);
+      $('#Lastmile-Estimate').html(`${lastMileMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${lastMileMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+    }
+    else {
+      // If there is awb min/max duration, show and populate the AWB Estimate Wrapper field
+      if (awbMinDuration && awbMaxDuration) {
+        $('#AWB-Estimate-Wrapper').css('display', 'block');
+        const awbMinDate = new Date(orderedAt);
+        awbMinDate.setDate(awbMinDate.getDate() + awbMinDuration);
+        const awbMaxDate = new Date(orderedAt);
+        awbMaxDate.setDate(awbMaxDate.getDate() + awbMaxDuration);
+        $('#AWB-Estimate').html(`${awbMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${awbMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+      }
+      // Else show/do nothing
+    }
+    
     if (collectionMethod === 'COD') {
       // Update payment-method
       $('#Payment-Method').html('Cash on Delivery');
@@ -154,12 +178,16 @@ class ShippingTracker {
           url,
           collectionAmount,
           collectionMethod,
-          minDuration,
-          maxDuration,
+          awbMinDuration,
+          awbMaxDuration,
+          deliveryMinDuration,
+          deliveryMaxDuration,
           orderId,
-        } = response.data
+          orderedAt,
+        } = response.data;
+        
         // Update status box
-        this.updateStatusBox(status, collectionMethod, collectionAmount, minDuration, maxDuration, orderId);
+        this.updateStatusBox(status, collectionMethod, collectionAmount, awbMinDuration, awbMaxDuration, deliveryMinDuration, deliveryMaxDuration, orderId, orderedAt);
         // Update tracking info if available
         if (trackingRef && (trackingRef.length > 0) && url && (url.length > 0)) {
           this.updateShippingInfo(courier, trackingRef, url);
