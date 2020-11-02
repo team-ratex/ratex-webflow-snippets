@@ -110,28 +110,27 @@ class ShippingTracker {
     });
 
     // Update tracking dates
-    // If there is awb min and max date, populate the field
-    if (awbMinDuration && awbMaxDuration) {
-      const awbMinDate = new Date(orderedAt);
-      awbMinDate.setDate(awbMinDate.getDate() + awbMinDuration);
-      const awbMaxDate = new Date(orderedAt);
-      awbMaxDate.setDate(awbMaxDate.getDate() + awbMaxDuration);
-      $('#AWB-Estimate').html(`${awbMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${awbMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
-    }
-    // Else hide it
-    else {
-      $('#AWB-Estimate-Wrapper').css('display', 'none');
-    }
-
+    // AWB Esimate Wrapper and Lastmile Estimate Wrapper is hidden by default
+    // If there is delivery min/max duration, show and populate the Lastmile Estimate Wrapper field
     if (deliveryMinDuration && deliveryMaxDuration) {
-      $('#AWB-Estimate-Wrapper').css('display', 'none');
       $('#Lastmile-Estimate-Wrapper').css('display', 'block');
-
       const lastMileMinDate = new Date(orderedAt);
       lastMileMinDate.setDate(lastMileMinDate.getDate() + deliveryMinDuration);
       const lastMileMaxDate = new Date(orderedAt);
       lastMileMaxDate.setDate(lastMileMaxDate.getDate() + deliveryMaxDuration);
       $('#Lastmile-Estimate').html(`${lastMileMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${lastMileMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+    }
+    else {
+      // If there is awb min/max duration, show and populate the AWB Esimate Wrapper field
+      if (awbMinDuration && awbMaxDuration) {
+        $('#AWB-Estimate-Wrapper').css('display', 'block');
+        const awbMinDate = new Date(orderedAt);
+        awbMinDate.setDate(awbMinDate.getDate() + awbMinDuration);
+        const awbMaxDate = new Date(orderedAt);
+        awbMaxDate.setDate(awbMaxDate.getDate() + awbMaxDuration);
+        $('#AWB-Estimate').html(`${awbMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${awbMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+      }
+      // Else show nothing
     }
     
     if (collectionMethod === 'COD') {
