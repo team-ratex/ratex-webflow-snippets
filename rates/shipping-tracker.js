@@ -118,7 +118,12 @@ class ShippingTracker {
       lastMileMinDate.setDate(lastMileMinDate.getDate() + deliveryMinDuration);
       const lastMileMaxDate = new Date(orderedAt);
       lastMileMaxDate.setDate(lastMileMaxDate.getDate() + deliveryMaxDuration);
-      $('#Lastmile-Estimate').html(`${lastMileMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${lastMileMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+      if (Date.now() > Date.parse(lastMileMaxDate)) {
+        $('#Lastmile-Estimate').html(`Maaf, pengiriman anda tertunda`);
+      }
+      else {
+        $('#Lastmile-Estimate').html(`${lastMileMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${lastMileMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+      } 
     }
     else {
       // If there is awb min/max duration, show and populate the AWB Estimate Wrapper field
@@ -128,7 +133,12 @@ class ShippingTracker {
         awbMinDate.setDate(awbMinDate.getDate() + awbMinDuration);
         const awbMaxDate = new Date(orderedAt);
         awbMaxDate.setDate(awbMaxDate.getDate() + awbMaxDuration);
-        $('#AWB-Estimate').html(`${awbMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${awbMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+        if (Date.now() > Date.parse(awbMaxDate)) {
+          $('#AWB-Estimate').html(`Maaf, pengiriman anda tertunda`);
+        }
+        else {
+          $('#AWB-Estimate').html(`${awbMinDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})} - ${awbMaxDate.toLocaleDateString('id-ID', {day: 'numeric', month: 'short', year: "numeric"})}`);
+        }
       }
       // Else show/do nothing
     }
