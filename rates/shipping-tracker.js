@@ -118,6 +118,7 @@ class ShippingTracker {
       lastMileMinDate.setDate(lastMileMinDate.getDate() + deliveryMinDuration);
       const lastMileMaxDate = new Date(orderedAt);
       lastMileMaxDate.setDate(lastMileMaxDate.getDate() + deliveryMaxDuration);
+      // Show delayed text instead if current time is greater than last mile max date
       if (Date.now() > Date.parse(lastMileMaxDate)) {
         $('#Lastmile-Estimate').html(`Maaf, pengiriman anda tertunda`);
       }
@@ -133,6 +134,7 @@ class ShippingTracker {
         awbMinDate.setDate(awbMinDate.getDate() + awbMinDuration);
         const awbMaxDate = new Date(orderedAt);
         awbMaxDate.setDate(awbMaxDate.getDate() + awbMaxDuration);
+        // Show delayed text instead if current time is greater than awb max date
         if (Date.now() > Date.parse(awbMaxDate)) {
           $('#AWB-Estimate').html(`Maaf, pengiriman anda tertunda`);
         }
