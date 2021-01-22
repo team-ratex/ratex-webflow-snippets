@@ -78,7 +78,7 @@ $(function () {
         data?: unknown;
       }
     ): Promise<INetworkResponse<T>> => {
-      const requestHeaders = config.headers
+      const requestHeaders = config?.headers
         ? this.combineHeaders(this.requestHeaders, config.headers)
         : this.requestHeaders;
 
@@ -89,7 +89,9 @@ $(function () {
           headers: requestHeaders,
           dataType: "json",
           contentType: "application/json",
-          ...("data" in config ? { data: JSON.stringify(config.data) } : null),
+          ...(typeof config === "object" && "data" in config
+            ? { data: JSON.stringify(config.data) }
+            : null),
           success: (data, textStatus, jqXHR: XMLHttpRequest) => {
             resolve({
               status: jqXHR.status,
@@ -216,7 +218,7 @@ $(function () {
       if (sectionElement) {
         sectionElement.style.display = show ? "" : "none";
       }
-    }
+    };
   }
 
   // Form
@@ -1387,7 +1389,7 @@ $(function () {
     public onActive = () => {
       setShowReferralCode(false); // hide referral code display
       this.setupMainButton();
-    };;
+    };
 
     public onInactive = () => {
       this.teardownMainButton();
