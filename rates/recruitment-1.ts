@@ -216,7 +216,7 @@ $(function () {
     private setShowSectionIndex = (sectionIndex: number, show = true) => {
       const sectionElement = this.sections[sectionIndex].getElement();
       if (sectionElement) {
-        sectionElement.style.display = show ? "" : "none";
+        sectionElement.style.display = show ? "initial" : "none";
       }
     };
   }
@@ -639,7 +639,7 @@ $(function () {
   const setShowReferralCode = (show: boolean) => {
     const referralCodeElement = document.getElementById(REFERRAL_CODE_ID);
     if (referralCodeElement) {
-      referralCodeElement.style.visibility = show ? "" : "hidden";
+      referralCodeElement.style.opacity = show ? "1" : "0";
     }
   };
 
@@ -1428,10 +1428,13 @@ $(function () {
   let otpResendCooldown = 0;
 
   // Initialize
-  const referralCodeElement = document.getElementById(REFERRAL_CODE_VALUE_ID);
-  if (referralCodeElement) {
-    referralCodeElement.innerText = referralCode;
-    referralCodeElement.style.opacity = "1";
+  if (referralCode) {
+    const referralCodeValueElement = document.getElementById(REFERRAL_CODE_VALUE_ID);
+    if (referralCodeValueElement) {
+      referralCodeValueElement.innerText = referralCode;
+      referralCodeValueElement.style.opacity = "1";
+      setShowReferralCode(true);
+    }
   }
 
   const sectionManager = new SectionManager([
@@ -1442,16 +1445,4 @@ $(function () {
     section4a,
   ]);
   sectionManager.goToSection(0);
-
-  // Disable default Webflow forms behavior
-  // ref: https://forum.webflow.com/t/disabling-form-submission/37752/4
-  $(`#${PHONE_NUMBER_FORM_ID}`).submit(function () {
-    return false;
-  });
-  $(`#${OTP_FORM_ID}`).submit(function () {
-    return false;
-  });
-  $(`#${REFERRAL_FORM_ID}`).submit(function () {
-    return false;
-  });
 });
